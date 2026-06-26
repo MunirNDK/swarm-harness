@@ -1,0 +1,14 @@
+{
+  "created_at": "2026-06-26T20:46:09.696Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "build-page:app/blog/page.tsx",
+  "files": 1,
+  "notes": "Blog index page built with 4 placeholder posts using real service-aligned topics. All shared components imported from contract paths. Images use Unsplash with width/height set. Glass cards with hover effects, meta info, and CTA banner at bottom. Fully responsive grid (1 col mobile, 2 col tablet, 3 col desktop). Accessibility: focus rings, alt text, semantic headings, keyboard navigation. No lorem or invented facts — all content derived from site services and areas.",
+  "cost_usd": 0.01481784,
+  "budget": {
+    "total": 0.157267,
+    "max": 8,
+    "fraction": 0.019658375,
+    "gate": "ok"
+  }
+}

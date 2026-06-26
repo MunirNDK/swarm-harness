@@ -1,0 +1,14 @@
+{
+  "created_at": "2026-06-26T20:38:00.353Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "build-components",
+  "files": 17,
+  "notes": "All shared components generated per design system. Navbar, Reveal, QuoteForm, Marquee are client components. Button supports href for internal/external links. ServiceCard dynamically imports lucide icons. QuoteForm validates and posts to /api/quote. All use dac.* tokens, glassmorphism, and framer-motion with reduced-motion respect.",
+  "cost_usd": 0.02510733,
+  "budget": {
+    "total": 0.045995,
+    "max": 8,
+    "fraction": 0.005749375,
+    "gate": "ok"
+  }
+}

@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-black text-white font-body;
+    background: linear-gradient(180deg, #000000, #0A0A0A);
+    min-height: 100vh;
+  }
+
+  /* Focus ring */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-dac-red ring-offset-2 ring-offset-black;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Gradient headline utility for headlines */
+  .gradient-headline {
+    @apply bg-gradient-to-r from-white via-white to-dac-red bg-clip-text text-transparent;
+  }
+
+  /* Glass utility to use inside components */
+  .glass-panel {
+    @apply bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-2xl;
+  }
+}
