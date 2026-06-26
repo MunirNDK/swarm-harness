@@ -6,4 +6,6 @@ docs/loop-engineering-handbook.md
 *.log
 .DS_Store
 products/*/node_modules/
+products/*/.next/
+products/*/out/
 evidence/assets/*.tmp

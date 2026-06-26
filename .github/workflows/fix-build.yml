@@ -1,0 +1,51 @@
+name: Fix Build (self-heal)
+# Runs the DeepSeek-powered fix-build worker against a PR branch until `next build` passes.
+on:
+  workflow_dispatch:
+    inputs:
+      product_slug:
+        description: Product slug
+        required: true
+        default: daniells-auto-care
+      branch:
+        description: Branch to heal (e.g. pcr/1-daniells-auto-care)
+        required: true
+      max_iters:
+        description: Max fix iterations
+        required: false
+        default: '6'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - name: Use latest harness tooling (worker code lives on main)
+        run: git checkout origin/main -- workers harness
+
+      - name: Self-heal build
+        id: fix
+        env:
+          PRODUCT_SLUG: ${{ inputs.product_slug }}
+          MAX_ITERS: ${{ inputs.max_iters }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: node workers/fix-build.mjs
+
+      - name: Commit fixes to the branch
+        if: always()
+        run: |
+          git config user.name "swarm-bot"
+          git config user.email "swarm-bot@users.noreply.github.com"
+          git add products/ evidence/ 2>/dev/null || true
+          git commit -m "fix: self-heal build for ${{ inputs.product_slug }} (passed=${{ steps.fix.outputs.build_passed }}, \$${{ steps.fix.outputs.total_cost }})" || echo "nothing to commit"
+          git push origin HEAD:${{ inputs.branch }}
