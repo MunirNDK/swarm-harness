@@ -81,6 +81,10 @@ async function step(label, instruction, { max_tokens = 16000 } = {}) {
   return json;
 }
 
+// ensure build output never gets committed
+fs.mkdirSync(PRODUCT_DIR, { recursive: true });
+fs.writeFileSync(path.join(PRODUCT_DIR, '.gitignore'), 'node_modules/\n.next/\nout/\n');
+
 // ---- PHASE 1: foundation (config + lib + layout + globals) ----
 if (!ONLY || ONLY === 'foundation') {
   await step('foundation',

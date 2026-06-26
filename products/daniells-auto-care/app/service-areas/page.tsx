@@ -4,7 +4,7 @@ import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
 import { SectionHeading } from '@/components/ui/section-heading';
 import { GlassCard } from '@/components/ui/glass-card';
-import { Marquee } from '@/components/ui/marquee';
+import { Marquee } from '@/components/marquee';
 import { QuoteCTA } from '@/components/quote-cta';
 import { Reveal } from '@/components/ui/reveal';
 import { MapPin } from 'lucide-react';

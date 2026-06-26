@@ -34,7 +34,7 @@
       ]
     },
     "daniells-auto-care": {
-      "total_usd": 0.199105,
+      "total_usd": 0.235357,
       "runs": [
         {
           "at": "2026-06-26T20:35:32.384Z",
@@ -470,6 +470,12 @@
             }
           },
           "files": 1
+        },
+        {
+          "at": "2026-06-26T23:46:20.979Z",
+          "cost_usd": 0.036251856,
+          "step": "fix-build:iter1",
+          "files": 3
         }
       ]
     }

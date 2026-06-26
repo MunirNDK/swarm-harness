@@ -10,7 +10,7 @@ import Button from '@/components/ui/button';
 import GlassCard from '@/components/ui/glass-card';
 import SectionHeading from '@/components/ui/section-heading';
 import Reveal from '@/components/ui/reveal';
-import ServiceCard from '@/components/ui/service-card';
+import ServiceCard from '@/components/service-card';
 import { QuoteCTA } from '@/components/quote-cta';
 
 // Generate static params for all services
