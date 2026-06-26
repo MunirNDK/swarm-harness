@@ -52,7 +52,12 @@ products/             products the swarm builds (one folder per product)
 
 1. Open a PCR (Issues → "PCR — Product Change Request"). Intake auto-classifies it.
 2. Planner dispatches **Implement PCR** (Actions) with the issue number → opens a PR.
-3. **Verify PCR** runs automatically on the PR (build/test + QA + security gate).
-4. Merge when green → Vercel deploys.
+3. On the PR: **Verify PCR** (build/test + QA + security gate) and **Deploy to Vercel**
+   (preview) run automatically. The preview URL is commented on the PR.
+4. Merge when green → **Deploy to Vercel** runs on `main` and ships the changed product(s)
+   to production (`swarm-<slug>` Vercel project per product).
+
+Deploy can also be triggered manually: Actions → **Deploy to Vercel** → pick a product slug
+and `preview`/`production`. Requires the `VERCEL_TOKEN` secret.
 
 Image assets: run **Asset Generation** (Actions) with a prompt; images land in `evidence/assets/`.

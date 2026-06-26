@@ -1,0 +1,85 @@
+name: Deploy to Vercel
+# Validated production path: PR -> preview deploy (URL commented), merge to main -> production.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths: ['products/**']
+  push:
+    branches: [main]
+    paths: ['products/**']
+  workflow_dispatch:
+    inputs:
+      product_slug:
+        description: Product folder slug
+        required: true
+      environment:
+        description: Deploy target
+        type: choice
+        options: [preview, production]
+        default: preview
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+      has_work: ${{ steps.m.outputs.has_work }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - id: m
+        env:
+          INPUT_SLUG: ${{ inputs.product_slug }}
+          INPUT_ENV: ${{ inputs.environment }}
+          HEAD_REF: ${{ github.head_ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: node scripts/deploy-matrix.mjs
+
+  deploy:
+    needs: setup
+    if: needs.setup.outputs.has_work == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    concurrency:
+      group: deploy-${{ matrix.slug }}-${{ matrix.env }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - name: Deploy ${{ matrix.slug }} (${{ matrix.env }})
+        id: vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -e
+          DIR="products/${{ matrix.slug }}"
+          [ -d "$DIR" ] || { echo "No such product dir: $DIR"; exit 1; }
+          ARGS="--token=$VERCEL_TOKEN --yes --cwd $DIR"
+          # Stable, namespaced project per product. Link (create if missing), then deploy.
+          npx --yes vercel@latest link $ARGS --project "swarm-${{ matrix.slug }}" || true
+          if [ "${{ matrix.env }}" = "production" ]; then PROD="--prod"; else PROD=""; fi
+          URL=$(npx --yes vercel@latest deploy $ARGS $PROD)
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "### Vercel ${{ matrix.env }} deploy — \`${{ matrix.slug }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "$URL" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment preview URL on PR
+        if: matrix.pr != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment "${{ matrix.pr }}" --repo "${{ github.repository }}" \
+            --body "🔼 **Vercel preview** for \`${{ matrix.slug }}\`: ${{ steps.vercel.outputs.url }}"
