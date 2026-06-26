@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
-import { QuoteCTA } from "@/components/ui/quote-cta";
+import { QuoteCTA } from "@/components/quote-cta";
 import { cn } from "@/lib/utils";
 
 const { business, services } = site;

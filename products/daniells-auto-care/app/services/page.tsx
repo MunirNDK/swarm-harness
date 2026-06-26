@@ -5,7 +5,7 @@ import Section from '@/components/ui/section';
 import SectionHeading from '@/components/ui/section-heading';
 import ServiceCard from '@/components/ui/service-card';
 import Reveal from '@/components/ui/reveal';
-import QuoteCTA from '@/components/ui/quote-cta';
+import { QuoteCTA } from '@/components/quote-cta';
 
 export const metadata: Metadata = {
   title: 'Services | Daniells Auto Care',

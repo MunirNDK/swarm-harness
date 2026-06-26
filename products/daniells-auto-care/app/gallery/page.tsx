@@ -5,7 +5,7 @@ import Container from '@/components/ui/container';
 import Section from '@/components/ui/section';
 import SectionHeading from '@/components/ui/section-heading';
 import Reveal from '@/components/ui/reveal';
-import QuoteCTA from '@/components/ui/quote-cta';
+import { QuoteCTA } from '@/components/quote-cta';
 import { cn } from '@/lib/utils';
 
 // Dark-toned luxury car detailing images from Unsplash (width/height set for CLS)

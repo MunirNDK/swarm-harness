@@ -6,7 +6,7 @@ import Section from '@/components/ui/section';
 import SectionHeading from '@/components/ui/section-heading';
 import ServiceCard from '@/components/service-card';
 import ReviewCard from '@/components/review-card';
-import QuoteCTA from '@/components/quote-cta';
+import { QuoteCTA } from '@/components/quote-cta';
 import Button from '@/components/ui/button';
 import GlassCard from '@/components/ui/glass-card';
 import Reveal from '@/components/ui/reveal';
