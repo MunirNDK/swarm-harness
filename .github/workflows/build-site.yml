@@ -51,8 +51,11 @@ jobs:
           BRANCH="pcr/${NUM:-0}-$SLUG"
           git config user.name "swarm-bot"
           git config user.email "swarm-bot@users.noreply.github.com"
-          git checkout -b "$BRANCH"
-          git add -A
+          # base the branch on the latest main so the commit never reverts/touches workflow files
+          # (GITHUB_TOKEN cannot push .github/workflows changes). Keep generated files (untracked).
+          git fetch origin main
+          git checkout -B "$BRANCH" FETCH_HEAD
+          git add products/ specs/ evidence/
           git commit -m "feat: build $SLUG site (DeepSeek V4 Pro, cost \$${{ steps.gen.outputs.total_cost }})"
           git push -u origin "$BRANCH"
           BODY="Hero-seeded redesign of **$SLUG** built by the swarm (DeepSeek V4 Pro) from \`specs/$SLUG\`. Spend: \$${{ steps.gen.outputs.total_cost }}. Verify + Vercel preview run on this PR."

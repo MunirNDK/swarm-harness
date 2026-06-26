@@ -15,10 +15,11 @@ function ensureDir(d) {
 
 /** Write a structured evidence packet for a (pcr, step). Returns the file path. */
 export function writeEvidence(packet) {
-  const dir = path.join(EVIDENCE_DIR, `PCR-${packet.pcr_id}`);
+  const dir = path.join(EVIDENCE_DIR, `PCR-${String(packet.pcr_id).replace(/[^a-zA-Z0-9._-]/g, '-')}`);
   ensureDir(dir);
   const stamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const file = path.join(dir, `${packet.step_id || 'step'}-${stamp}.json`);
+  const safeStep = String(packet.step_id || 'step').replace(/[^a-zA-Z0-9._-]/g, '-');
+  const file = path.join(dir, `${safeStep}-${stamp}.json`);
   fs.writeFileSync(file, JSON.stringify({ created_at: new Date().toISOString(), ...packet }, null, 2));
   return file;
 }
