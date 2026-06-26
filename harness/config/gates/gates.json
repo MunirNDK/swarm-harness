@@ -1,0 +1,10 @@
+{
+  "$comment": "Gate definitions. Deterministic gates run in workers/gates.mjs; agentic gates are model-judged.",
+  "gates": [
+    { "id": "duplicate_pcr", "type": "agentic", "attached_to": "intake", "failure_action": "flag_and_pause" },
+    { "id": "cost_gate", "type": "deterministic", "attached_to": "every_step", "max_usd": 8.0, "failure_action": "pause_and_request_human_input" },
+    { "id": "technical_validation", "type": "hybrid", "attached_to": "verify", "checks": ["lint", "test", "build"], "failure_action": "retry_with_feedback", "retry_limit": 3 },
+    { "id": "security_gate", "type": "agentic", "attached_to": "verify", "fail_on": ["high", "critical"], "failure_action": "retry_with_feedback", "retry_limit": 3 },
+    { "id": "deployment_readiness", "type": "human", "attached_to": "deployment", "requires_human_approval": true, "when": ["risk:high"] }
+  ]
+}

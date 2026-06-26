@@ -1,0 +1,37 @@
+name: PCR — Product Change Request
+description: Request the swarm to build or change a website, plugin, SaaS, app, or asset.
+title: "[PCR] "
+labels: ["pcr"]
+body:
+  - type: input
+    id: outcome
+    attributes:
+      label: Requested outcome
+      description: What does success look like in one sentence?
+      placeholder: A deployed 5-page marketing site for a local HVAC business.
+    validations:
+      required: true
+  - type: dropdown
+    id: product_type
+    attributes:
+      label: Product type
+      options: [website, multi-page site, landing page, plugin, SaaS product, web app, asset/image set, other]
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description & requirements
+      description: Pages/features, content, tech preferences, brand, constraints.
+    validations:
+      required: true
+  - type: input
+    id: stack
+    attributes:
+      label: Preferred stack (optional)
+      placeholder: Next.js + TypeScript + Tailwind (default), or specify otherwise.
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: Non-goals (optional)
+      description: Anything explicitly out of scope.

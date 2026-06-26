@@ -1,0 +1,36 @@
+name: PCR Intake
+# Loop: event-driven. When a PCR issue is opened/labeled, classify + dedup + estimate cost.
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: intake-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  intake:
+    if: github.event.action == 'opened' || github.event.label.name == 'pcr'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run intake classifier
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node workers/intake.mjs
+      - name: Commit evidence
+        run: |
+          git config user.name "swarm-bot"
+          git config user.email "swarm-bot@users.noreply.github.com"
+          git add evidence || true
+          git commit -m "evidence: intake PCR #${{ github.event.issue.number }}" || echo "no changes"
+          git push || echo "nothing to push"

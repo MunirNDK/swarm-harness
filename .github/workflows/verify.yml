@@ -1,0 +1,44 @@
+name: Verify PCR
+# Gate: on every PR that touches a product, run build/test + QA/security review.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'products/**'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  checks: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Derive product slug and PCR number from branch
+        id: meta
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          # expected: pcr/<number>-<slug>
+          NUM=$(echo "$BRANCH" | sed -n 's#pcr/\([0-9]*\)-.*#\1#p')
+          SLUG=$(echo "$BRANCH" | sed -n 's#pcr/[0-9]*-\(.*\)#\1#p')
+          echo "issue_number=$NUM" >> "$GITHUB_OUTPUT"
+          echo "product_slug=$SLUG" >> "$GITHUB_OUTPUT"
+
+      - name: Install product deps (best effort)
+        working-directory: products/${{ steps.meta.outputs.product_slug }}
+        run: npm install --no-audit --no-fund || echo "install skipped/failed"
+
+      - name: Run verify + security gate
+        env:
+          ISSUE_NUMBER: ${{ steps.meta.outputs.issue_number }}
+          PRODUCT_SLUG: ${{ steps.meta.outputs.product_slug }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node workers/verify.mjs

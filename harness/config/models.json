@@ -1,0 +1,26 @@
+{
+  "$comment": "Model routing + budget for the swarm. User decision: DeepSeek V4 Pro for ALL roles, $8/PCR cost gate. Image model IDs are verified on first asset run.",
+  "default_model": "deepseek/deepseek-v4-pro",
+  "roles": {
+    "planner": "deepseek/deepseek-v4-pro",
+    "intake_classifier": "deepseek/deepseek-v4-pro",
+    "implementer": "deepseek/deepseek-v4-pro",
+    "verifier": "deepseek/deepseek-v4-pro",
+    "security_reviewer": "deepseek/deepseek-v4-pro",
+    "asset_prompter": "deepseek/deepseek-v4-pro"
+  },
+  "image": {
+    "default": "bytedance/seedream-4.5",
+    "alternatives": ["black-forest-labs/flux.2-pro"]
+  },
+  "budget": {
+    "max_cost_per_pcr_usd": 8.0,
+    "warn_at_fraction": 0.75,
+    "action_when_exceeded": "pause_and_request_human_input"
+  },
+  "openrouter": {
+    "base_url": "https://openrouter.ai/api/v1",
+    "referer": "https://github.com/MunirNDK/swarm-harness",
+    "title": "swarm-harness"
+  }
+}

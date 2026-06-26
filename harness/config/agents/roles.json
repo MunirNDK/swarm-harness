@@ -1,0 +1,51 @@
+{
+  "$comment": "Agent role profiles for the swarm. model resolves via harness/config/models.json roles.",
+  "agents": [
+    {
+      "id": "intake_classifier",
+      "role": "Intake Classifier",
+      "lane": "intake",
+      "model_role": "intake_classifier",
+      "permissions": { "read": true, "write": false, "deploy": false },
+      "worker": "workers/intake.mjs",
+      "gates_produced": ["request_clarity", "duplicate_pcr"]
+    },
+    {
+      "id": "implementer",
+      "role": "Frontend/Full-stack Implementer",
+      "lane": "development",
+      "model_role": "implementer",
+      "permissions": { "read": true, "write": "gated", "deploy": false },
+      "worker": "workers/implement.mjs",
+      "gates_required": ["cost_gate"],
+      "gates_produced": ["implementation_complete"]
+    },
+    {
+      "id": "verifier",
+      "role": "QA Evaluator",
+      "lane": "qa",
+      "model_role": "verifier",
+      "permissions": { "read": true, "write": false, "deploy": false },
+      "worker": "workers/verify.mjs",
+      "gates_produced": ["technical_validation"]
+    },
+    {
+      "id": "security_reviewer",
+      "role": "Security Reviewer",
+      "lane": "security",
+      "model_role": "security_reviewer",
+      "permissions": { "read": true, "write": false, "deploy": false },
+      "worker": "workers/verify.mjs",
+      "gates_produced": ["security_gate"]
+    },
+    {
+      "id": "asset_generator",
+      "role": "Asset / Image Generator",
+      "lane": "design",
+      "model_role": "asset_prompter",
+      "permissions": { "read": true, "write": "gated", "deploy": false },
+      "worker": "workers/asset.mjs",
+      "gates_produced": ["asset_ready"]
+    }
+  ]
+}

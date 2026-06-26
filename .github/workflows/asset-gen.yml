@@ -1,0 +1,46 @@
+name: Asset Generation
+# Loop: manual dispatch. Generate images via OpenRouter and commit them to evidence/assets.
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: Image prompt
+        required: true
+      count:
+        description: Number of images
+        required: false
+        default: '1'
+      refine:
+        description: Refine the prompt with DeepSeek first (1=yes)
+        required: false
+        default: '0'
+      pcr:
+        description: PCR number to attribute cost to (optional)
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  asset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Generate assets
+        env:
+          PROMPT: ${{ inputs.prompt }}
+          COUNT: ${{ inputs.count }}
+          REFINE: ${{ inputs.refine }}
+          PCR: ${{ inputs.pcr }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: node workers/asset.mjs
+      - name: Commit assets
+        run: |
+          git config user.name "swarm-bot"
+          git config user.email "swarm-bot@users.noreply.github.com"
+          git add evidence
+          git commit -m "assets: generate via OpenRouter" || echo "no changes"
+          git push || echo "nothing to push"

@@ -1,0 +1,17 @@
+{
+  "name": "swarm-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Loop-based agentic swarm harness on a GitHub-native runtime. Claude plans and coordinates; DeepSeek V4 Pro (via OpenRouter) implements, verifies, secures, and generates assets.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "intake": "node workers/intake.mjs",
+    "implement": "node workers/implement.mjs",
+    "verify": "node workers/verify.mjs",
+    "asset": "node workers/asset.mjs",
+    "smoke": "node workers/smoke.mjs"
+  },
+  "author": "MunirNDK",
+  "license": "MIT"
+}

@@ -1,0 +1,9 @@
+node_modules/
+# Confidential third-party content — kept local only, never published.
+docs/loop-engineering-handbook.md
+.env
+.env.*
+*.log
+.DS_Store
+products/*/node_modules/
+evidence/assets/*.tmp
