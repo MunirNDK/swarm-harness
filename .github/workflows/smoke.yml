@@ -1,0 +1,19 @@
+name: Smoke Test
+# Validates OPENROUTER_API_KEY + DeepSeek V4 Pro reachability + cost reporting.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Run smoke test
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: node workers/smoke.mjs
