@@ -1,0 +1,37 @@
+{
+  "pcrs": {
+    "1": {
+      "total_usd": 0.002503,
+      "runs": [
+        {
+          "at": "2026-06-26T20:16:09.134Z",
+          "cost_usd": 0.002503165,
+          "step": "intake",
+          "usage": {
+            "prompt_tokens": 430,
+            "completion_tokens": 579,
+            "total_tokens": 1009,
+            "cost": 0.002503165,
+            "is_byok": false,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 0,
+              "audio_tokens": 0,
+              "video_tokens": 0
+            },
+            "cost_details": {
+              "upstream_inference_cost": 0.002503165,
+              "upstream_inference_prompt_cost": 0.000688,
+              "upstream_inference_completions_cost": 0.001815165
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 389,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            }
+          }
+        }
+      ]
+    }
+  }
+}
