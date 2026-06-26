@@ -1,0 +1,64 @@
+name: Build Site (spec-driven)
+# Planner dispatches this. DeepSeek V4 Pro builds products/<slug> from specs/<slug>, then opens a PR.
+on:
+  workflow_dispatch:
+    inputs:
+      product_slug:
+        description: Spec slug under specs/
+        required: true
+        default: daniells-auto-care
+      issue_number:
+        description: PCR issue number (for PR linking)
+        required: false
+      only_phase:
+        description: Limit to one phase (foundation|components|pages) — blank = all
+        required: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - name: Generate site
+        id: gen
+        env:
+          PRODUCT_SLUG: ${{ inputs.product_slug }}
+          ONLY_PHASE: ${{ inputs.only_phase }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: node workers/build-site.mjs
+
+      - name: Install product deps (best effort)
+        if: steps.gen.outputs.budget_gate != 'pause'
+        working-directory: products/${{ inputs.product_slug }}
+        run: npm install --no-audit --no-fund || echo "install issues — verify will surface them"
+
+      - name: Open pull request
+        if: steps.gen.outputs.budget_gate != 'pause'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SLUG="${{ inputs.product_slug }}"
+          NUM="${{ inputs.issue_number }}"
+          BRANCH="pcr/${NUM:-0}-$SLUG"
+          git config user.name "swarm-bot"
+          git config user.email "swarm-bot@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "feat: build $SLUG site (DeepSeek V4 Pro, cost \$${{ steps.gen.outputs.total_cost }})"
+          git push -u origin "$BRANCH"
+          BODY="Hero-seeded redesign of **$SLUG** built by the swarm (DeepSeek V4 Pro) from \`specs/$SLUG\`. Spend: \$${{ steps.gen.outputs.total_cost }}. Verify + Vercel preview run on this PR."
+          [ -n "$NUM" ] && BODY="$BODY"$'\n\n'"Closes #$NUM"
+          gh pr create --title "PCR: redesign $SLUG" --body "$BODY" --base main --head "$BRANCH"
+
+      - name: Budget-paused notice
+        if: steps.gen.outputs.budget_gate == 'pause'
+        run: echo "::warning::Build paused — PCR budget exceeded. Files generated so far are in the runner; raise the budget or split the build."

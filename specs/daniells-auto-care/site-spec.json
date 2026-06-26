@@ -1,0 +1,147 @@
+{
+  "slug": "daniells-auto-care",
+  "name": "Daniells Auto Care",
+  "description": "Premium mobile auto detailing & ceramic coating, Northern NJ. Dark glassmorphism redesign (hero-seeded) recolored to live brand red + near-black.",
+  "stack": {
+    "framework": "next",
+    "router": "app",
+    "language": "typescript",
+    "styling": "tailwind",
+    "ui": "shadcn-style primitives (local, in components/ui)",
+    "motion": "framer-motion",
+    "icons": "lucide-react",
+    "deps": ["next", "react", "react-dom", "framer-motion", "lucide-react", "clsx", "tailwind-merge"],
+    "devDeps": ["typescript", "@types/react", "@types/node", "tailwindcss", "postcss", "autoprefixer"]
+  },
+  "tokens": {
+    "colors": {
+      "dac.red": "#E80505",
+      "dac.red-light": "#B30404",
+      "dac.red-med": "#980404",
+      "dac.red-dark": "#740404",
+      "dac.ink": "#0A0A0A",
+      "dac.black": "#000000",
+      "dac.white": "#FFFFFF",
+      "dac.muted": "#A1A1AA",
+      "dac.faint": "#7C7C7C"
+    },
+    "radius": { "card": "1.5rem", "pill": "9999px", "input": "0.75rem" },
+    "container": "max-w-7xl",
+    "darkGradient": "linear-gradient(180deg,#000000,#0A0A0A)"
+  },
+  "fonts": { "heading": "Sora", "body": "Inter", "loader": "next/font/google" },
+  "motion": {
+    "lib": "framer-motion",
+    "primitives": ["fadeSlideIn (opacity 0->1, y 20->0, 0.7s ease-out)", "stagger 0.05s", "hover scale 1.02", "marquee 40s linear infinite"],
+    "respectReducedMotion": true
+  },
+  "business": {
+    "name": "Daniells Auto Care",
+    "tagline": "Professional Auto Detailing. Same-Day Service. 100% Satisfaction Guaranteed.",
+    "phone": "(973) 916-7868",
+    "phoneHref": "tel:+19739167868",
+    "hours": "Available 24/7",
+    "serviceArea": "Northern New Jersey",
+    "mobile": true,
+    "responseTime": "15-minute quote response",
+    "experienceYears": "8+",
+    "vehiclesDetailed": "2,000+",
+    "reviewsCount": "300+",
+    "googleReviews": "100+",
+    "trust": ["Licensed & Insured", "Factory-trained technicians", "2–10 year ceramic coating warranty", "Lifetime window tint warranty"],
+    "primaryCtas": [
+      { "label": "Get Free Quote", "href": "/contact", "variant": "primary" },
+      { "label": "Call (973) 916-7868", "href": "tel:+19739167868", "variant": "secondary" }
+    ]
+  },
+  "services": [
+    { "slug": "car-detailing", "name": "Car Detailing", "icon": "Sparkles", "short": "Complete interior and exterior detailing for pristine results.", "long": "Full-vehicle detail combining our interior deep-clean and exterior restoration for a showroom finish, inside and out." },
+    { "slug": "exterior-detailing", "name": "Exterior Detailing", "icon": "CarFront", "short": "Expert exterior detailing that restores and protects your finish.", "long": "Hand wash, decontamination, gloss restoration and protection that brings your paint back to life and shields it from the elements." },
+    { "slug": "interior-detailing", "name": "Interior Detailing", "icon": "Armchair", "short": "Deep cleaning, steam extraction and leather conditioning.", "long": "Showroom-fresh cabins: steam extraction, shampoo, leather conditioning and sanitization of every surface." },
+    { "slug": "ceramic-coating", "name": "Ceramic Coating", "icon": "ShieldCheck", "short": "Ultimate paint protection with a 2–10 year warranty.", "long": "Hydrophobic ceramic coating that repels water and contaminants, deepens gloss and protects your paint for years." },
+    { "slug": "paint-correction", "name": "Paint Correction", "icon": "Wand2", "short": "Remove swirls, scratches and oxidation.", "long": "Multi-stage machine polishing that removes defects and restores a flawless, mirror-like factory finish." },
+    { "slug": "paint-protection-film", "name": "Paint Protection Film", "icon": "Layers", "short": "Self-healing film protection against chips and scratches.", "long": "Virtually invisible self-healing film that guards high-impact areas against rock chips, scratches and road debris." },
+    { "slug": "window-tinting", "name": "Window Tinting", "icon": "SunDim", "short": "Heat rejection, privacy and UV protection.", "long": "Premium window film with a lifetime warranty — cooler cabins, reduced glare, UV protection and a clean, finished look." },
+    { "slug": "fleet-detailing", "name": "Fleet Detailing", "icon": "Truck", "short": "Keep your business fleet looking professional.", "long": "Dedicated corporate detailing programs with on-site mobile service, volume pricing and account management." }
+  ],
+  "areas": ["Franklin Lakes", "Ridgewood", "Tenafly", "Englewood Cliffs", "Chatham", "Madison", "Mountain Lakes", "Basking Ridge", "Bernardsville", "Florham Park"],
+  "stats": [
+    { "value": "300+", "label": "Five-Star Reviews" },
+    { "value": "8+", "label": "Years Experience" },
+    { "value": "2,000+", "label": "Vehicles Detailed" },
+    { "value": "15 min", "label": "Quote Response" }
+  ],
+  "reviews": [
+    { "name": "Carlton George", "when": "2 months ago", "stars": 5, "quote": "The car was parked under a tree for two years and collected a lot of dirt. When finished it looked showroom ready inside and out." },
+    { "name": "Motivational Josh", "when": "4 months ago", "stars": 5, "quote": "One of the best detailing experiences I've ever had. From start to finish the service was professional, efficient, and super convenient." },
+    { "name": "Brandon Bueno Rivera", "when": "7 months ago", "stars": 5, "quote": "Completed a full interior & exterior detail on my niece's car. Very professional, on time, and the results were fantastic." }
+  ],
+  "nav": {
+    "primary": [
+      { "label": "Home", "href": "/" },
+      { "label": "Services", "href": "/services", "children": "services" },
+      { "label": "Service Areas", "href": "/service-areas", "children": "areas" },
+      { "label": "Fleet", "href": "/fleet" },
+      { "label": "Our Team", "href": "/team" },
+      { "label": "Gallery", "href": "/gallery" },
+      { "label": "Blog", "href": "/blog" },
+      { "label": "Contact", "href": "/contact" }
+    ],
+    "cta": { "label": "Get Free Quote", "href": "/contact" }
+  },
+  "components": [
+    { "name": "cn", "path": "lib/utils.ts", "contract": "clsx + tailwind-merge helper" },
+    { "name": "site", "path": "lib/site.ts", "contract": "exports all business/services/areas/reviews/stats/nav constants from this spec" },
+    { "name": "Container", "path": "components/ui/container.tsx", "contract": "max-w-7xl centered padded wrapper" },
+    { "name": "Section", "path": "components/ui/section.tsx", "contract": "vertical section spacing + optional id" },
+    { "name": "Button", "path": "components/ui/button.tsx", "contract": "variants: primary(red solid), secondary(glass), ghost; sizes; asChild via <a>/<Link>; rounded-full" },
+    { "name": "GlassCard", "path": "components/ui/glass-card.tsx", "contract": "bg-white/5 border-white/10 backdrop-blur-xl rounded-3xl; optional red glow" },
+    { "name": "SectionHeading", "path": "components/ui/section-heading.tsx", "contract": "eyebrow + gradient title + subtitle, centered or left" },
+    { "name": "StarRating", "path": "components/ui/star-rating.tsx", "contract": "lucide Star fill by count" },
+    { "name": "Reveal", "path": "components/ui/reveal.tsx", "contract": "framer-motion fade-slide-in wrapper, respects reduced motion, supports stagger index" },
+    { "name": "Navbar", "path": "components/navbar.tsx", "contract": "sticky; transparent at top, glass on scroll; logo; primary nav with dropdowns for services/areas; phone + Get Free Quote; mobile drawer" },
+    { "name": "Footer", "path": "components/footer.tsx", "contract": "brand blurb; columns: Services, Service Areas, Company; phone/hours; legal; licensed & insured" },
+    { "name": "ServiceCard", "path": "components/service-card.tsx", "contract": "glass card: lucide icon, name, short, 'Learn more' -> /services/[slug]" },
+    { "name": "StatStrip", "path": "components/stat-strip.tsx", "contract": "row of stats in glass" },
+    { "name": "ReviewCard", "path": "components/review-card.tsx", "contract": "glass: stars, quote, name, when" },
+    { "name": "QuoteForm", "path": "components/quote-form.tsx", "contract": "client form: name, phone, email, vehicle, service(select from services), message; validation; loading+success states; posts to /api/quote (stub returns ok)" },
+    { "name": "QuoteCTA", "path": "components/quote-cta.tsx", "contract": "full-width red-gradient glass band: headline + Get Free Quote + Call" },
+    { "name": "Marquee", "path": "components/marquee.tsx", "contract": "infinite horizontal marquee of service-area towns or trust badges" }
+  ],
+  "pages": [
+    { "route": "app/layout.tsx", "type": "layout", "sections": ["fonts (Sora+Inter)", "globals", "Navbar", "{children}", "Footer", "metadata + OG"] },
+    { "route": "app/page.tsx", "type": "home", "sections": ["Hero (seed: gradient headline, dual CTA, glass stat card + progress + active/premium pills, area marquee)", "Trust StatStrip", "Services grid (8 ServiceCards)", "Why choose us (3-4 glass features: mobile, licensed, warranties, 15-min)", "Process steps (Book -> Detail -> Protect)", "Gallery preview (3-6 images)", "Reviews (3 ReviewCards + Google rating)", "Service areas teaser + Marquee", "QuoteCTA"] },
+    { "route": "app/services/page.tsx", "type": "services-overview", "sections": ["SectionHeading", "grid of all 8 ServiceCards linking to /services/[slug]", "QuoteCTA"] },
+    { "route": "app/services/[slug]/page.tsx", "type": "service-detail-template", "note": "ONE dynamic page serves all services; generateStaticParams from services; 404 if unknown", "sections": ["Hero (service name + long desc + CTA + image)", "What's included (benefits list)", "Why it matters", "Related services", "QuoteCTA"] },
+    { "route": "app/service-areas/page.tsx", "type": "areas-overview", "sections": ["SectionHeading", "grid/list of 10 towns linking to /service-areas/[slug]", "Marquee", "QuoteCTA"] },
+    { "route": "app/service-areas/[slug]/page.tsx", "type": "area-detail-template", "note": "ONE dynamic page serves all areas; generateStaticParams from areas; 404 if unknown", "sections": ["Hero (mobile detailing in {town}, NJ + CTA)", "Services available locally", "Reviews", "QuoteCTA"] },
+    { "route": "app/fleet/page.tsx", "type": "fleet", "sections": ["Hero (corporate fleet detailing)", "Program features (on-site, volume pricing, account mgmt, scheduled maintenance)", "How it works", "QuoteCTA (Explore Fleet Programs)"] },
+    { "route": "app/team/page.tsx", "type": "team", "sections": ["Hero", "Story / values", "Certifications (licensed & insured, factory-trained)", "QuoteCTA"] },
+    { "route": "app/gallery/page.tsx", "type": "gallery", "sections": ["SectionHeading", "responsive image grid (before/after, masonry-ish)", "QuoteCTA"] },
+    { "route": "app/blog/page.tsx", "type": "blog-index", "sections": ["SectionHeading", "post card grid (3-4 placeholder posts linking to /blog/[slug])"] },
+    { "route": "app/blog/[slug]/page.tsx", "type": "blog-post-template", "note": "ONE dynamic placeholder post page; generateStaticParams from a small posts list", "sections": ["article header", "body (placeholder copy)", "QuoteCTA"] },
+    { "route": "app/contact/page.tsx", "type": "contact", "sections": ["Hero (Get Free Quote)", "QuoteForm + contact details (phone, hours, area, response time)", "Service areas note"] },
+    { "route": "app/api/quote/route.ts", "type": "api", "sections": ["POST stub: validate + return { ok: true } (no real email backend yet)"] },
+    { "route": "app/not-found.tsx", "type": "404", "sections": ["on-brand 404 with home CTA"] }
+  ],
+  "assets": {
+    "policy": "Phase 1 = curated dark-toned Unsplash auto-detailing/luxury-car photos (known-good URLs). Phase 2 = OpenRouter image worker replaces with branded generated assets.",
+    "matrix": [
+      { "key": "hero-bg", "use": "home hero background", "mood": "dark moody luxury car detail, close-up wet gloss reflections" },
+      { "key": "service-{slug}", "use": "service-detail hero per service", "count": 8 },
+      { "key": "gallery-*", "use": "gallery before/after + results", "count": "6-9" },
+      { "key": "fleet", "use": "fleet hero (vans/cars lineup)" },
+      { "key": "og", "use": "Open Graph share image 1200x630" }
+    ]
+  },
+  "globalRules": [
+    "Dark theme only. Background #0A0A0A/#000. Glass surfaces per design-system.md.",
+    "Brand red #E80505 for CTAs/accents; never red small body text (contrast).",
+    "Every page imports Navbar/Footer via layout; do not redefine.",
+    "All content comes from lib/site.ts (this spec) — no invented facts, no lorem in shipped UI.",
+    "framer-motion Reveal on section entrances; respect prefers-reduced-motion.",
+    "lucide-react icons only; no emoji.",
+    "Responsive: 375/768/1024/1440; mobile-first; no horizontal scroll.",
+    "Accessibility: focus rings, alt text, labelled form fields, 44px targets."
+  ]
+}
