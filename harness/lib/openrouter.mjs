@@ -72,20 +72,44 @@ export async function chat({
   };
 }
 
+function extractJSON(text) {
+  if (!text) return null;
+  // strip ```json ... ``` or ``` ... ``` fences
+  let t = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+  try { return JSON.parse(t); } catch {}
+  // grab from first { to last }
+  const first = t.indexOf('{');
+  const last = t.lastIndexOf('}');
+  if (first !== -1 && last > first) {
+    try { return JSON.parse(t.slice(first, last + 1)); } catch {}
+  }
+  return null;
+}
+
 /**
- * Ask for strict JSON back and parse it. Falls back to extracting the first {...} block.
+ * Ask for strict JSON back and parse it. Strips code fences, extracts the object,
+ * and does one corrective retry if the model returns prose. Cost accumulates across attempts.
  */
 export async function chatJSON(opts) {
   const out = await chat({ ...opts, response_format: { type: 'json_object' } });
-  let parsed;
-  try {
-    parsed = JSON.parse(out.text);
-  } catch {
-    const m = out.text.match(/\{[\s\S]*\}/);
-    if (!m) throw new Error(`Model did not return JSON:\n${out.text.slice(0, 500)}`);
-    parsed = JSON.parse(m[0]);
+  let parsed = extractJSON(out.text);
+  let cost = out.cost;
+  if (!parsed) {
+    const retry = await chat({
+      ...opts,
+      response_format: { type: 'json_object' },
+      messages: [
+        ...opts.messages,
+        { role: 'assistant', content: out.text.slice(0, 2000) },
+        { role: 'user', content: 'That was not valid JSON. Respond again with ONLY the JSON object — no prose, no markdown fences.' },
+      ],
+    });
+    cost += retry.cost;
+    parsed = extractJSON(retry.text);
+    if (!parsed) throw new Error(`Model did not return JSON after retry:\n${(retry.text || out.text).slice(0, 500)}`);
+    return { ...retry, cost, json: parsed };
   }
-  return { ...out, json: parsed };
+  return { ...out, cost, json: parsed };
 }
 
 /**

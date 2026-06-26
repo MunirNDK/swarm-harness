@@ -9,8 +9,9 @@ permissions:
   issues: write
 
 concurrency:
+  # collapse the simultaneous opened+labeled events on issue creation into one run
   group: intake-${{ github.event.issue.number }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   intake:
