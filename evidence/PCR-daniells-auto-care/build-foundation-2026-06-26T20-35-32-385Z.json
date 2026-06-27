@@ -1,0 +1,14 @@
+{
+  "created_at": "2026-06-26T20:35:32.385Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "build-foundation",
+  "files": 9,
+  "notes": "Foundation files created with exact design tokens, site content, and layout skeleton. Navbar/Footer imports are commented out pending component creation. Next step: build shared components (Navbar, Footer, UI primitives) and page bodies.",
+  "cost_usd": 0.02088766,
+  "budget": {
+    "total": 0.020888,
+    "max": 8,
+    "fraction": 0.002611,
+    "gate": "ok"
+  }
+}

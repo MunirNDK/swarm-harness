@@ -1,0 +1,14 @@
+{
+  "created_at": "2026-06-26T20:46:51.465Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "build-page:app/blog/[slug]/page.tsx",
+  "files": 1,
+  "notes": "Created placeholder blog post template with three posts, generateStaticParams, notFound handling, and required sections. Used glass card for article header and content, with gradient headline and dark toned Unsplash images. QuoteCTA added at bottom. All imports follow contract paths.",
+  "cost_usd": 0.018694915,
+  "budget": {
+    "total": 0.175962,
+    "max": 8,
+    "fraction": 0.02199525,
+    "gate": "ok"
+  }
+}

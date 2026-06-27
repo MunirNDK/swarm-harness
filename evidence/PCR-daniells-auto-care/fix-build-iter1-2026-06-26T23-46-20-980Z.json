@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-26T23:46:20.980Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "fix-build-iter1",
+  "files": 3,
+  "notes": "Fixed incorrect import paths in three files: `@/components/ui/marquee` -> `@/components/marquee`, `@/components/ui/service-card` -> `@/components/service-card`. Also updated the ServiceCard usage in services/[slug]/page.tsx to pass the `service` object prop instead of spreading props, matching the actual component interface.",
+  "errors_tail": "\n> daniells-auto-care@1.0.0 build\n> next build\n\n⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache\nAttention: Next.js now collects completely anonymous telemetry regarding usage.\nThis information is used to shape Next.js' roadmap and prioritize features.\nYou can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:\nhttps://nextjs.org/telemetry\n\n  ▲ Next.js 14.2.35\n\n   Creating an optimized production build ...\n\nFailed to compile.\n\n./app/service-areas/page.tsx\nModule not found: Can't resolve '@/components/ui/marquee'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\n./app/services/[slug]/page.tsx\nModule not found: Can't resolve '@/components/ui/service-card'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\n./app/services/page.tsx\nModule not found: Can't resolve '@/components/ui/service-card'\n\nhttps://nextjs.org/docs/messages/module-not-found\n\n\n> Build failed because of webpack errors\n",
+  "cost_usd": 0.036251856,
+  "budget": {
+    "total": 0.235357,
+    "max": 8,
+    "fraction": 0.029419625,
+    "gate": "ok"
+  }
+}
