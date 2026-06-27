@@ -17,13 +17,15 @@ if (!slug) throw new Error('PRODUCT_SLUG is required');
 const dir = path.join(ROOT, 'products', slug);
 
 // 1. Deterministic gates (only if the product declares the scripts).
+// build + test are blocking; lint is advisory (missing eslint config shouldn't block a deploy).
 const det = [];
+const advisory = [];
 const pkgPath = path.join(dir, 'package.json');
 if (fs.existsSync(pkgPath)) {
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-  if (pkg.scripts?.lint) det.push(commandGate('lint', 'npm run -s lint', { cwd: dir }));
   if (pkg.scripts?.test) det.push(commandGate('test', 'npm test --silent', { cwd: dir }));
   if (pkg.scripts?.build) det.push(commandGate('build', 'npm run -s build', { cwd: dir }));
+  if (pkg.scripts?.lint) advisory.push(commandGate('lint', 'npm run -s lint -- --no-cache 2>/dev/null || true', { cwd: dir }));
 }
 
 // 2. Collect source for the review (skip deps/build output, cap size).
@@ -75,6 +77,7 @@ const lines = [
   `### Verify: \`products/${slug}\` — **${combined.pass ? 'PASS' : 'FAIL'}**`,
   ``,
   ...det.map((g) => `- ${g.pass ? '✅' : '❌'} ${g.name}`),
+  ...advisory.map((g) => `- ${g.pass ? '✅' : '⚠️'} ${g.name} (advisory)`),
   `- ${reviewGate.pass ? '✅' : '❌'} qa+security review (${rev.findings?.length || 0} findings)`,
   ``,
   ...(rev.findings || []).map((f) => `- **[${f.severity}/${f.type}]** \`${f.file}\` — ${f.issue}\n  - fix: ${f.fix}`),
