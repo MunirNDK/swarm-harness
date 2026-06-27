@@ -1,0 +1,16 @@
+{
+  "brandPrefix": "Premium automotive detailing brand photography for Daniells Auto Care. Dark, cinematic, near-black background, glossy wet reflections, dramatic studio lighting with a subtle deep-red accent glow, high-end and professional, photorealistic, no text, no watermark, no logos. ",
+  "items": [
+    { "key": "hero", "path": "public/assets/hero.png", "prompt": "Wide cinematic hero shot of a luxury black SUV with flawless mirror-gloss paint being detailed at night, water beading on the hood, dramatic red rim lighting, ultra-wide 16:9 composition with negative space on the left for headline text." },
+    { "key": "car-detailing", "path": "public/assets/services/car-detailing.png", "prompt": "Full vehicle detail in progress, a pristine sedan half-cleaned showing dramatic before/after gloss, detailer with microfiber, moody lighting." },
+    { "key": "exterior-detailing", "path": "public/assets/services/exterior-detailing.png", "prompt": "Close-up of a gloved hand foam-washing a glossy black car panel, thick suds, water droplets, deep reflections." },
+    { "key": "interior-detailing", "path": "public/assets/services/interior-detailing.png", "prompt": "Spotless luxury car interior, conditioned black leather seats, steam cleaning wand, clean dashboard, soft cabin lighting." },
+    { "key": "ceramic-coating", "path": "public/assets/services/ceramic-coating.png", "prompt": "Ceramic coating application on a dark car panel, hydrophobic water beading sheeting off, applicator block, slick high-gloss surface." },
+    { "key": "paint-correction", "path": "public/assets/services/paint-correction.png", "prompt": "Dual-action polisher correcting swirl marks on glossy black paint, bright reflection lines, professional paint correction." },
+    { "key": "paint-protection-film", "path": "public/assets/services/paint-protection-film.png", "prompt": "Installer applying clear paint protection film to a car's hood, squeegee, flawless invisible film, premium garage." },
+    { "key": "window-tinting", "path": "public/assets/services/window-tinting.png", "prompt": "Professional applying dark window tint film to a car side window, clean precise install, premium look." },
+    { "key": "fleet-detailing", "path": "public/assets/services/fleet-detailing.png", "prompt": "A neat row of clean commercial vans and cars freshly detailed, corporate fleet, professional outdoor setting." },
+    { "key": "fleet", "path": "public/assets/fleet.png", "prompt": "Wide shot of a professionally detailed commercial fleet of vehicles lined up, glossy and uniform, corporate, 16:9." },
+    { "key": "og", "path": "public/assets/og.png", "prompt": "Bold branded share image: dramatic close-up of a luxury car's glossy detailed surface with red accent light, clean composition with open space for a logo, 1200x630 aspect." }
+  ]
+}

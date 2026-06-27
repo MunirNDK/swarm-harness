@@ -10,8 +10,8 @@
     "asset_prompter": "deepseek/deepseek-v4-pro"
   },
   "image": {
-    "default": "bytedance/seedream-4.5",
-    "alternatives": ["black-forest-labs/flux.2-pro"]
+    "default": "google/gemini-2.5-flash-image",
+    "alternatives": ["google/gemini-3.1-flash-image", "google/gemini-3-pro-image", "openai/gpt-5-image-mini"]
   },
   "budget": {
     "max_cost_per_pcr_usd": 8.0,
