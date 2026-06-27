@@ -3,23 +3,30 @@ import * as LucideIcons from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { cn } from "@/lib/utils";
 
-interface ServiceCardProps {
+interface ServiceLike {
   slug: string;
   name: string;
   icon: string;
   short: string;
+}
+
+interface ServiceCardProps extends Partial<ServiceLike> {
+  service?: ServiceLike;
   className?: string;
 }
 
 export function ServiceCard({
+  service,
   slug,
   name,
   icon,
   short,
   className,
 }: ServiceCardProps) {
+  const s = service ?? { slug: slug!, name: name!, icon: icon!, short: short! };
+  ({ slug, name, icon, short } = s);
   // Dynamically get the icon component from lucide-react
-  const IconComponent = (LucideIcons as Record<string, React.ComponentType<{ className?: string }>>)[icon];
+  const IconComponent = (LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string }>>)[icon];
 
   return (
     <Link href={`/services/${slug}`} className={cn("block group", className)}>

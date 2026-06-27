@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { services } from '@/lib/site';
-import Container from '@/components/ui/container';
-import Section from '@/components/ui/section';
-import SectionHeading from '@/components/ui/section-heading';
-import ServiceCard from '@/components/service-card';
-import Reveal from '@/components/ui/reveal';
+import { Container } from '@/components/ui/container';
+import { Section } from '@/components/ui/section';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { ServiceCard } from '@/components/service-card';
+import { Reveal } from '@/components/ui/reveal';
 import { QuoteCTA } from '@/components/quote-cta';
 
 export const metadata: Metadata = {

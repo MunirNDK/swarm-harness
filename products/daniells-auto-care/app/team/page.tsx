@@ -38,7 +38,7 @@ const values = [
   },
 ]
 
-const certifications = site.trust
+const certifications = site.business.trust
 
 export default function TeamPage() {
   return (

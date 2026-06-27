@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import Container from '@/components/ui/container';
-import Section from '@/components/ui/section';
-import SectionHeading from '@/components/ui/section-heading';
-import Reveal from '@/components/ui/reveal';
+import { Container } from '@/components/ui/container';
+import { Section } from '@/components/ui/section';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { Reveal } from '@/components/ui/reveal';
 import { QuoteCTA } from '@/components/quote-cta';
 import { cn } from '@/lib/utils';
 

@@ -1,12 +1,13 @@
 import { GlassCard } from "@/components/ui/glass-card";
-import { stats } from "@/lib/site";
+import { stats as defaultStats } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 interface StatStripProps {
   className?: string;
+  stats?: { value: string; label: string }[];
 }
 
-export function StatStrip({ className }: StatStripProps) {
+export function StatStrip({ className, stats = defaultStats }: StatStripProps) {
   return (
     <div
       className={cn(

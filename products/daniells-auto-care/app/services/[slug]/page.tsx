@@ -4,13 +4,13 @@ import Image from 'next/image';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { site } from '@/lib/site';
 import { cn } from '@/lib/utils';
-import Container from '@/components/ui/container';
-import Section from '@/components/ui/section';
-import Button from '@/components/ui/button';
-import GlassCard from '@/components/ui/glass-card';
-import SectionHeading from '@/components/ui/section-heading';
-import Reveal from '@/components/ui/reveal';
-import ServiceCard from '@/components/service-card';
+import { Container } from '@/components/ui/container';
+import { Section } from '@/components/ui/section';
+import { Button } from '@/components/ui/button';
+import { GlassCard } from '@/components/ui/glass-card';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { Reveal } from '@/components/ui/reveal';
+import { ServiceCard } from '@/components/service-card';
 import { QuoteCTA } from '@/components/quote-cta';
 
 // Generate static params for all services

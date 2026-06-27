@@ -1,10 +1,13 @@
 import { cn } from "@/lib/utils";
+import { ReactNode } from "react";
 
 interface SectionHeadingProps {
   eyebrow?: string;
   title: string;
-  subtitle?: string;
+  subtitle?: ReactNode;
   align?: "center" | "left";
+  centered?: boolean;
+  center?: boolean;
   className?: string;
 }
 
@@ -12,14 +15,18 @@ export function SectionHeading({
   eyebrow,
   title,
   subtitle,
-  align = "center",
+  align,
+  centered,
+  center,
   className,
 }: SectionHeadingProps) {
+  const isCentered = centered ?? center;
+  const resolvedAlign = align ?? (isCentered === false ? "left" : "center");
   return (
     <div
       className={cn(
         "max-w-3xl",
-        align === "center" && "mx-auto text-center",
+        resolvedAlign === "center" && "mx-auto text-center",
         className
       )}
     >

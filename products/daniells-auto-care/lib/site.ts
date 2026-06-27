@@ -139,3 +139,6 @@ export const nav = {
   ],
   cta: { label: "Get Free Quote", href: "/contact" },
 };
+
+// Aggregate accessor used by pages that prefer a single `site` object.
+export const site = { business, services, areas, stats, reviews, nav };

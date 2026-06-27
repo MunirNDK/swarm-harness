@@ -1,15 +1,15 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { site } from '@/lib/site';
-import Container from '@/components/ui/container';
-import Section from '@/components/ui/section';
-import SectionHeading from '@/components/ui/section-heading';
-import ServiceCard from '@/components/service-card';
-import ReviewCard from '@/components/review-card';
+import { Container } from '@/components/ui/container';
+import { Section } from '@/components/ui/section';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { ServiceCard } from '@/components/service-card';
+import { ReviewCard } from '@/components/review-card';
 import { QuoteCTA } from '@/components/quote-cta';
-import Button from '@/components/ui/button';
-import GlassCard from '@/components/ui/glass-card';
-import Reveal from '@/components/ui/reveal';
+import { Button } from '@/components/ui/button';
+import { GlassCard } from '@/components/ui/glass-card';
+import { Reveal } from '@/components/ui/reveal';
 
 const HERO_IMAGE_URL =
   'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=1200&h=800&fit=crop&crop=edges';

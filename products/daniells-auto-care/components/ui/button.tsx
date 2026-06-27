@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import Link from "next/link";
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import { ButtonHTMLAttributes, cloneElement, forwardRef, isValidElement, ReactElement } from "react";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center rounded-full font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dac-red focus-visible:ring-offset-2 focus-visible:ring-offset-dac-black disabled:pointer-events-none disabled:opacity-50",
@@ -34,10 +34,18 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   href?: string;
   external?: boolean;
+  asChild?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, href, external, children, ...props }, ref) => {
+  ({ className, variant, size, href, external, asChild, children, ...props }, ref) => {
+    // Slot pattern: render the single child (e.g. <Link>) with button styles merged in.
+    if (asChild && isValidElement(children)) {
+      const child = children as ReactElement<any>;
+      return cloneElement(child, {
+        className: cn(buttonVariants({ variant, size }), className, child.props?.className),
+      });
+    }
     if (href) {
       const isExternal = external || href.startsWith("http") || href.startsWith("tel:") || href.startsWith("mailto:");
       if (isExternal) {

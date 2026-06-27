@@ -7,15 +7,18 @@ interface RevealProps {
   children: ReactNode;
   className?: string;
   delay?: number;
+  index?: number;
   direction?: "up" | "down" | "left" | "right";
 }
 
 export function Reveal({
   children,
   className,
-  delay = 0,
+  delay,
+  index = 0,
   direction = "up",
 }: RevealProps) {
+  const resolvedDelay = delay ?? index * 0.05;
   const prefersReducedMotion = useReducedMotion();
 
   const directionOffset = {
@@ -39,7 +42,7 @@ export function Reveal({
       transition={{
         duration: 0.6,
         ease: "easeOut",
-        delay: delay,
+        delay: resolvedDelay,
       }}
       className={className}
     >

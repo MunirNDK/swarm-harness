@@ -1,14 +1,19 @@
 import { GlassCard } from "@/components/ui/glass-card";
 import { StarRating } from "@/components/ui/star-rating";
 
-interface ReviewCardProps {
+interface ReviewLike {
   name: string;
   when: string;
   stars: number;
   quote: string;
 }
 
-export function ReviewCard({ name, when, stars, quote }: ReviewCardProps) {
+interface ReviewCardProps extends Partial<ReviewLike> {
+  review?: ReviewLike;
+}
+
+export function ReviewCard({ review, name, when, stars, quote }: ReviewCardProps) {
+  ({ name, when, stars, quote } = review ?? { name: name!, when: when!, stars: stars!, quote: quote! });
   return (
     <GlassCard className="p-6 flex flex-col h-full">
       <StarRating count={stars} className="mb-4" />

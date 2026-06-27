@@ -3,8 +3,8 @@ import { Sora, Inter } from 'next/font/google';
 import './globals.css';
 import { business } from '@/lib/site';
 // These components will be created later
-// import Navbar from '@/components/navbar';
-// import Footer from '@/components/footer';
+// import { Navbar } from '@/components/navbar';
+// import { Footer } from '@/components/footer';
 
 const sora = Sora({
   subsets: ['latin'],
