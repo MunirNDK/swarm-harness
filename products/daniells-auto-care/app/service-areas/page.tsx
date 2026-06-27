@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { site } from '@/lib/site';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
 import { SectionHeading } from '@/components/ui/section-heading';
@@ -7,15 +8,18 @@ import { GlassCard } from '@/components/ui/glass-card';
 import { Marquee } from '@/components/marquee';
 import { QuoteCTA } from '@/components/quote-cta';
 import { Reveal } from '@/components/ui/reveal';
+import { Button } from '@/components/ui/button';
 import { MapPin } from 'lucide-react';
-import { areas } from '@/lib/site';
 
 const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
 export const metadata: Metadata = {
-  title: 'Service Areas | Daniells Auto Care',
+  title: 'Service Areas | Mobile Auto Detailing in Northern NJ | Daniells Auto Care',
   description:
     'Mobile auto detailing across Northern New Jersey. Serving Franklin Lakes, Ridgewood, Tenafly, Chatham, Madison, and more. Same-day service, 100% satisfaction.',
+  alternates: {
+    canonical: `${site.siteUrl}/service-areas`,
+  },
 };
 
 export default function ServiceAreasPage() {
@@ -32,12 +36,12 @@ export default function ServiceAreasPage() {
           <SectionHeading
             eyebrow="Service Areas"
             title="Proudly Serving Northern New Jersey"
-            subtitle="Expert auto detailing delivered to your doorstep across Bergen, Morris, and Essex counties."
+            subtitle="Expert auto detailing delivered to your doorstep across Bergen, Morris, and Essex counties. Same-day service, 100% satisfaction guaranteed."
             className="mb-16"
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {areas.map((area, index) => (
+            {site.areas.map((area, index) => (
               <Reveal key={area} index={index}>
                 <Link
                   href={`/service-areas/${slugify(area)}`}
@@ -52,6 +56,16 @@ export default function ServiceAreasPage() {
               </Reveal>
             ))}
           </div>
+
+          {/* Internal links for SEO */}
+          <div className="mt-12 flex flex-wrap justify-center gap-4">
+            <Button variant="secondary" size="lg" href="/services">
+              View All Services
+            </Button>
+            <Button variant="primary" size="lg" href="/contact">
+              Get Free Quote
+            </Button>
+          </div>
         </Container>
       </Section>
 
@@ -61,7 +75,7 @@ export default function ServiceAreasPage() {
           <p className="text-center text-dac-muted mb-8 text-sm uppercase tracking-widest">
             We come to you
           </p>
-          <Marquee items={areas} />
+          <Marquee items={site.areas} />
         </Container>
       </Section>
 

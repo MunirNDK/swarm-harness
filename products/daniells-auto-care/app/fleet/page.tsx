@@ -1,4 +1,5 @@
-import { Calendar, Percent, Truck, UserCheck, ClipboardList, PenTool } from "lucide-react";
+import { Metadata } from "next";
+import { Calendar, Percent, Truck, UserCheck, ClipboardList, PenTool, ShieldCheck } from "lucide-react";
 import { site } from "@/lib/site";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -12,7 +13,13 @@ import { cn } from "@/lib/utils";
 const { business, services } = site;
 const fleetService = services.find((s) => s.slug === "fleet-detailing");
 
-const features = [
+export const metadata: Metadata = {
+  title: "Fleet & Commercial Auto Detailing in Northern NJ | Daniells Auto Care",
+  description:
+    "Professional mobile fleet detailing with on-site service, volume pricing, scheduled maintenance, and dedicated account management. Trusted by businesses across Northern New Jersey — free quotes in 15 minutes.",
+};
+
+const benefits = [
   {
     icon: Truck,
     title: "On-Site Mobile Detailing",
@@ -26,20 +33,20 @@ const features = [
       "Economies of scale built into every program: the more vehicles you enroll, the lower the per-unit cost.",
   },
   {
-    icon: UserCheck,
-    title: "Dedicated Account Manager",
-    description:
-      "One point of contact for scheduling, invoicing, and special requests — so you never have to repeat yourself.",
-  },
-  {
     icon: Calendar,
     title: "Scheduled Maintenance",
     description:
       "Regular detailing programs that keep your fleet consistently clean and protected, on a cadence that fits your operations.",
   },
+  {
+    icon: UserCheck,
+    title: "Dedicated Account Manager",
+    description:
+      "One point of contact for scheduling, invoicing, and special requests — so you never have to repeat yourself.",
+  },
 ];
 
-const steps = [
+const processSteps = [
   {
     icon: ClipboardList,
     title: "Request a Fleet Assessment",
@@ -57,6 +64,21 @@ const steps = [
     title: "On-Site Execution",
     description:
       "Our mobile unit arrives at your scheduled time, completes the work, and leaves your fleet looking its best.",
+  },
+];
+
+const faqs = [
+  {
+    q: "What types of vehicles qualify for fleet programs?",
+    a: "We service virtually any commercial vehicle, including sedans, SUVs, vans, box trucks, and light-duty fleet vehicles. If you have specialized equipment, we’ll tailor a plan.",
+  },
+  {
+    q: "Do you offer on-site mobile detailing for fleets?",
+    a: "Absolutely. Our mobile detailing rig comes fully equipped to handle interior and exterior detailing at your location, minimizing downtime and logistics.",
+  },
+  {
+    q: "Is there a minimum number of vehicles required for volume pricing?",
+    a: "Volume pricing typically starts at 3 or more vehicles, but we work with businesses of any size. The more vehicles in your fleet, the greater the per-unit savings.",
   },
 ];
 
@@ -118,8 +140,35 @@ export default function FleetPage() {
         </Container>
       </section>
 
-      {/* Program Features */}
-      <Section id="features">
+      {/* Program Overview Intro */}
+      <Section id="overview" background="ink">
+        <Container>
+          <Reveal>
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-lg leading-relaxed text-[#A1A1AA]">
+                A professional fleet image builds trust with clients and
+                employees. At Daniells Auto Care, we make it easy to maintain a
+                spotless fleet with on-site mobile detailing, predictable
+                scheduling, and transparent volume pricing. Whether you run a
+                small business or manage a large commercial fleet across{" "}
+                {business.serviceArea}, our dedicated account managers ensure
+                every vehicle reflects the quality of your brand — without
+                disrupting your operations.
+              </p>
+              <p className="mt-4 text-lg leading-relaxed text-[#A1A1AA]">
+                Backed by over {business.experienceYears} of experience and{" "}
+                {business.vehiclesDetailed} vehicles detailed, we have the
+                equipment, expertise, and insurance to handle any fleet size.
+                From ceramic coating protection to regular wash-and-vac programs,
+                we customize a plan that fits your needs and budget.
+              </p>
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
+
+      {/* Benefits (Why Choose Us) */}
+      <Section id="benefits">
         <Container>
           <SectionHeading
             eyebrow="Fleet Solutions"
@@ -127,16 +176,16 @@ export default function FleetPage() {
             subtitle="A dedicated program built around your business — not the other way around."
           />
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature, idx) => (
-              <Reveal key={feature.title} delay={idx * 0.05}>
+            {benefits.map((benefit, idx) => (
+              <Reveal key={benefit.title} delay={idx * 0.05}>
                 <GlassCard className="flex h-full flex-col items-start p-8">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E80505]/10 text-[#E80505]">
-                    <feature.icon className="h-6 w-6" />
+                    <benefit.icon className="h-6 w-6" />
                   </div>
                   <h3 className="mt-5 font-sora text-lg font-semibold text-white">
-                    {feature.title}
+                    {benefit.title}
                   </h3>
-                  <p className="mt-3 text-[#A1A1AA]">{feature.description}</p>
+                  <p className="mt-3 text-[#A1A1AA]">{benefit.description}</p>
                 </GlassCard>
               </Reveal>
             ))}
@@ -153,10 +202,9 @@ export default function FleetPage() {
             subtitle="Simple, transparent, and built for minimal disruption."
           />
           <div className="mt-16 grid gap-8 md:grid-cols-3">
-            {steps.map((step, idx) => (
+            {processSteps.map((step, idx) => (
               <Reveal key={step.title} delay={idx * 0.1}>
                 <div className="relative flex flex-col items-center text-center">
-                  {/* Step number */}
                   <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#E80505]/30 bg-[#E80505]/10 text-[#E80505]">
                     <step.icon className="h-6 w-6" />
                   </div>
@@ -165,6 +213,29 @@ export default function FleetPage() {
                   </h3>
                   <p className="mt-3 text-[#A1A1AA]">{step.description}</p>
                 </div>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* FAQ */}
+      <Section id="faq" background="ink">
+        <Container>
+          <SectionHeading
+            eyebrow="FAQ"
+            title="Fleet Detailing Questions"
+            subtitle="Answers to common questions about our commercial fleet programs."
+          />
+          <div className="mt-12 mx-auto max-w-3xl space-y-4">
+            {faqs.map((faq, idx) => (
+              <Reveal key={idx} delay={idx * 0.05}>
+                <GlassCard className="p-6">
+                  <h3 className="font-sora text-lg font-semibold text-white">
+                    {faq.q}
+                  </h3>
+                  <p className="mt-2 text-[#A1A1AA]">{faq.a}</p>
+                </GlassCard>
               </Reveal>
             ))}
           </div>

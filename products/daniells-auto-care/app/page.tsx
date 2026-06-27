@@ -378,6 +378,44 @@ export default function HomePage() {
         </Container>
       </Section>
 
+      {/* FAQ Section */}
+      <Section id="faq">
+        <Container>
+          <SectionHeading
+            eyebrow="FAQ"
+            title="Frequently Asked Questions"
+            subtitle="Answers to common questions about our auto detailing services."
+          />
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            {site.faqs.map((faq, index) => (
+              <Reveal key={index} delay={index * 0.05}>
+                <GlassCard className="p-6">
+                  <h3 className="text-lg font-semibold text-white mb-2">{faq.q}</h3>
+                  <p className="text-sm text-dac-muted">{faq.a}</p>
+                </GlassCard>
+              </Reveal>
+            ))}
+          </div>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": site.faqs.map((faq) => ({
+                  "@type": "Question",
+                  "name": faq.q,
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": faq.a
+                  }
+                }))
+              })
+            }}
+          />
+        </Container>
+      </Section>
+
       {/* Quote CTA */}
       <QuoteCTA />
     </>

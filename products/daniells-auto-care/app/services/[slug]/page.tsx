@@ -30,11 +30,11 @@ export async function generateMetadata({
   if (!service) return {};
 
   return {
-    title: `${service.name} | ${site.business.name}`,
-    description: service.short,
+    title: `${service.name} in Northern NJ | ${site.business.name}`,
+    description: service.metaDescription || service.short,
     openGraph: {
-      title: `${service.name} | ${site.business.name}`,
-      description: service.short,
+      title: `${service.name} in Northern NJ | ${site.business.name}`,
+      description: service.metaDescription || service.short,
     },
   };
 }
@@ -91,86 +91,6 @@ const serviceImages: Record<string, { src: string; width: number; height: number
   },
 };
 
-// Benefits list per service
-const serviceBenefits: Record<string, string[]> = {
-  'car-detailing': [
-    'Complete interior steam cleaning and shampoo',
-    'Exterior hand wash, clay bar, and wax',
-    'Leather conditioning and UV protection',
-    'Engine bay cleaning and dressing',
-    'Same-day service available',
-  ],
-  'exterior-detailing': [
-    'Hand wash with pH-neutral soap',
-    'Paint decontamination and clay bar treatment',
-    'Machine polishing for gloss restoration',
-    'Premium sealant or wax application',
-    'Wheel and tire cleaning and dressing',
-  ],
-  'interior-detailing': [
-    'Deep vacuum and crevice cleaning',
-    'Steam extraction for carpets and upholstery',
-    'Leather cleaning and conditioning',
-    'Dashboard and trim UV protection',
-    'Odor elimination and sanitization',
-  ],
-  'ceramic-coating': [
-    'Paint decontamination and prep',
-    'Single-stage polish for maximum adhesion',
-    'Multi-layer ceramic application',
-    '2–10 year warranty options',
-    'Hydrophobic self-cleaning effect',
-  ],
-  'paint-correction': [
-    'Multi-stage machine polishing',
-    'Swirl mark and scratch removal',
-    'Oxidation and water spot correction',
-    'Gloss enhancement and refinement',
-    'Prep for ceramic coating or sealant',
-  ],
-  'paint-protection-film': [
-    'Self-healing polyurethane film',
-    'Custom-cut for your vehicle',
-    'High-impact area coverage',
-    'Invisible finish, no yellowing',
-    'Rock chip and scratch protection',
-  ],
-  'window-tinting': [
-    'Premium ceramic or carbon film',
-    'UV rejection up to 99%',
-    'Heat reduction for cooler cabins',
-    'Lifetime warranty on film',
-    'Professional computer-cut installation',
-  ],
-  'fleet-detailing': [
-    'On-site mobile service available',
-    'Volume pricing and account management',
-    'Consistent quality across all vehicles',
-    'Flexible scheduling to minimize downtime',
-    'Custom detailing packages for your fleet',
-  ],
-};
-
-// Why it matters per service
-const serviceWhyItMatters: Record<string, string> = {
-  'car-detailing':
-    'A full detail does more than clean your car — it preserves your investment. Regular detailing protects paint, prevents interior wear, and maintains resale value. Our comprehensive approach ensures every surface is cleaned, conditioned, and protected.',
-  'exterior-detailing':
-    'Your car\'s exterior faces constant assault from UV rays, road debris, and environmental contaminants. Professional exterior detailing removes bonded contaminants, restores gloss, and applies protective layers that shield your paint for months.',
-  'interior-detailing':
-    'The interior is where you spend your time — it should be clean, fresh, and comfortable. Our deep-cleaning process removes allergens, bacteria, and embedded dirt while conditioning surfaces to prevent cracking and fading.',
-  'ceramic-coating':
-    'Ceramic coating is the ultimate paint protection. Unlike wax that washes away in weeks, a professional ceramic coating bonds to your paint at the molecular level, providing years of hydrophobic protection, UV resistance, and effortless maintenance.',
-  'paint-correction':
-    'Swirls, scratches, and oxidation dull your car\'s appearance and reduce its value. Paint correction removes these defects through precise machine polishing, restoring a flawless, mirror-like finish that looks better than factory.',
-  'paint-protection-film':
-    'Even careful drivers can\'t avoid every rock chip. Paint protection film provides an invisible, self-healing barrier that absorbs impacts and prevents damage to your paint — preserving your car\'s appearance and resale value.',
-  'window-tinting':
-    'Window tint isn\'t just about looks — it blocks harmful UV rays, reduces interior heat, cuts glare, and adds privacy. Our premium films come with a lifetime warranty and are installed with precision for a flawless finish.',
-  'fleet-detailing':
-    'Your fleet represents your brand. Clean, well-maintained vehicles project professionalism and attention to detail. Our fleet program delivers consistent, high-quality detailing with minimal disruption to your operations.',
-};
-
 export default function ServiceDetailPage({
   params,
 }: {
@@ -180,16 +100,54 @@ export default function ServiceDetailPage({
   if (!service) notFound();
 
   const image = serviceImages[service.slug] || serviceImages['car-detailing'];
-  const benefits = serviceBenefits[service.slug] || [];
-  const whyItMatters = serviceWhyItMatters[service.slug] || '';
+  const benefits = service.benefits || [];
+  const process = service.process || [];
+  const faq = service.faq || [];
 
   // Get related services (excluding current, up to 3)
   const relatedServices = site.services
     .filter((s) => s.slug !== service.slug)
     .slice(0, 3);
 
+  // Build intro paragraph: long description + 2-3 sentences about Northern NJ and mobile
+  const introParagraph = `${service.long} At Daniells Auto Care, we bring professional ${service.name.toLowerCase()} to Northern New Jersey with our fully equipped mobile detailing service. Whether you're in Franklin Lakes, Ridgewood, or anywhere in our service area, our factory-trained technicians come to your home or office, delivering showroom-quality results without disrupting your day.`;
+
+  // JSON-LD structured data
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.name,
+    description: service.metaDescription || service.short,
+    provider: {
+      '@type': 'LocalBusiness',
+      name: site.business.name,
+      telephone: site.business.phone,
+      areaServed: 'Northern New Jersey',
+    },
+    areaServed: 'Northern New Jersey',
+    ...(faq.length > 0 && {
+      hasFAQPage: {
+        '@type': 'FAQPage',
+        mainEntity: faq.map((item: { q: string; a: string }) => ({
+          '@type': 'Question',
+          name: item.q,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.a,
+          },
+        })),
+      },
+    }),
+  };
+
   return (
     <>
+      {/* JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Hero Section */}
       <Section className="pt-32 pb-16 md:pt-40 md:pb-20">
         <Container>
@@ -252,63 +210,123 @@ export default function ServiceDetailPage({
         </Container>
       </Section>
 
-      {/* What's Included Section */}
-      <Section className="py-16 md:py-20">
-        <Container>
-          <SectionHeading
-            eyebrow="What's Included"
-            title={`${service.name} Package`}
-            subtitle="Every service includes our commitment to quality, attention to detail, and 100% satisfaction guarantee."
-          />
-          <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {benefits.map((benefit, index) => (
-              <Reveal key={index} delay={index * 0.05}>
-                <GlassCard className="p-6 flex items-start gap-4">
-                  <CheckCircle className="h-6 w-6 text-dac-red flex-shrink-0 mt-0.5" />
-                  <p className="text-white font-medium">{benefit}</p>
-                </GlassCard>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </Section>
-
-      {/* Why It Matters Section */}
+      {/* Intro / Overview Section */}
       <Section className="py-16 md:py-20 bg-dac-black/50">
         <Container>
           <div className="max-w-3xl mx-auto">
             <Reveal>
-              <SectionHeading
-                eyebrow="Why It Matters"
-                title="Protect Your Investment"
-                centered
-              />
-              <div className="mt-8">
-                <GlassCard className="p-8 md:p-10">
-                  <p className="text-dac-muted text-lg leading-relaxed">
-                    {whyItMatters}
-                  </p>
-                  <div className="mt-8 flex flex-wrap gap-4">
-                    <Button
-                      href="/contact"
-                      variant="primary"
-                      size="lg"
-                      className="min-h-[44px]"
-                    >
-                      Schedule Your Service
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </div>
-                </GlassCard>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight mb-6">
+                Professional {service.name} in Northern NJ
+              </h2>
+              <div className="prose prose-invert prose-lg max-w-none">
+                <p className="text-dac-muted leading-relaxed">
+                  {introParagraph}
+                </p>
+                <p className="text-dac-muted leading-relaxed mt-4">
+                  Ready to experience the difference?{' '}
+                  <a href="/contact" className="text-dac-red hover:underline font-medium">
+                    Contact us today
+                  </a>{' '}
+                  for a free, no-obligation quote, or explore our{' '}
+                  {relatedServices.length > 0 && (
+                    <>
+                      other services like{' '}
+                      {relatedServices.slice(0, 2).map((rs, i) => (
+                        <span key={rs.slug}>
+                          <a href={`/services/${rs.slug}`} className="text-dac-red hover:underline font-medium">
+                            {rs.name.toLowerCase()}
+                          </a>
+                          {i < relatedServices.slice(0, 2).length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                      .
+                    </>
+                  )}
+                </p>
               </div>
             </Reveal>
           </div>
         </Container>
       </Section>
 
+      {/* What's Included / Benefits Section */}
+      {benefits.length > 0 && (
+        <Section className="py-16 md:py-20">
+          <Container>
+            <SectionHeading
+              eyebrow="What's Included"
+              title={`${service.name} Package`}
+              subtitle="Every service includes our commitment to quality, attention to detail, and 100% satisfaction guarantee."
+            />
+            <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {benefits.map((benefit: string, index: number) => (
+                <Reveal key={index} delay={index * 0.05}>
+                  <GlassCard className="p-6 flex items-start gap-4">
+                    <CheckCircle className="h-6 w-6 text-dac-red flex-shrink-0 mt-0.5" />
+                    <p className="text-white font-medium">{benefit}</p>
+                  </GlassCard>
+                </Reveal>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      )}
+
+      {/* Our Process Section */}
+      {process.length > 0 && (
+        <Section className="py-16 md:py-20 bg-dac-black/50">
+          <Container>
+            <SectionHeading
+              eyebrow="Our Process"
+              title={`How We Deliver ${service.name}`}
+              subtitle="A proven, step-by-step approach for consistent, showroom-quality results."
+            />
+            <div className="mt-12 max-w-4xl mx-auto space-y-8">
+              {process.map((step: { title: string; desc: string }, index: number) => (
+                <Reveal key={index} delay={index * 0.1}>
+                  <GlassCard className="p-6 md:p-8 flex gap-6">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-dac-red/20 flex items-center justify-center text-dac-red font-bold text-lg">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-2">{step.title}</h3>
+                      <p className="text-dac-muted leading-relaxed">{step.desc}</p>
+                    </div>
+                  </GlassCard>
+                </Reveal>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      )}
+
+      {/* FAQ Section */}
+      {faq.length > 0 && (
+        <Section className="py-16 md:py-20">
+          <Container>
+            <SectionHeading
+              eyebrow="FAQ"
+              title={`${service.name} Questions`}
+              subtitle="Answers to common questions about our service."
+              centered
+            />
+            <div className="mt-12 max-w-3xl mx-auto space-y-6">
+              {faq.map((item: { q: string; a: string }, index: number) => (
+                <Reveal key={index} delay={index * 0.05}>
+                  <GlassCard className="p-6 md:p-8">
+                    <h3 className="text-lg font-semibold text-white mb-3">{item.q}</h3>
+                    <p className="text-dac-muted leading-relaxed">{item.a}</p>
+                  </GlassCard>
+                </Reveal>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      )}
+
       {/* Related Services Section */}
       {relatedServices.length > 0 && (
-        <Section className="py-16 md:py-20">
+        <Section className="py-16 md:py-20 bg-dac-black/50">
           <Container>
             <Reveal>
               <SectionHeading

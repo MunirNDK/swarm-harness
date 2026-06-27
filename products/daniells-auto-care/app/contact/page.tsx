@@ -1,5 +1,6 @@
 import { Metadata } from "next";
-import { Phone, Clock, MapPin, Timer } from "lucide-react";
+import { Phone, Clock, MapPin, Timer, ExternalLink } from "lucide-react";
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -10,17 +11,32 @@ import { Button } from "@/components/ui/button";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Get a Free Quote | Daniells Auto Care",
+  title: "Get Your Free Quote | Mobile Auto Detailing | Daniells Auto Care",
   description:
-    "Request a free, no-obligation quote for mobile auto detailing in Northern New Jersey. Same-day service, 15-minute response.",
+    "Request a free, no-obligation quote for mobile auto detailing in Northern New Jersey. Same-day service, 15-minute response. We serve Franklin Lakes, Ridgewood, Tenafly and beyond.",
 };
+
+const faqs = [
+  {
+    q: "How quickly will I receive my quote?",
+    a: "We respond to all quote requests within 15 minutes during business hours. Our goal is to provide an accurate, no-obligation estimate so you can make an informed decision.",
+  },
+  {
+    q: "Do you service my area?",
+    a: "We provide mobile detailing throughout Northern New Jersey, including Franklin Lakes, Ridgewood, Tenafly, Chatham, Madison and many other towns. View our full service areas list for details.",
+  },
+  {
+    q: "Is the quote really free?",
+    a: "Yes — the quote is 100% free with no obligation. We’ll assess your vehicle’s needs and provide a transparent price before any work begins.",
+  },
+];
 
 export default function ContactPage() {
   const { business, areas } = site;
 
   return (
     <>
-      {/* Hero */}
+      {/* Hero + Intro */}
       <Section id="hero" className="relative overflow-hidden pt-32 pb-20">
         {/* Background glow */}
         <div className="absolute inset-0 -z-10">
@@ -31,11 +47,27 @@ export default function ContactPage() {
             <SectionHeading
               eyebrow="Contact Us"
               title="Get Your Free Quote"
-              subtitle="Fill out the form below and we’ll respond within 15 minutes — no strings attached."
+              subtitle="Fill out the form below and we‘ll respond within 15 minutes — no strings attached."
               centered
             />
           </Reveal>
-          <Reveal delay={0.1} className="mt-8 flex justify-center">
+          <Reveal delay={0.1} className="mt-6 mx-auto max-w-2xl text-center">
+            <p className="text-lg text-[#A1A1AA]">
+              Daniells Auto Care brings professional mobile detailing to your
+              doorstep across {business.serviceArea}. Whether you need a
+              one-time detail or a regular maintenance plan, our team is ready
+              to deliver a spotless finish with same‑day service and a 100%
+              satisfaction guarantee. Call us at{" "}
+              <a
+                href={business.phoneHref}
+                className="text-[#E80505] underline underline-offset-2 hover:text-white transition-colors"
+              >
+                {business.phone}
+              </a>{" "}
+              or request a free quote online.
+            </p>
+          </Reveal>
+          <Reveal delay={0.15} className="mt-8 flex justify-center">
             <Button asChild variant="primary" size="lg">
               <a href="tel:+19739167868">
                 <Phone className="mr-2 h-5 w-5" />
@@ -108,6 +140,29 @@ export default function ContactPage() {
         </Container>
       </Section>
 
+      {/* FAQ */}
+      <Section id="faq" background="ink">
+        <Container>
+          <SectionHeading
+            eyebrow="FAQ"
+            title="Quote & Service Questions"
+            subtitle="Here are answers to common questions before you reach out."
+          />
+          <div className="mt-12 mx-auto max-w-3xl space-y-4">
+            {faqs.map((faq, idx) => (
+              <Reveal key={idx} delay={idx * 0.05}>
+                <GlassCard className="p-6">
+                  <h3 className="font-sora text-lg font-semibold text-white">
+                    {faq.q}
+                  </h3>
+                  <p className="mt-2 text-[#A1A1AA]">{faq.a}</p>
+                </GlassCard>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
       {/* Service Areas Note */}
       <Section id="service-areas" className="pb-24">
         <Container>
@@ -133,6 +188,33 @@ export default function ContactPage() {
               </div>
             </GlassCard>
           </Reveal>
+        </Container>
+      </Section>
+
+      {/* Internal links */}
+      <Section id="related-links" background="ink" className="pb-24">
+        <Container>
+          <Reveal>
+            <SectionHeading
+              title="Explore More"
+              subtitle="Learn about our services and coverage areas."
+              centered
+            />
+          </Reveal>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/services">
+                <ExternalLink className="mr-2 h-5 w-5" />
+                View All Services
+              </Link>
+            </Button>
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/service-areas">
+                <ExternalLink className="mr-2 h-5 w-5" />
+                Service Areas
+              </Link>
+            </Button>
+          </div>
         </Container>
       </Section>
     </>
