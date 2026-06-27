@@ -9,3 +9,7 @@ products/*/node_modules/
 products/*/.next/
 products/*/out/
 evidence/assets/*.tmp
+# Local-only operator files containing secrets — NEVER commit/push
+*.local.md
+swarm-secrets.local.md
+.secrets/
