@@ -1,0 +1,14 @@
+{
+  "created_at": "2026-06-26T20:42:39.843Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "build-page:app/fleet/page.tsx",
+  "files": 1,
+  "notes": "Fleet page uses the fleet-detailing service from site.ts for hero content, custom features and steps arrays, and imports shared components per contract. Background image is a dark-toned Unsplash photo of corporate vehicles. No Navbar/Footer – they are handled by layout.",
+  "cost_usd": 0.016830156,
+  "budget": {
+    "total": 0.106327,
+    "max": 8,
+    "fraction": 0.013290875,
+    "gate": "ok"
+  }
+}

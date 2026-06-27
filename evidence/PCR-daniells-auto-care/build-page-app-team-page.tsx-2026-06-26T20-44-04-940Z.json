@@ -1,0 +1,14 @@
+{
+  "created_at": "2026-06-26T20:44:04.940Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "build-page:app/team/page.tsx",
+  "files": 1,
+  "notes": "Team page with cinematic hero (dark Unsplash car detailing background), values grid (using trust data), certifications list (certifications from site.trust), and quote CTA. All content real, design system compliant.",
+  "cost_usd": 0.011974833,
+  "budget": {
+    "total": 0.118302,
+    "max": 8,
+    "fraction": 0.01478775,
+    "gate": "ok"
+  }
+}
