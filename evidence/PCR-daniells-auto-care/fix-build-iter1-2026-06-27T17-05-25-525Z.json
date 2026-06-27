@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:05:25.525Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "fix-build-iter1",
+  "files": 1,
+  "notes": "Added 'faqs' to the site object in lib/site.ts to resolve TypeScript errors in page.tsx where site.faqs was used but not defined in the aggregated site type.",
+  "errors_tail": "app/page.tsx(390,19): error TS2339: Property 'faqs' does not exist on type '{ business: { name: string; tagline: string; phone: string; phoneHref: string; hours: string; serviceArea: string; mobile: boolean; responseTime: string; experienceYears: string; vehiclesDetailed: string; reviewsCount: string; googleReviews: string; trust: string[]; primaryCtas: ({ ...; } | { ...; })[]; }; ... 4 mor...'.\r\napp/page.tsx(390,29): error TS7006: Parameter 'faq' implicitly has an 'any' type.\r\napp/page.tsx(390,34): error TS7006: Parameter 'index' implicitly has an 'any' type.\r\napp/page.tsx(405,36): error TS2339: Property 'faqs' does not exist on type '{ business: { name: string; tagline: string; phone: string; phoneHref: string; hours: string; serviceArea: string; mobile: boolean; responseTime: string; experienceYears: string; vehiclesDetailed: string; reviewsCount: string; googleReviews: string; trust: string[]; primaryCtas: ({ ...; } | { ...; })[]; }; ... 4 mor...'.\r\napp/page.tsx(405,46): error TS7006: Parameter 'faq' implicitly has an 'any' type.\r\n\n",
+  "cost_usd": 0.062864,
+  "budget": {
+    "total": 0.205991,
+    "max": 8,
+    "fraction": 0.025748875,
+    "gate": "ok"
+  }
+}

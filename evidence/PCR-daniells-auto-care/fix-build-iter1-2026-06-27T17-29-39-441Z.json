@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:29:39.441Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "fix-build-iter1",
+  "files": 2,
+  "notes": "Fixed type errors by updating hero image usage in app/page.tsx to access site.images.hero string directly, and in app/services/[slug]/page.tsx changed the Image component to use service.image string with static width/height instead of properties on a string.",
+  "errors_tail": "app/page.tsx(117,30): error TS2339: Property 'src' does not exist on type 'string'.\r\napp/page.tsx(118,30): error TS2339: Property 'alt' does not exist on type 'string'.\r\napp/services/[slug]/page.tsx(145,40): error TS2339: Property 'src' does not exist on type 'string'.\r\napp/services/[slug]/page.tsx(147,42): error TS2339: Property 'width' does not exist on type 'string'.\r\napp/services/[slug]/page.tsx(148,43): error TS2339: Property 'height' does not exist on type 'string'.\r\n\n",
+  "cost_usd": 0.034731728,
+  "budget": {
+    "total": 0.86157,
+    "max": 8,
+    "fraction": 0.10769625,
+    "gate": "ok"
+  }
+}

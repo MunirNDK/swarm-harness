@@ -1,0 +1,20 @@
+{
+  "created_at": "2026-06-27T17:17:09.881Z",
+  "pcr_id": "daniells-asset-test",
+  "step_id": "asset",
+  "prompt": "Dark moody cinematic close-up of a luxury black car being detailed, glossy wet paint reflections, dramatic studio lighting, premium automotive photography, deep blacks with subtle red rim light, 16:9",
+  "refined": false,
+  "images": [
+    {
+      "file": "..\\..\\..\\AppData\\Local\\Temp\\claude\\C--Users-user-Documents-Projects-Directory-Daniel-Auto-Website-swarm-harness\\5f8cc2dc-dd5d-4d43-ab1f-77131e16c463\\scratchpad\\asset-test\\daniells-asset-test-2026-06-27T17-17-09-871Z-0-0.png",
+      "model": "google/gemini-2.5-flash-image"
+    }
+  ],
+  "cost_usd": 0.038712,
+  "budget": {
+    "total": 0.038712,
+    "max": 8,
+    "fraction": 0.004839,
+    "gate": "ok"
+  }
+}

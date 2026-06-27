@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:26:09.749Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 2,
+  "task": "Replace Unsplash placeholder images with our generated brand assets (now in lib/site).\n- app/page.tsx: the homepage hero background image currently uses an https://images.unsplash.com URL. Replace tha",
+  "notes": "Replaced homepage hero background Unsplash image with images.hero from lib/site. In services/[slug]/page.tsx, removed hardcoded serviceImages mapping and used service.image.src, service.image.width, service.image.height, and alt={service.name}. All other Unsplash images (gallery) kept as placeholders per task scope.",
+  "cost_usd": 0.0200262465,
+  "budget": {
+    "total": 0.802651,
+    "max": 8,
+    "fraction": 0.100331375,
+    "gate": "ok"
+  }
+}

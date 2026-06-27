@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T16:55:16.075Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 1,
+  "task": "Add data-backed SEO content to lib/site.ts. KEEP all existing exports unchanged; ADD new ones (typed, valid TS):\n- export const siteUrl = 'https://daniellsautocare.com';\n- export const faqs: { q: stri",
+  "notes": "Added siteUrl, faqs (8 general FAQs), extended each service with benefits, process, faq, and metaDescription; added whyChooseUs (6 items), processSteps (4 steps), and areaIntro function. All existing exports remain unchanged.",
+  "cost_usd": 0.01810209,
+  "budget": {
+    "total": 0.028615,
+    "max": 8,
+    "fraction": 0.003576875,
+    "gate": "ok"
+  }
+}

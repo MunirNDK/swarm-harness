@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:03:21.121Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 2,
+  "task": "Two SEO changes:\n1) app/layout.tsx: inject a LocalBusiness JSON-LD <script type='application/ld+json'> in <body> using business facts (name, telephone=business.phone, areaServed='Northern New Jersey',",
+  "notes": "Added LocalBusiness JSON-LD script to layout and an FAQ section with FAQPage JSON-LD to the homepage.",
+  "cost_usd": 0.0337472,
+  "budget": {
+    "total": 0.143127,
+    "max": 8,
+    "fraction": 0.017890875,
+    "gate": "ok"
+  }
+}

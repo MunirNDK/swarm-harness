@@ -1,0 +1,69 @@
+{
+  "created_at": "2026-06-27T17:22:08.126Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "asset-matrix",
+  "generated": [
+    {
+      "key": "hero",
+      "path": "public/assets/hero.png",
+      "cost": 0.038769
+    },
+    {
+      "key": "car-detailing",
+      "path": "public/assets/services/car-detailing.png",
+      "cost": 0.0387243
+    },
+    {
+      "key": "exterior-detailing",
+      "path": "public/assets/services/exterior-detailing.png",
+      "cost": 0.0388068
+    },
+    {
+      "key": "interior-detailing",
+      "path": "public/assets/services/interior-detailing.png",
+      "cost": 0.0388128
+    },
+    {
+      "key": "ceramic-coating",
+      "path": "public/assets/services/ceramic-coating.png",
+      "cost": 0.0387237
+    },
+    {
+      "key": "paint-correction",
+      "path": "public/assets/services/paint-correction.png",
+      "cost": 0.0387828
+    },
+    {
+      "key": "paint-protection-film",
+      "path": "public/assets/services/paint-protection-film.png",
+      "cost": 0.0387884
+    },
+    {
+      "key": "window-tinting",
+      "path": "public/assets/services/window-tinting.png",
+      "cost": 0.0388219
+    },
+    {
+      "key": "fleet-detailing",
+      "path": "public/assets/services/fleet-detailing.png",
+      "cost": 0.0387219
+    },
+    {
+      "key": "fleet",
+      "path": "public/assets/fleet.png",
+      "cost": 0.0387462
+    },
+    {
+      "key": "og",
+      "path": "public/assets/og.png",
+      "cost": 0.0387766
+    }
+  ],
+  "image_model": "google/gemini-2.5-flash-image",
+  "budget": {
+    "total": 0.739828,
+    "max": 8,
+    "fraction": 0.0924785,
+    "gate": "ok"
+  }
+}

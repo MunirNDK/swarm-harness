@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:27:19.963Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 2,
+  "task": "Use generated assets. import { images, siteUrl } from '@/lib/site' where needed.\n- app/fleet/page.tsx: replace any Unsplash hero/image URL with images.fleet (keep dimensions/alt).\n- app/layout.tsx: se",
+  "notes": "Replaced Unsplash hero image in fleet page with images.fleet from generated assets. Added openGraph images and twitter:image to layout metadata using siteUrl/assets/og.png. Preserved all existing structure, components, and JSON-LD.",
+  "cost_usd": 0.024186974,
+  "budget": {
+    "total": 0.826838,
+    "max": 8,
+    "fraction": 0.10335475,
+    "gate": "ok"
+  }
+}

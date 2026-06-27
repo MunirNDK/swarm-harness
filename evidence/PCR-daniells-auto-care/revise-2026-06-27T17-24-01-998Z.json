@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:24:01.999Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 1,
+  "task": "Add generated brand image paths to lib/site.ts (keep all existing exports). Add:\n- export const images = { hero: '/assets/hero.png', fleet: '/assets/fleet.png', og: '/assets/og.png' };\n- Add an 'image",
+  "notes": "Added images export with hero, fleet, og paths. Added image field to each service object using slug-based path. Included images in the aggregated site object.",
+  "cost_usd": 0.04279704,
+  "budget": {
+    "total": 0.782625,
+    "max": 8,
+    "fraction": 0.097828125,
+    "gate": "ok"
+  }
+}

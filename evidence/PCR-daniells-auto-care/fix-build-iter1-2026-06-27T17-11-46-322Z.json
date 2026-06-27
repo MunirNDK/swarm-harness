@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:11:46.322Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "fix-build-iter1",
+  "files": 1,
+  "notes": "Added `siteUrl` to the `site` object in lib/site.ts so that `site.siteUrl` resolves correctly. The separate `siteUrl` export remains unchanged for direct imports.",
+  "errors_tail": "ing; serviceArea: string; mobile: boolean; responseTime: string; experienceYears: string; vehiclesDetailed: string; reviewsCount: string; googleReviews: string; trust: string[]; primaryCtas: ({ ...; } | { ...; })[]; }; ... 5 mor...'.\r\napp/service-areas/[slug]/page.tsx(177,18): error TS2339: Property 'siteUrl' does not exist on type '{ business: { name: string; tagline: string; phone: string; phoneHref: string; hours: string; serviceArea: string; mobile: boolean; responseTime: string; experienceYears: string; vehiclesDetailed: string; reviewsCount: string; googleReviews: string; trust: string[]; primaryCtas: ({ ...; } | { ...; })[]; }; ... 5 mor...'.\r\napp/service-areas/[slug]/page.tsx(194,15): error TS2339: Property 'siteUrl' does not exist on type '{ business: { name: string; tagline: string; phone: string; phoneHref: string; hours: string; serviceArea: string; mobile: boolean; responseTime: string; experienceYears: string; vehiclesDetailed: string; reviewsCount: string; googleReviews: string; trust: string[]; primaryCtas: ({ ...; } | { ...; })[]; }; ... 5 mor...'.\r\napp/service-areas/page.tsx(21,24): error TS2339: Property 'siteUrl' does not exist on type '{ business: { name: string; tagline: string; phone: string; phoneHref: string; hours: string; serviceArea: string; mobile: boolean; responseTime: string; experienceYears: string; vehiclesDetailed: string; reviewsCount: string; googleReviews: string; trust: string[]; primaryCtas: ({ ...; } | { ...; })[]; }; ... 5 mor...'.\r\n\n",
+  "cost_usd": 0.065899053,
+  "budget": {
+    "total": 0.313353,
+    "max": 8,
+    "fraction": 0.039169125,
+    "gate": "ok"
+  }
+}

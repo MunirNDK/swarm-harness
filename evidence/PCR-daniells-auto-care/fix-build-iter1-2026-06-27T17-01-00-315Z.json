@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:01:00.315Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "fix-build-iter1",
+  "files": 1,
+  "notes": "Fixed type mismatches in service detail page: changed FAQ map callback from { question, answer } to { q, a } and process map callback from { title, description } to { title, desc } to match the actual data structure in lib/site.ts.",
+  "errors_tail": "': string; name: string; acceptedAnswer: { '@type': string; text: string; }; }' is not assignable to parameter of type '(value: { q: string; a: string; }, index: number, array: { q: string; a: string; }[]) => { '@type': string; name: string; acceptedAnswer: { '@type': string; text: string; }; }'.\r\n  Types of parameters 'item' and 'value' are incompatible.\r\n    Type '{ q: string; a: string; }' is missing the following properties from type '{ question: string; answer: string; }': question, answer\r\napp/services/[slug]/page.tsx(285,28): error TS2345: Argument of type '(step: { title: string; description: string; }, index: number) => JSX.Element' is not assignable to parameter of type '(value: { title: string; desc: string; }, index: number, array: { title: string; desc: string; }[]) => Element'.\r\n  Types of parameters 'step' and 'value' are incompatible.\r\n    Property 'description' is missing in type '{ title: string; desc: string; }' but required in type '{ title: string; description: string; }'.\r\napp/services/[slug]/page.tsx(314,24): error TS2345: Argument of type '(item: { question: string; answer: string; }, index: number) => JSX.Element' is not assignable to parameter of type '(value: { q: string; a: string; }, index: number, array: { q: string; a: string; }[]) => Element'.\r\n  Types of parameters 'item' and 'value' are incompatible.\r\n    Type '{ q: string; a: string; }' is missing the following properties from type '{ question: string; answer: string; }': question, answer\r\n\n",
+  "cost_usd": 0.054565762,
+  "budget": {
+    "total": 0.098312,
+    "max": 8,
+    "fraction": 0.012289,
+    "gate": "ok"
+  }
+}

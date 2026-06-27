@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:09:09.111Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 2,
+  "task": "Enrich for SEO. fleet/page.tsx: add metadata (title 'Fleet & Commercial Auto Detailing in Northern NJ | Daniells Auto Care' + description), an intro, a benefits section (on-site mobile service, volume",
+  "notes": "Enriched fleet/page.tsx with metadata, textual intro, kept existing benefits/process sections, added 3 fleet-specific FAQs. Enriched contact/page.tsx with improved metadata, content intro, FAQ section, and internal links to /services and /service-areas. Both pages preserved existing design and components.",
+  "cost_usd": 0.01539252,
+  "budget": {
+    "total": 0.247454,
+    "max": 8,
+    "fraction": 0.03093175,
+    "gate": "ok"
+  }
+}

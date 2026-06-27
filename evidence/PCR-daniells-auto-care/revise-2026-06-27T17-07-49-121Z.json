@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T17:07:49.121Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 2,
+  "task": "Enrich the service-area pages for LOCAL SEO. For the [slug] template (serves all 10 NJ towns via generateStaticParams): add generateMetadata returning title 'Mobile Auto Detailing in {Town}, NJ | Dani",
+  "notes": "Enriched both service-area pages for local SEO. The overview page now includes a canonical URL, internal links to /services and /contact, and uses site.areas from lib/site. The [slug] template adds generateMetadata with localized title/description/OpenGraph/canonical, a JSON-LD LocalBusiness schema with areaServed set to the town, an intro paragraph via areaIntro(town), a 'Why Choose Us' section with icons, a numbered process steps section, a localized FAQ section, and all existing sections (services, reviews, quote CTA) preserved. All imports reference existing files; no new files created.",
+  "cost_usd": 0.02606975,
+  "budget": {
+    "total": 0.232061,
+    "max": 8,
+    "fraction": 0.029007625,
+    "gate": "ok"
+  }
+}

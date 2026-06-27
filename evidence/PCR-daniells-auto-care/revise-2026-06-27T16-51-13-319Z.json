@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T16:51:13.319Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 2,
+  "task": "Two related fixes to global chrome:\n1) HEADER+FOOTER: app/layout.tsx currently has Navbar and Footer commented out. Import { Navbar } from '@/components/navbar' and { Footer } from '@/components/foote",
+  "notes": "Uncommented Navbar and Footer in layout, added top padding for fixed navbar (pt-16 md:pt-20) and bottom padding for sticky CTA (pb-24 md:pb-0). Created StickyCTA component with glassmorphism, two buttons (Call with Phone icon, Get Free Quote primary) visible only on mobile.",
+  "cost_usd": 0.01051308,
+  "budget": {
+    "total": 0.010513,
+    "max": 8,
+    "fraction": 0.001314125,
+    "gate": "ok"
+  }
+}

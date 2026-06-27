@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T16:57:39.371Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 1,
+  "task": "Enrich the service detail template for SEO/SERP (it renders all 8 services via generateStaticParams). Using the service's new fields from lib/site.ts (benefits, process, faq, metaDescription, long):\n-",
+  "notes": "Updated service detail page to use new fields from lib/site.ts (benefits, process, faq, metaDescription, long). Added intro/overview paragraph with Northern NJ and mobile mentions, benefits list, process steps, FAQ section with GlassCards, internal links to related services and contact. Injected JSON-LD with Service and FAQPage schemas. Updated generateMetadata to use service.metaDescription and enriched title. Removed hardcoded benefits and whyItMatters objects; replaced with dynamic data. Preserved existing hero, design language, and QuoteCTA.",
+  "cost_usd": 0.01513104,
+  "budget": {
+    "total": 0.043746,
+    "max": 8,
+    "fraction": 0.00546825,
+    "gate": "ok"
+  }
+}
