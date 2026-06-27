@@ -114,8 +114,8 @@ export default function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=1920&q=80"
-            alt="Dark luxury car detailing background"
+            src={site.images.hero}
+            alt="Professional auto detailing hero background"
             fill
             className="object-cover opacity-30"
             priority

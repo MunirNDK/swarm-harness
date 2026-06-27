@@ -26,6 +26,7 @@ export const business = {
 export const services = [
   {
     slug: "car-detailing",
+    image: "/assets/services/car-detailing.webp",
     name: "Car Detailing",
     icon: "Sparkles",
     short: "Complete interior and exterior detailing for pristine results.",
@@ -74,6 +75,7 @@ export const services = [
   },
   {
     slug: "exterior-detailing",
+    image: "/assets/services/exterior-detailing.webp",
     name: "Exterior Detailing",
     icon: "CarFront",
     short: "Expert exterior detailing that restores and protects your finish.",
@@ -118,6 +120,7 @@ export const services = [
   },
   {
     slug: "interior-detailing",
+    image: "/assets/services/interior-detailing.webp",
     name: "Interior Detailing",
     icon: "Armchair",
     short: "Deep cleaning, steam extraction and leather conditioning.",
@@ -166,6 +169,7 @@ export const services = [
   },
   {
     slug: "ceramic-coating",
+    image: "/assets/services/ceramic-coating.webp",
     name: "Ceramic Coating",
     icon: "ShieldCheck",
     short: "Ultimate paint protection with a 2–10 year warranty.",
@@ -214,6 +218,7 @@ export const services = [
   },
   {
     slug: "paint-correction",
+    image: "/assets/services/paint-correction.webp",
     name: "Paint Correction",
     icon: "Wand2",
     short: "Remove swirls, scratches and oxidation.",
@@ -262,6 +267,7 @@ export const services = [
   },
   {
     slug: "paint-protection-film",
+    image: "/assets/services/paint-protection-film.webp",
     name: "Paint Protection Film",
     icon: "Layers",
     short: "Self-healing film protection against chips and scratches.",
@@ -310,6 +316,7 @@ export const services = [
   },
   {
     slug: "window-tinting",
+    image: "/assets/services/window-tinting.webp",
     name: "Window Tinting",
     icon: "SunDim",
     short: "Heat rejection, privacy and UV protection.",
@@ -358,6 +365,7 @@ export const services = [
   },
   {
     slug: "fleet-detailing",
+    image: "/assets/services/fleet-detailing.webp",
     name: "Fleet Detailing",
     icon: "Truck",
     short: "Keep your business fleet looking professional.",
@@ -547,5 +555,11 @@ export function areaIntro(town: string): string {
 
 export const siteUrl = "https://daniellsautocare.com";
 
+export const images = {
+  hero: "/assets/hero.webp",
+  fleet: "/assets/fleet.webp",
+  og: "/assets/og.webp",
+};
+
 // Aggregate accessor used by pages that prefer a single `site` object.
-export const site = { business, services, areas, stats, reviews, nav, faqs, siteUrl };
+export const site = { business, services, areas, stats, reviews, nav, faqs, siteUrl, images };

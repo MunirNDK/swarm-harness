@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { Calendar, Percent, Truck, UserCheck, ClipboardList, PenTool, ShieldCheck } from "lucide-react";
-import { site } from "@/lib/site";
+import { site, images } from "@/lib/site";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -91,8 +91,7 @@ export default function FleetPage() {
         <div
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=1200&q=80')",
+            backgroundImage: `url('${images.fleet}')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}

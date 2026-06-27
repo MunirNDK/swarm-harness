@@ -39,58 +39,6 @@ export async function generateMetadata({
   };
 }
 
-// Image mapping for services (dark-toned Unsplash photos)
-const serviceImages: Record<string, { src: string; width: number; height: number; alt: string }> = {
-  'car-detailing': {
-    src: 'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=800&q=80',
-    width: 800,
-    height: 600,
-    alt: 'Professional car detailing in progress',
-  },
-  'exterior-detailing': {
-    src: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&q=80',
-    width: 800,
-    height: 600,
-    alt: 'Exterior car detailing and paint restoration',
-  },
-  'interior-detailing': {
-    src: 'https://images.unsplash.com/photo-1615874694520-474822394e73?w=800&q=80',
-    width: 800,
-    height: 600,
-    alt: 'Interior car detailing and deep cleaning',
-  },
-  'ceramic-coating': {
-    src: 'https://images.unsplash.com/photo-1601362840469-51e4d8d58792?w=800&q=80',
-    width: 800,
-    height: 600,
-    alt: 'Ceramic coating application on luxury car',
-  },
-  'paint-correction': {
-    src: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80',
-    width: 800,
-    height: 600,
-    alt: 'Paint correction and polishing process',
-  },
-  'paint-protection-film': {
-    src: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&q=80',
-    width: 800,
-    height: 600,
-    alt: 'Paint protection film installation',
-  },
-  'window-tinting': {
-    src: 'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=800&q=80',
-    width: 800,
-    height: 600,
-    alt: 'Professional window tinting service',
-  },
-  'fleet-detailing': {
-    src: 'https://images.unsplash.com/photo-1580674285054-bed31e145f59?w=800&q=80',
-    width: 800,
-    height: 600,
-    alt: 'Fleet detailing for business vehicles',
-  },
-};
-
 export default function ServiceDetailPage({
   params,
 }: {
@@ -99,7 +47,6 @@ export default function ServiceDetailPage({
   const service = site.services.find((s) => s.slug === params.slug);
   if (!service) notFound();
 
-  const image = serviceImages[service.slug] || serviceImages['car-detailing'];
   const benefits = service.benefits || [];
   const process = service.process || [];
   const faq = service.faq || [];
@@ -195,10 +142,10 @@ export default function ServiceDetailPage({
                 <div className="absolute inset-0 bg-dac-red/10 blur-3xl rounded-3xl" />
                 <GlassCard className="overflow-hidden p-0 relative">
                   <Image
-                    src={image.src}
-                    alt={image.alt}
-                    width={image.width}
-                    height={image.height}
+                    src={service.image}
+                    alt={service.name}
+                    width={800}
+                    height={600}
                     className="w-full h-auto object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority
