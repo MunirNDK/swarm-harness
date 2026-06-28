@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-28T00:06:49.179Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 2,
+  "task": "Update header + footer.\n1) components/navbar.tsx: replace text brand with logo image (import { logo } from '@/lib/site'; <img src={logo} alt='Daniells Auto Care' className='h-9 w-auto'/> inside a Link",
+  "notes": "Navbar: replaced text logo with image from lib/site, made dropdown parents clickable links, and dropdowns now appear on hover/focus-within (desktop) while keeping mobile click-to-expand. Footer: added logo image at top of brand column.",
+  "cost_usd": 0.01441155,
+  "budget": {
+    "total": 0.92869,
+    "max": 8,
+    "fraction": 0.11608625,
+    "gate": "ok"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-28T00:16:52.839Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 3,
+  "task": "Remove ALL images.unsplash.com references from these files (broken/stock). For blog post images use a local brand asset (images.hero or a /assets/services/*.webp from site.services). For not-found, re",
+  "notes": "Removed all images.unsplash.com references. Blog listing and post pages now import a local brand asset (public/assets/services/ceramic-coating.webp) as a placeholder for blog images. The 404 page replaced the external background image with a solid dark surface and a subtle red glow, and added the logo (public/logo.svg) as a decorative element. All content, design language, and accessibility features preserved.",
+  "cost_usd": 0.03173238,
+  "budget": {
+    "total": 1.037511,
+    "max": 8,
+    "fraction": 0.129688875,
+    "gate": "ok"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-28T00:09:02.353Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 3,
+  "task": "Create a 'Get Free Quote' popup modal so CTAs open a form modal instead of navigating to /contact.\n1) NEW components/quote-modal.tsx ('use client'): export a React Context + <QuoteModalProvider> holdi",
+  "notes": "Created quote-modal.tsx with context provider, modal overlay (glass design, keyboard/tap-to-close), and QuoteButton. Updated quote-cta.tsx and sticky-cta.tsx to use QuoteButton for the primary CTA, keeping the call button. The new modal must be integrated into the root layout: wrap children with <QuoteModalProvider> and include <QuoteModal /> somewhere in app/layout.tsx (not modified here).",
+  "cost_usd": 0.0107648775,
+  "budget": {
+    "total": 0.939455,
+    "max": 8,
+    "fraction": 0.117431875,
+    "gate": "ok"
+  }
+}

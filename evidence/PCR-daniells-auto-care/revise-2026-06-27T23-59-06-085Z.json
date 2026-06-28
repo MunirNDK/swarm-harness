@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-27T23:59:06.085Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 3,
+  "task": "Add a before/after comparison slider to the gallery (like a twentytwenty / ba-slider).\n1) Create components/before-after.tsx — 'use client', exported component BeforeAfter with props { before: string;",
+  "notes": "Created reusable BeforeAfter component with pointer drag + keyboard range slider and accessible labels. Rewrote gallery page to use beforeAfter data from lib/site, preserving design language and removing all Unsplash images. Added beforeAfter array to lib/site.ts with placeholder image paths.",
+  "cost_usd": 0.012564981,
+  "budget": {
+    "total": 0.893757,
+    "max": 8,
+    "fraction": 0.111719625,
+    "gate": "ok"
+  }
+}

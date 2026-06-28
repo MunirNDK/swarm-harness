@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-06-28T00:15:23.090Z",
+  "pcr_id": "daniells-auto-care",
+  "step_id": "revise",
+  "files": 2,
+  "task": "Remove ALL images.unsplash.com references from these two files (broken/stock). Replace each with a relevant LOCAL brand asset: import { images } from '@/lib/site' and use images.hero or images.fleet, ",
+  "notes": "Replaced Unsplash image URLs in app/team/page.tsx and app/service-areas/[slug]/page.tsx with site.images.hero from lib/site. Removed HERO_IMAGE_URL constants. Updated openGraph image, JSON-LD image, and <Image> src in both files. No external URLs remain.",
+  "cost_usd": 0.024353696,
+  "budget": {
+    "total": 1.005779,
+    "max": 8,
+    "fraction": 0.125722375,
+    "gate": "ok"
+  }
+}

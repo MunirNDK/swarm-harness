@@ -69,10 +69,17 @@ const { json, cost, usage } = await chatJSON({
   max_tokens: 16000,
 });
 
+const targetSet = new Set(targetList.map((t) => t.replace(/\\/g, '/')));
 let n = 0;
 for (const f of json.files || []) {
+  const rel = f.path.replace(/\\/g, '/');
   const dest = path.join(DIR, f.path);
   if (!dest.startsWith(DIR)) { console.warn('skip outside dir:', f.path); continue; }
+  // guard: never clobber an EXISTING file that wasn't an explicit target (prevents side-effect overwrites)
+  if (fs.existsSync(dest) && targetList.length && !targetSet.has(rel)) {
+    console.warn('  SKIP (existing, not a target):', rel);
+    continue;
+  }
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, f.content); n++;
   console.log('  wrote', f.path);
