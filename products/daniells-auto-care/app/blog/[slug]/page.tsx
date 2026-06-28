@@ -7,12 +7,15 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
 
+// Local brand asset — replace with a real blog hero image when available
+import blogHero from '@/public/assets/services/ceramic-coating.webp';
+
 type Post = {
   slug: string;
   title: string;
   date: string;
   excerpt: string;
-  image: string;
+  image: typeof blogHero;
   imageWidth: number;
   imageHeight: number;
   content: string[];
@@ -24,7 +27,7 @@ const posts: Post[] = [
     title: 'Ceramic Coating: Ultimate Protection for Your Car',
     date: 'May 15, 2024',
     excerpt: 'Discover how ceramic coating can protect your vehicle’s finish, deepen its gloss, and reduce maintenance.',
-    image: 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=1200&h=800&fit=crop&crop=center&fm=webp',
+    image: blogHero,
     imageWidth: 1200,
     imageHeight: 800,
     content: [
@@ -39,7 +42,7 @@ const posts: Post[] = [
     title: 'Paint Correction: Restore Your Car’s Factory Shine',
     date: 'April 28, 2024',
     excerpt: 'Swirl marks and scratches can dull your paint. Learn how paint correction brings back that showroom finish.',
-    image: 'https://images.unsplash.com/photo-1551524559-8bc7cfa3fea5?w=1200&h=800&fit=crop&crop=center&fm=webp',
+    image: blogHero,
     imageWidth: 1200,
     imageHeight: 800,
     content: [
@@ -53,7 +56,7 @@ const posts: Post[] = [
     title: 'Interior Detailing: Deep Clean Techniques for a Showroom Cabin',
     date: 'April 10, 2024',
     excerpt: 'From steam extraction to leather conditioning, learn the methods that make your interior look and feel brand new.',
-    image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=1200&h=800&fit=crop&crop=center&fm=webp',
+    image: blogHero,
     imageWidth: 1200,
     imageHeight: 800,
     content: [
@@ -80,7 +83,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      images: [post.image],
+      images: [typeof post.image === 'string' ? post.image : '/assets/services/ceramic-coating.webp'],
     },
   };
 }

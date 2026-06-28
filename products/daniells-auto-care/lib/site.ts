@@ -561,5 +561,18 @@ export const images = {
   og: "/assets/og.webp",
 };
 
+export const logo = '/assets/logo.webp';
+
+export const beforeAfter: { id: string; title: string; tag: string; before: string; after: string }[] = [
+  { id:'honda-dog-hair', title:'Dog Hair Removal — Honda Accord', tag:'Interior Detailing', before:'/assets/gallery/honda-dog-hair-before.webp', after:'/assets/gallery/honda-dog-hair-after.webp' },
+  { id:'jeep-mold', title:'Mold Removal — Jeep Grand', tag:'Interior Detailing', before:'/assets/gallery/jeep-mold-before.webp', after:'/assets/gallery/jeep-mold-after.webp' },
+  { id:'rav4-trunk-mold', title:'Mold Removal — Toyota RAV4 Trunk', tag:'Interior Detailing', before:'/assets/gallery/rav4-trunk-mold-before.webp', after:'/assets/gallery/rav4-trunk-mold-after.webp' },
+  { id:'camry-seat', title:'Seat Shampooing — Toyota Camry', tag:'Interior Detailing', before:'/assets/gallery/camry-seat-before.webp', after:'/assets/gallery/camry-seat-after.webp' },
+  { id:'jeep-trim', title:'Trim Restoration — Jeep Grand Cherokee', tag:'Exterior Detailing', before:'/assets/gallery/jeep-trim-before.webp', after:'/assets/gallery/jeep-trim-after.webp' },
+  { id:'tesla-vinyl', title:'Vinyl Wrap Prep — Tesla Model Y', tag:'Exterior Detailing', before:'/assets/gallery/tesla-vinyl-before.webp', after:'/assets/gallery/tesla-vinyl-after.webp' },
+  { id:'rav4-vinyl', title:'Vinyl Wrap Prep — Toyota RAV4', tag:'Exterior Detailing', before:'/assets/gallery/rav4-vinyl-before.webp', after:'/assets/gallery/rav4-vinyl-after.webp' },
+  { id:'ford-trim', title:'Trim Restoration — Ford F-150', tag:'Exterior Detailing', before:'/assets/gallery/ford-trim-before.webp', after:'/assets/gallery/ford-trim-after.webp' },
+];
+
 // Aggregate accessor used by pages that prefer a single `site` object.
-export const site = { business, services, areas, stats, reviews, nav, faqs, siteUrl, images };
+export const site = { business, services, areas, stats, reviews, nav, faqs, siteUrl, images, logo, beforeAfter };

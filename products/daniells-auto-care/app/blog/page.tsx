@@ -10,6 +10,9 @@ import { ArrowRight, Calendar, Clock, Tag } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+// Local brand asset — replace with a real blog hero image when available
+import blogHero from '@/public/assets/services/ceramic-coating.webp';
+
 export const metadata: Metadata = {
   title: 'Blog | Daniells Auto Care',
   description: 'Expert tips, guides, and insights on auto detailing, ceramic coatings, paint protection, and more from the professionals at Daniells Auto Care.',
@@ -30,7 +33,7 @@ const blogPosts = [
     category: 'Ceramic Coating',
     readTime: '6 min read',
     date: '2025-01-15',
-    image: 'https://images.unsplash.com/photo-1607867918858-2b3b0a2b8f0f?w=800&h=500&fit=crop&auto=format&q=80',
+    image: blogHero,
     imageAlt: 'Luxury car with glossy ceramic coating finish',
   },
   {
@@ -40,7 +43,7 @@ const blogPosts = [
     category: 'Paint Correction',
     readTime: '5 min read',
     date: '2025-01-10',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=500&fit=crop&auto=format&q=80',
+    image: blogHero,
     imageAlt: 'Close-up of polished car paint with perfect reflection',
   },
   {
@@ -50,7 +53,7 @@ const blogPosts = [
     category: 'Detailing Tips',
     readTime: '7 min read',
     date: '2025-01-05',
-    image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&h=500&fit=crop&auto=format&q=80',
+    image: blogHero,
     imageAlt: 'Car being washed in winter conditions with steam',
   },
   {
@@ -60,7 +63,7 @@ const blogPosts = [
     category: 'Window Tinting',
     readTime: '4 min read',
     date: '2024-12-20',
-    image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=500&fit=crop&auto=format&q=80',
+    image: blogHero,
     imageAlt: 'Car window with premium tint film applied',
   },
 ];

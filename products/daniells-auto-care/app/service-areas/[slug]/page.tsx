@@ -15,9 +15,6 @@ import { Reveal } from '@/components/ui/reveal';
 import { StarRating } from '@/components/ui/star-rating';
 import { CheckCircle, Clock, ShieldCheck, Sparkles, Wrench, MapPin, Phone } from 'lucide-react';
 
-const HERO_IMAGE_URL =
-  'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=1200&h=800&fit=crop&crop=edges';
-
 const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
 // Localized intro copy for each town
@@ -151,7 +148,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       type: 'website',
       images: [
         {
-          url: HERO_IMAGE_URL,
+          url: site.images.hero,
           width: 1200,
           height: 800,
           alt: `Auto detailing in ${area}, NJ`,
@@ -175,7 +172,7 @@ export default function AreaDetailPage({ params }: { params: { slug: string } })
     name: site.business.name,
     telephone: site.business.phone,
     url: `${site.siteUrl}/service-areas/${params.slug}`,
-    image: HERO_IMAGE_URL,
+    image: site.images.hero,
     description: `Professional mobile auto detailing in ${town}, NJ. Same-day service, 100% satisfaction guaranteed.`,
     areaServed: {
       '@type': 'City',
@@ -206,7 +203,7 @@ export default function AreaDetailPage({ params }: { params: { slug: string } })
       {/* Hero */}
       <div className="relative min-h-[80vh] flex items-center overflow-hidden">
         <Image
-          src={HERO_IMAGE_URL}
+          src={site.images.hero}
           alt={`Auto detailing in ${town}, NJ`}
           fill
           className="object-cover"

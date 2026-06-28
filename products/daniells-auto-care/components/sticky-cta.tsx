@@ -1,6 +1,9 @@
+'use client';
+
 import { Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { business } from '@/lib/site';
+import { QuoteButton } from '@/components/quote-modal';
 
 export function StickyCTA() {
   return (
@@ -15,13 +18,9 @@ export function StickyCTA() {
           <Phone className="h-5 w-5 mr-2" />
           Call
         </Button>
-        <Button
-          href="/contact"
-          variant="primary"
-          size="lg"
-        >
+        <QuoteButton variant="primary" size="lg">
           Get Free Quote
-        </Button>
+        </QuoteButton>
       </div>
     </div>
   );
