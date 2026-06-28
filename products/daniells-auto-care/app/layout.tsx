@@ -5,6 +5,7 @@ import { business, siteUrl } from '@/lib/site';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { StickyCTA } from '@/components/sticky-cta';
+import { QuoteModalProvider, QuoteModal } from '@/components/quote-modal';
 
 const sora = Sora({
   subsets: ['latin'],
@@ -55,10 +56,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${sora.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1 pt-16 md:pt-20 pb-24 md:pb-0">{children}</main>
-        <Footer />
-        <StickyCTA />
+        <QuoteModalProvider>
+          <Navbar />
+          <main className="flex-1 pt-16 md:pt-20 pb-24 md:pb-0">{children}</main>
+          <Footer />
+          <StickyCTA />
+          <QuoteModal />
+        </QuoteModalProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

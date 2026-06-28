@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Phone, Clock } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { business, services, areas } from "@/lib/site";
+import { business, services, areas, logo } from "@/lib/site";
 
 export function Footer() {
   return (
@@ -10,6 +10,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="space-y-4">
+            <img src={logo} alt="Daniells Auto Care" className="h-10 w-auto" />
             <Link href="/" className="text-xl font-bold text-white">
               Daniells<span className="text-dac-red"> Auto Care</span>
             </Link>

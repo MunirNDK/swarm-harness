@@ -48,7 +48,7 @@ export default function TeamPage() {
         {/* Background Image with dark overlay */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?q=80&w=1200&h=800&fit=crop&auto=format"
+            src={site.images.hero}
             alt=""
             fill
             priority

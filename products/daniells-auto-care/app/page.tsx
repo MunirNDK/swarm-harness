@@ -11,7 +11,8 @@ import { StatStrip } from "@/components/stat-strip";
 import { ReviewCard } from "@/components/review-card";
 import { QuoteCTA } from "@/components/quote-cta";
 import { Marquee } from "@/components/marquee";
-import { site } from "@/lib/site";
+import { BeforeAfter } from "@/components/before-after";
+import { site, beforeAfter } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import {
   Sparkles,
@@ -76,33 +77,6 @@ const whyChooseUs = [
     title: "15-Minute Quote Response",
     description:
       "We value your time. Get a detailed, transparent quote within 15 minutes of your inquiry.",
-  },
-];
-
-const galleryImages = [
-  {
-    src: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80",
-    alt: "Professional car detailing in progress",
-    width: 800,
-    height: 600,
-  },
-  {
-    src: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80",
-    alt: "Luxury car with glossy finish after detailing",
-    width: 800,
-    height: 600,
-  },
-  {
-    src: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80",
-    alt: "Interior detailing with steam cleaning",
-    width: 800,
-    height: 600,
-  },
-  {
-    src: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&q=80",
-    alt: "Ceramic coating application on a sports car",
-    width: 800,
-    height: 600,
   },
 ];
 
@@ -299,27 +273,23 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* Gallery Preview */}
+      {/* Before / After Showcase */}
       <Section id="gallery">
         <Container>
           <SectionHeading
-            eyebrow="Our Work"
-            title="Results That Speak for Themselves"
-            subtitle="A glimpse of our recent detailing projects across Northern New Jersey."
+            eyebrow="Real Results"
+            title="Before & After Transformations"
+            subtitle="See the dramatic difference our detailing makes. Actual client vehicles, unretouched."
           />
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-            {galleryImages.map((img, index) => (
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
+            {beforeAfter.slice(0, 3).map((item, index) => (
               <Reveal key={index} delay={index * 0.1}>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dac-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
+                <BeforeAfter
+                  before={item.before}
+                  after={item.after}
+                  title={item.title}
+                  tag={item.tag}
+                />
               </Reveal>
             ))}
           </div>

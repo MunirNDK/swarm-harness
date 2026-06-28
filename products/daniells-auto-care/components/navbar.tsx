@@ -5,8 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { nav, services, areas, business } from "@/lib/site";
-import { Button } from "@/components/ui/button";
+import { nav, services, areas, business, logo } from "@/lib/site";
+import { QuoteButton } from "@/components/quote-modal";
 import { Container } from "@/components/ui/container";
 
 export function Navbar() {
@@ -66,9 +66,7 @@ export function Navbar() {
         <nav className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold text-white tracking-tight">
-              Daniells<span className="text-dac-red"> Auto Care</span>
-            </span>
+            <img src={logo} alt="Daniells Auto Care" className="h-9 w-auto" />
           </Link>
 
           {/* Desktop nav */}
@@ -76,9 +74,9 @@ export function Navbar() {
             {nav.primary.map((item) => {
               if (item.children) {
                 return (
-                  <div key={item.label} className="relative">
-                    <button
-                      onClick={() => toggleDropdown(item.label)}
+                  <div key={item.label} className="relative group">
+                    <Link
+                      href={item.href}
                       className={cn(
                         "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-full transition-colors",
                         pathname.startsWith(item.href)
@@ -88,12 +86,10 @@ export function Navbar() {
                     >
                       {item.label}
                       <ChevronDown className="h-4 w-4" />
-                    </button>
-                    {activeDropdown === item.label && (
-                      <div className="absolute top-full left-0 mt-2 w-56 bg-dac-black/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl py-2 z-50">
-                        {dropdownContent(item.children)}
-                      </div>
-                    )}
+                    </Link>
+                    <div className="absolute top-full left-0 mt-2 w-56 bg-dac-black/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200">
+                      {dropdownContent(item.children)}
+                    </div>
                   </div>
                 );
               }
@@ -123,9 +119,7 @@ export function Navbar() {
               <Phone className="h-4 w-4" />
               {business.phone}
             </a>
-            <Button href={nav.cta.href} size="sm">
-              {nav.cta.label}
-            </Button>
+            <QuoteButton variant="primary">{nav.cta.label}</QuoteButton>
           </div>
 
           {/* Mobile menu button */}
@@ -185,9 +179,9 @@ export function Navbar() {
                 <Phone className="h-5 w-5" />
                 {business.phone}
               </a>
-              <Button href={nav.cta.href} className="w-full" size="lg">
+              <QuoteButton variant="primary" className="w-full">
                 {nav.cta.label}
-              </Button>
+              </QuoteButton>
             </div>
           </Container>
         </div>

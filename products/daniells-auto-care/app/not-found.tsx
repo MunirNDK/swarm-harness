@@ -7,20 +7,16 @@ import { SectionHeading } from '@/components/ui/section-heading';
 import { Button } from '@/components/ui/button';
 import { GlassCard } from '@/components/ui/glass-card';
 import { Reveal } from '@/components/ui/reveal';
+import Image from 'next/image';
 
 export default function NotFound() {
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image with overlay */}
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dac-ink">
+      {/* Subtle red glow behind the card */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1920&q=80)',
-        }}
+        className="absolute inset-0 bg-dac-red/5 blur-3xl"
         aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" aria-hidden="true" />
 
       <Container className="relative z-10">
         <Section className="flex flex-col items-center text-center">
@@ -31,6 +27,17 @@ export default function NotFound() {
                 className="absolute -inset-4 bg-dac-red/10 blur-3xl rounded-3xl"
                 aria-hidden="true"
               />
+
+              {/* Logo */}
+              <div className="flex justify-center mb-8">
+                <Image
+                  src={site.logo}
+                  alt="Daniells Auto Care"
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto opacity-80"
+                />
+              </div>
 
               {/* 404 Number */}
               <h1 className="font-sora text-8xl sm:text-9xl font-bold bg-gradient-to-r from-white via-white to-dac-red bg-clip-text text-transparent leading-none mb-6">
