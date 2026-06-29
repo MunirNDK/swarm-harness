@@ -125,9 +125,13 @@ speed or autonomy becomes the bottleneck. Section 7 has the Railway setup.
 
 ---
 
-## 4. Orchestrator runbook A — GitHub-native (works today)
+## 4. Orchestrator runbook A — GitHub-native (legacy, still works)
 
-> This is the default path. Copy-paste the commands; replace `<...>` placeholders.
+> This is the legacy path using GitHub Actions workers. It works but pays a cold-start tax
+> on every iteration. For the recommended local runtime, see **Runbook C (omp)** in
+> `docs/omp-runtime.md`.
+
+> Copy-paste the commands; replace `<...>` placeholders.
 
 ### A0. One-time checks
 ```bash
@@ -345,6 +349,10 @@ the Vercel token and call `vercel deploy` from the worker.)
 
 ## 8. The iterate-until-perfect master loop (pseudistructions for the orchestrator)
 
+> **Default runtime: omp (Runbook C, `docs/omp-runtime.md`).** The loop below is
+> runtime-agnostic — the steps are the same whether you dispatch via omp locally
+> or GitHub Actions remotely.
+
 ```
 1.  Create PCR (Issue). Read intake classification.
 2.  PLAN: load relevant skills (Section 5). If UI: fetch seed + reference, extract DNA + colors.
@@ -443,8 +451,11 @@ rate-limit/validation, unsafe deps). verdict="fail" if any high/critical. Respon
 ---
 
 ### Appendix: current defaults
-- Planner model: any (this handbook makes it model-agnostic). Workers: `deepseek/deepseek-v4-pro`.
-- Image: `bytedance/seedream-4.5` (alt `black-forest-labs/flux.2-pro`).
+- **Runtime:** oh-my-pi (omp) — local, warm caches, LSP, hash-anchored edits, subagents.
+- Planner model: any (this handbook makes it model-agnostic). Workers: `deepseek/deepseek-v4-pro` via OpenRouter.
+- Image: `google/gemini-2.5-flash-image` (alt `bytedance/seedream-4.5`, `black-forest-labs/flux.2-pro`).
 - Repo: `MunirNDK/swarm-harness` (public). Deploy: Vercel (`swarm-<slug>`). Budget: $8/PCR.
-- Secrets: `swarm-secrets.local.md` (LOCAL, gitignored).
+- Secrets: `swarm-secrets.local.md` (LOCAL, gitignored) → `.omp/.env` for local runs; GitHub Actions secrets for deploy.
+- omp agents: `.omp/agents/{builder,fixer,verifier,asset-gen,reviser}.md`
+- Project context: `.omp/AGENTS.md` (auto-loaded). Sticky rules: `.omp/RULES.md` (always-apply).
 ```

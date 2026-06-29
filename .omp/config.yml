@@ -1,0 +1,17 @@
+# omp config — swarm harness project settings
+# Model routing for the build swarm
+
+# Default model for all agents: DeepSeek V4 Pro via OpenRouter
+model: openrouter/deepseek/deepseek-v4-pro
+
+# Advisor model (reviews every turn)
+# advisor:
+#   model: openrouter/deepseek/deepseek-v4-pro
+
+# Task settings
+task:
+  maxRecursionDepth: 3
+
+# Cost tracking
+stats:
+  enabled: true
