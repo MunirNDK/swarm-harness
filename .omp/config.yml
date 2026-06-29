@@ -4,9 +4,8 @@
 # Default model for all agents: DeepSeek V4 Pro via OpenRouter
 model: openrouter/deepseek/deepseek-v4-pro
 
-# Advisor model (reviews every turn)
-# advisor:
-#   model: openrouter/deepseek/deepseek-v4-pro
+# Disable thinking by default (saves tokens, avoids credit limit issues)
+thinking: off
 
 # Task settings
 task:
