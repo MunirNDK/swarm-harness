@@ -33,13 +33,10 @@ jobs:
       - name: Install omp
         run: |
           curl -fsSL https://omp.sh/install | sh
-          echo "$HOME/.omp/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Configure omp
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
-          echo "OPENROUTER_API_KEY=*** > .env
           echo "model: openrouter/deepseek/deepseek-v4-pro" > .omp/config.yml
           echo "thinking: off" >> .omp/config.yml
 
