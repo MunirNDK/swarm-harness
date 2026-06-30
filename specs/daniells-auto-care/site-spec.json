@@ -1,45 +1,111 @@
 {
   "slug": "daniells-auto-care",
   "name": "Daniells Auto Care",
-  "description": "Premium mobile auto detailing & ceramic coating, Northern NJ. Dark glassmorphism redesign (hero-seeded) recolored to live brand red + near-black.",
+  "description": "Premium mobile auto detailing & ceramic coating, Northern NJ. Dark showroom-precision redesign — detailing bay at night metaphor, red-accented, concept-locked per approved design system.",
+  "specVersion": "2.0-compliant",
   "stack": {
     "framework": "next",
     "router": "app",
     "language": "typescript",
     "styling": "tailwind",
-    "ui": "shadcn-style primitives (local, in components/ui)",
     "motion": "framer-motion",
     "icons": "lucide-react",
     "deps": ["next", "react", "react-dom", "framer-motion", "lucide-react", "clsx", "tailwind-merge", "class-variance-authority"],
     "devDeps": ["typescript", "@types/react", "@types/node", "tailwindcss", "postcss", "autoprefixer"]
   },
-  "tokens": {
-    "colors": {
-      "dac.red": "#E80505",
-      "dac.red-light": "#B30404",
-      "dac.red-med": "#980404",
-      "dac.red-dark": "#740404",
-      "dac.ink": "#0A0A0A",
-      "dac.black": "#000000",
-      "dac.white": "#FFFFFF",
-      "dac.muted": "#A1A1AA",
-      "dac.faint": "#7C7C7C"
-    },
-    "radius": { "card": "1.5rem", "pill": "9999px", "input": "0.75rem" },
-    "container": "max-w-7xl",
-    "darkGradient": "linear-gradient(180deg,#000000,#0A0A0A)"
+  "concept": {
+    "bet": "This website IS a premium automotive showroom after hours — the lights are low, the vehicle is the focus, and every surface reflects the brand's relentless precision. Red is the signal color of detail, urgency, and craft.",
+    "metaphor": "A high-end detailing bay at night — black epoxy floor, vehicle under focused light, red accent lines on tools and work orders, the glow of ceramic coating curing under inspection lamps.",
+    "signatureDevice": "The Treatment Log — a red-stamped metadata block on every service card reading like a detailer's work order: service code, treatment stages, time estimate, status indicator.",
+    "direction": "Showroom Precision"
   },
-  "fonts": { "heading": "Sora", "body": "Inter", "loader": "next/font/google" },
+  "designTokens": {
+    "bayFloor": { "bg": "#0A0A0A", "surface": "#141414", "surface2": "#1C1C1C", "overlay": "rgba(5,5,5,0.82)" },
+    "underBay": { "surfaceDark": "#050505", "surfaceDark2": "#080808" },
+    "ink": { "ink": "#FFFFFF", "inkSoft": "#B0B0B0", "inkFaint": "#6E6E6E", "muted": "#484848", "rule": "#2A2A2A" },
+    "accent": { "accent": "#E80505", "accentDeep": "#740404", "accentMid": "#980404", "accentLight": "#B30404", "accentSoft": "rgba(232,5,5,0.15)", "accentMist": "rgba(232,5,5,0.06)" },
+    "semantic": { "success": "#4ADE80", "successSoft": "rgba(74,222,128,0.12)", "warning": "#FBBF24", "warningSoft": "rgba(251,191,36,0.12)", "danger": "#E80505", "dangerSoft": "rgba(232,5,5,0.15)", "info": "#60A5FA", "infoSoft": "rgba(96,165,250,0.12)" },
+    "typography": {
+      "fonts": { "display": "Montserrat", "body": "Montserrat", "mono": "JetBrains Mono" },
+      "scale": { "xs": "11px", "sm": "13px", "base": "16px", "md": "18px", "lg": "22px", "xl": "26px", "2xl": "32px", "3xl": "clamp(34px,4vw,48px)", "4xl": "clamp(42px,6vw,64px)", "display": "clamp(48px,8vw,80px)" }
+    },
+    "spacing": { "pin": "4px", "rivet": "8px", "bolt": "12px", "gauge": "16px", "panel": "24px", "bay": "32px", "stall": "48px", "deck": "64px", "hangar": "96px", "perimeter": "128px", "sectionVPad": "clamp(64px,10vw,120px)", "cardGridMin": "min(320px,100%)" },
+    "radius": { "none": "0px", "sm": "4px", "md": "8px", "lg": "12px", "full": "9999px" },
+    "layout": { "containerMaxW": "80rem", "navH": "80px", "navBg": "#050505", "navFg": "#FFFFFF" },
+    "motion": { "ease": "cubic-bezier(0.2,0,0,1)", "easeSpring": "cubic-bezier(0.34,1.3,0.64,1)", "dFast": "120ms", "dBase": "200ms", "dSlow": "350ms" },
+    "shadows": {
+      "sm": "0 1px 2px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3)",
+      "md": "0 4px 12px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.4)",
+      "lg": "0 12px 32px rgba(0,0,0,0.6), 0 6px 14px rgba(0,0,0,0.4)",
+      "red": "0 4px 20px rgba(232,5,5,0.25)"
+    },
+    "cta": {
+      "bg": "#E80505", "fg": "#FFFFFF", "bgHover": "#980404", "bgActive": "#740404",
+      "outlineBorder": "#FFFFFF", "outlineFg": "#FFFFFF", "outlineBgHover": "rgba(255,255,255,0.10)",
+      "gradient": "linear-gradient(135deg,#E80505,#980404)",
+      "trustBg": "#141414", "trustBorder": "#2A2A2A", "trustStar": "#FBBF24"
+    },
+    "form": { "inputBg": "#141414", "inputBorder": "#2A2A2A", "inputFocus": "#E80505", "inputError": "#E80505", "inputSuccess": "#4ADE80" }
+  },
+  "signatureMoves": {
+    "treatmentLog": {
+      "description": "Red-stamped metadata block on every service card — reads like a detailer's work order.",
+      "css": "font-family: JetBrains Mono; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; background: var(--surface-dark-2); border-top: 1px solid rgba(232,5,5,0.3); border-bottom: 1px solid rgba(232,5,5,0.3); padding: var(--pin) var(--bolt);",
+      "format": "[SVC-CODE] · {name} · STAGE {n} · EST. {x}-HRS · ● {STATUS}",
+      "statusColors": { "READY": "#4ADE80", "BOOKING": "#E80505" },
+      "appliesTo": ["ServiceCard", "FleetCard"]
+    },
+    "redGlowReveal": {
+      "description": "Cards and gallery images have a red radial gradient that intensifies on hover, tracking cursor position. Simulates inspection lamp aimed at surface.",
+      "mechanism": "CSS custom properties --mx and --my set via JS mousemove event. Radial gradient at cursor position fades in on hover.",
+      "gradients": {
+        "serviceCards": "radial-gradient(ellipse 300px 200px at var(--mx) var(--my), rgba(232,5,5,0.12), transparent 70%)",
+        "gallery": "radial-gradient(ellipse 300px 200px at var(--mx) var(--my), rgba(232,5,5,0.10), transparent 70%)",
+        "fleet": "radial-gradient(ellipse 300px 200px at var(--mx) var(--my), rgba(232,5,5,0.10), transparent 70%)",
+        "reviews": "radial-gradient(ellipse 250px 180px at var(--mx) var(--my), rgba(232,5,5,0.08), transparent 70%)"
+      },
+      "hoverChain": "1. border: rule→rgba(232,5,5,0.3); 2. transform: translateY(-2px); 3. box-shadow: shadow-sm→shadow-red; 4. red radial gradient fades in at cursor; 5. all transitions 200ms ease",
+      "appliesTo": ["ServiceCard", "GlassCard", "GalleryCard", "FleetCard", "ReviewCard"]
+    },
+    "gradientCtaBar": {
+      "description": "Full-width animated gradient bar (red→dark red) pulsing between sections, carrying trust signal marquee. Also used as button bg.",
+      "css": "background: linear-gradient(135deg, #E80505, #980404); padding: 24px 0;",
+      "marqueeItems": ["300+ Five Star Reviews", "Licensed & Insured", "Same Day Service", "Mobile Service to Your Location"],
+      "animation": "30s linear infinite marquee, 4s alternate pulse between 0.85-1.0 opacity",
+      "separator": "8px red dot before each item",
+      "appearsAs": ["Full-width section divider", "Primary CTA button background", "Conversion point identifier"]
+    }
+  },
+  "backgroundRhythm": {
+    "hero": "#050505",
+    "standardSections": "#0A0A0A",
+    "gradientDivider": "gradient(135deg,#E80505,#980404)",
+    "testimonialSection": "#141414",
+    "footer": "#050505",
+    "exceptions": {
+      "quoteForm": "#141414",
+      "fleetPricing": "#080808",
+      "gallery": "#0A0A0A",
+      "ctaPoints": "red gradient accent strip"
+    },
+    "gradientDividerPlacement": ["between sections 2-3", "between sections 4-5", "before final CTA"]
+  },
+  "buttonSpecs": {
+    "primary": { "bg": "#E80505", "fg": "#FFFFFF", "hoverBg": "#980404", "transform": "translateY(-2px)", "shadow": "0 4px 20px rgba(232,5,5,0.25)", "fontWeight": 700, "textTransform": "uppercase", "letterSpacing": "0.05em", "padding": "0.85rem 1.75rem", "borderRadius": "4px" },
+    "outline": { "bg": "transparent", "fg": "#FFFFFF", "border": "1px solid #2A2A2A", "hoverBorder": "#E80505", "hoverFg": "#E80505" },
+    "phone": { "bg": "transparent", "fg": "#E80505", "border": "1px solid #E80505", "hoverBg": "rgba(232,5,5,0.10)" }
+  },
+  "fonts": { "heading": "Montserrat", "body": "Montserrat", "mono": "JetBrains Mono", "loader": "next/font/google" },
   "motion": {
     "lib": "framer-motion",
-    "primitives": ["fadeSlideIn (opacity 0->1, y 20->0, 0.7s ease-out)", "stagger 0.05s", "hover scale 1.02", "marquee 40s linear infinite"],
+    "primitives": ["fadeSlideIn (opacity 0->1, y 20->0, 0.7s cubic-bezier(0.2,0,0,1))", "stagger 0.05s", "hover scale 1.02 + translateY(-2px) + red glow", "marquee 30s linear infinite"],
     "respectReducedMotion": true
   },
   "business": {
     "name": "Daniells Auto Care",
     "tagline": "Professional Auto Detailing. Same-Day Service. 100% Satisfaction Guaranteed.",
     "phone": "(973) 916-7868",
-    "phoneHref": "tel:+19739167868",
+    "phoneHref": "tel:+197****7868",
     "hours": "Available 24/7",
     "serviceArea": "Northern New Jersey",
     "mobile": true,
@@ -49,20 +115,17 @@
     "reviewsCount": "300+",
     "googleReviews": "100+",
     "trust": ["Licensed & Insured", "Factory-trained technicians", "2–10 year ceramic coating warranty", "Lifetime window tint warranty"],
-    "primaryCtas": [
-      { "label": "Get Free Quote", "href": "/contact", "variant": "primary" },
-      { "label": "Call (973) 916-7868", "href": "tel:+19739167868", "variant": "secondary" }
-    ]
+    "primaryCtas": [{ "label": "Get Free Quote", "href": "/contact", "variant": "primary" }, { "label": "Call (973) 916-7868", "href": "tel:+197****7868", "variant": "secondary" }]
   },
   "services": [
-    { "slug": "car-detailing", "name": "Car Detailing", "icon": "Sparkles", "short": "Complete interior and exterior detailing for pristine results.", "long": "Full-vehicle detail combining our interior deep-clean and exterior restoration for a showroom finish, inside and out." },
-    { "slug": "exterior-detailing", "name": "Exterior Detailing", "icon": "CarFront", "short": "Expert exterior detailing that restores and protects your finish.", "long": "Hand wash, decontamination, gloss restoration and protection that brings your paint back to life and shields it from the elements." },
-    { "slug": "interior-detailing", "name": "Interior Detailing", "icon": "Armchair", "short": "Deep cleaning, steam extraction and leather conditioning.", "long": "Showroom-fresh cabins: steam extraction, shampoo, leather conditioning and sanitization of every surface." },
-    { "slug": "ceramic-coating", "name": "Ceramic Coating", "icon": "ShieldCheck", "short": "Ultimate paint protection with a 2–10 year warranty.", "long": "Hydrophobic ceramic coating that repels water and contaminants, deepens gloss and protects your paint for years." },
-    { "slug": "paint-correction", "name": "Paint Correction", "icon": "Wand2", "short": "Remove swirls, scratches and oxidation.", "long": "Multi-stage machine polishing that removes defects and restores a flawless, mirror-like factory finish." },
-    { "slug": "paint-protection-film", "name": "Paint Protection Film", "icon": "Layers", "short": "Self-healing film protection against chips and scratches.", "long": "Virtually invisible self-healing film that guards high-impact areas against rock chips, scratches and road debris." },
-    { "slug": "window-tinting", "name": "Window Tinting", "icon": "SunDim", "short": "Heat rejection, privacy and UV protection.", "long": "Premium window film with a lifetime warranty — cooler cabins, reduced glare, UV protection and a clean, finished look." },
-    { "slug": "fleet-detailing", "name": "Fleet Detailing", "icon": "Truck", "short": "Keep your business fleet looking professional.", "long": "Dedicated corporate detailing programs with on-site mobile service, volume pricing and account management." }
+    { "slug": "car-detailing", "name": "Car Detailing", "code": "SVC-100", "icon": "Sparkles", "stage": 3, "estHours": 4, "status": "READY", "short": "Complete interior and exterior detailing for pristine results.", "long": "Full-vehicle detail combining our interior deep-clean and exterior restoration for a showroom finish, inside and out." },
+    { "slug": "exterior-detailing", "name": "Exterior Detailing", "code": "SVC-200", "icon": "CarFront", "stage": 3, "estHours": 3, "status": "READY", "short": "Expert exterior detailing that restores and protects your finish.", "long": "Hand wash, decontamination, gloss restoration and protection that brings your paint back to life and shields it from the elements." },
+    { "slug": "interior-detailing", "name": "Interior Detailing", "code": "SVC-300", "icon": "Armchair", "stage": 3, "estHours": 3, "status": "READY", "short": "Deep cleaning, steam extraction and leather conditioning.", "long": "Showroom-fresh cabins: steam extraction, shampoo, leather conditioning and sanitization of every surface." },
+    { "slug": "ceramic-coating", "name": "Ceramic Coating", "code": "SVC-400", "icon": "ShieldCheck", "stage": 4, "estHours": 6, "status": "BOOKING", "short": "Ultimate paint protection with a 2–10 year warranty.", "long": "Hydrophobic ceramic coating that repels water and contaminants, deepens gloss and protects your paint for years." },
+    { "slug": "paint-correction", "name": "Paint Correction", "code": "SVC-500", "icon": "Wand2", "stage": 4, "estHours": 5, "status": "READY", "short": "Remove swirls, scratches and oxidation.", "long": "Multi-stage machine polishing that removes defects and restores a flawless, mirror-like factory finish." },
+    { "slug": "paint-protection-film", "name": "Paint Protection Film", "code": "SVC-600", "icon": "Layers", "stage": 3, "estHours": 4, "status": "READY", "short": "Self-healing film protection against chips and scratches.", "long": "Virtually invisible self-healing film that guards high-impact areas against rock chips, scratches and road debris." },
+    { "slug": "window-tinting", "name": "Window Tinting", "code": "SVC-700", "icon": "SunDim", "stage": 2, "estHours": 2, "status": "READY", "short": "Heat rejection, privacy and UV protection.", "long": "Premium window film with a lifetime warranty — cooler cabins, reduced glare, UV protection and a clean, finished look." },
+    { "slug": "fleet-detailing", "name": "Fleet Detailing", "code": "SVC-800", "icon": "Truck", "stage": 3, "estHours": 0, "status": "READY", "short": "Keep your business fleet looking professional.", "long": "Dedicated corporate detailing programs with on-site mobile service, volume pricing and account management." }
   ],
   "areas": ["Franklin Lakes", "Ridgewood", "Tenafly", "Englewood Cliffs", "Chatham", "Madison", "Mountain Lakes", "Basking Ridge", "Bernardsville", "Florham Park"],
   "stats": [
@@ -91,39 +154,79 @@
   },
   "components": [
     { "name": "cn", "path": "lib/utils.ts", "contract": "clsx + tailwind-merge helper" },
-    { "name": "site", "path": "lib/site.ts", "contract": "exports all business/services/areas/reviews/stats/nav constants from this spec" },
-    { "name": "Container", "path": "components/ui/container.tsx", "contract": "max-w-7xl centered padded wrapper" },
-    { "name": "Section", "path": "components/ui/section.tsx", "contract": "vertical section spacing + optional id" },
-    { "name": "Button", "path": "components/ui/button.tsx", "contract": "variants: primary(red solid), secondary(glass), ghost; sizes; asChild via <a>/<Link>; rounded-full" },
-    { "name": "GlassCard", "path": "components/ui/glass-card.tsx", "contract": "bg-white/5 border-white/10 backdrop-blur-xl rounded-3xl; optional red glow" },
-    { "name": "SectionHeading", "path": "components/ui/section-heading.tsx", "contract": "eyebrow + gradient title + subtitle, centered or left" },
-    { "name": "StarRating", "path": "components/ui/star-rating.tsx", "contract": "lucide Star fill by count" },
-    { "name": "Reveal", "path": "components/ui/reveal.tsx", "contract": "framer-motion fade-slide-in wrapper, respects reduced motion, supports stagger index" },
-    { "name": "Navbar", "path": "components/navbar.tsx", "contract": "sticky; transparent at top, glass on scroll; logo; primary nav with dropdowns for services/areas; phone + Get Free Quote; mobile drawer" },
-    { "name": "Footer", "path": "components/footer.tsx", "contract": "brand blurb; columns: Services, Service Areas, Company; phone/hours; legal; licensed & insured" },
-    { "name": "ServiceCard", "path": "components/service-card.tsx", "contract": "glass card: lucide icon, name, short, 'Learn more' -> /services/[slug]" },
-    { "name": "StatStrip", "path": "components/stat-strip.tsx", "contract": "row of stats in glass" },
-    { "name": "ReviewCard", "path": "components/review-card.tsx", "contract": "glass: stars, quote, name, when" },
-    { "name": "QuoteForm", "path": "components/quote-form.tsx", "contract": "client form: name, phone, email, vehicle, service(select from services), message; validation; loading+success states; posts to /api/quote (stub returns ok)" },
-    { "name": "QuoteCTA", "path": "components/quote-cta.tsx", "contract": "full-width red-gradient glass band: headline + Get Free Quote + Call" },
-    { "name": "Marquee", "path": "components/marquee.tsx", "contract": "infinite horizontal marquee of service-area towns or trust badges" }
+    { "name": "site", "path": "lib/site.ts", "contract": "exports all business/services/areas/reviews/stats/nav constants from this spec. Services include code, stage, estHours, status for Treatment Log." },
+    { "name": "Container", "path": "components/ui/container.tsx", "contract": "max-w-[80rem] centered padded wrapper" },
+    { "name": "Section", "path": "components/ui/section.tsx", "contract": "sections alternate bg per backgroundRhythm: hero=#050505, standard=#0A0A0A, testimonial=#141414, footer=#050505. Pass bg prop or auto-detect by position." },
+    { "name": "Button", "path": "components/ui/button.tsx", "contract": "Three variants: primary(solid #E80505, hover #980404, text-transform uppercase, letter-spacing 0.05em, rounded 4px, padding 0.85rem 1.75rem), outline(transparent, white border #2A2A2A→#E80505 hover), phone(transparent, #E80505 border). All: font-weight 700, display inline-flex, gap 0.5rem, transition 200ms ease. Focus: outline 2px #E80505, offset 2px." },
+    { "name": "GlassCard", "path": "components/ui/glass-card.tsx", "contract": "bg-#141414, border #2A2A2A, rounded 12px. Red Glow Reveal: track mouse position via --mx/--my CSS vars, radial-gradient at cursor on hover. Hover chain: border→rgba(232,5,5,0.3), translateY(-2px), shadow→shadow-red. All transitions 200ms ease. No glass/backdrop-blur (anti-pattern: glass is not the concept)." },
+    { "name": "SectionHeading", "path": "components/ui/section-heading.tsx", "contract": "Eyebrow (Montserrat, uppercase, #E80505, 0.75rem, tracking 0.1em) + title (Montserrat, 700) + optional subtitle (#B0B0B0). Can be centered or left." },
+    { "name": "StarRating", "path": "components/ui/star-rating.tsx", "contract": "lucide Star, fill #FBBF24 for count (yellow trust stars — not red stars — per design system). Empty stars #484848." },
+    { "name": "Reveal", "path": "components/ui/reveal.tsx", "contract": "framer-motion: opacity 0→1, y 20→0, duration 0.7s, ease cubic-bezier(0.2,0,0,1). respects prefers-reduced-motion. stagger support by index." },
+    { "name": "Marquee", "path": "components/ui/marquee.tsx", "contract": "infinite horizontal scroll, animation 30s linear infinite. Duplicate items for seamless loop. Red dot separator (8px, #E80505, rounded-full) before each item." },
+    { "name": "Navbar", "path": "components/navbar.tsx", "contract": "80px height. Background #050505. Text #FFFFFF. Sticky. Logo left. Primary nav with dropdowns for services/areas. Phone + Get Free Quote CTA right. Mobile drawer with hamburger. Active link underlines with #E80505." },
+    { "name": "Footer", "path": "components/footer.tsx", "contract": "Background #050505 (bookends with hero). Brand blurb. Columns: Services, Service Areas, Company. Phone/hours. Legal links. Licensed & insured badge. Montserrat text." },
+    { "name": "ServiceCard", "path": "components/service-card.tsx", "contract": "GlassCard with Red Glow Reveal. Top: lucide icon (#E80505, 2rem). Middle: Service name (Montserrat, 1.25rem, 700, #FFFFFF). Short description (#B0B0B0). Bottom: Treatment Log block — JetBrains Mono 0.65rem uppercase, format '[SVC-CODE] · {name} · STAGE {n} · EST. {x}-HRS · ● {STATUS}'. Status dot colors: READY=#4ADE80 pulse, BOOKING=#E80505 pulse. Link to /services/[slug]." },
+    { "name": "StatStrip", "path": "components/stat-strip.tsx", "contract": "Grid of 4 stat tiles. Each: large value (Montserrat, 3xl clamp, 700, #FFFFFF) + label (#B0B0B0, 0.875rem). Background #141414, border #2A2A2A, rounded 12px. Subtle red gradient hover per Red Glow Reveal." },
+    { "name": "ReviewCard", "path": "components/review-card.tsx", "contract": "GlassCard with Red Glow Reveal (review variant: radial-gradient ellipse 250px 180px, rgba(232,5,5,0.08)). StarRating yellow 5 stars. Quote italic (#B0B0B0). Name (#FFFFFF, 600). When (#6E6E6E). Google 'G' icon." },
+    { "name": "QuoteForm", "path": "components/quote-form.tsx", "contract": "Client form on #141414 surface. Fields: name, phone, email, vehicle, service(select from services), message. Inputs: bg #141414, border #2A2A2A, focus border #E80505, error border #E80505. Labels: Montserrat, 0.875rem, #B0B0B0. Submit: primary button (Get My Free Quote). Validation: client-side required+format. Loading state: button spinner. Success state: green check + confirmation message. Error state: inline field errors. Posts to /api/quote." },
+    { "name": "QuoteCTA", "path": "components/quote-cta.tsx", "contract": "Full-width Gradient CTA Bar: linear-gradient(135deg,#E80505,#980404). Contains trust marquee animation. Below gradient: headline + description + Primary Button + Phone Button. Padding 48px. This is the Gradient CTA Bar signature move — appears between sections 2-3, 4-5, and before final CTA." },
+    { "name": "TreatmentLog", "path": "components/ui/treatment-log.tsx", "contract": "The Treatment Log signature device. Props: code, name, stage, estHours, status. JetBrains Mono, 0.65rem, uppercase, letter-spacing 0.06em, #B0B0B0 text. Red top/bottom border rgba(232,5,5,0.3). Background #080808. Padding 4px 12px. Fields separated by middle dot in #484848. Status dot: pulsing animation (2s infinite scale), color by status (READY=#4ADE80, BOOKING=#E80505)." }
   ],
   "pages": [
-    { "route": "app/layout.tsx", "type": "layout", "sections": ["fonts (Sora+Inter)", "globals", "Navbar", "{children}", "Footer", "metadata + OG"] },
-    { "route": "app/page.tsx", "type": "home", "sections": ["Hero (seed: gradient headline, dual CTA, glass stat card + progress + active/premium pills, area marquee)", "Trust StatStrip", "Services grid (8 ServiceCards)", "Why choose us (3-4 glass features: mobile, licensed, warranties, 15-min)", "Process steps (Book -> Detail -> Protect)", "Gallery preview (3-6 images)", "Reviews (3 ReviewCards + Google rating)", "Service areas teaser + Marquee", "QuoteCTA"] },
-    { "route": "app/services/page.tsx", "type": "services-overview", "sections": ["SectionHeading", "grid of all 8 ServiceCards linking to /services/[slug]", "QuoteCTA"] },
-    { "route": "app/services/[slug]/page.tsx", "type": "service-detail-template", "note": "ONE dynamic page serves all services; generateStaticParams from services; 404 if unknown", "sections": ["Hero (service name + long desc + CTA + image)", "What's included (benefits list)", "Why it matters", "Related services", "QuoteCTA"] },
-    { "route": "app/service-areas/page.tsx", "type": "areas-overview", "sections": ["SectionHeading", "grid/list of 10 towns linking to /service-areas/[slug]", "Marquee", "QuoteCTA"] },
-    { "route": "app/service-areas/[slug]/page.tsx", "type": "area-detail-template", "note": "ONE dynamic page serves all areas; generateStaticParams from areas; 404 if unknown", "sections": ["Hero (mobile detailing in {town}, NJ + CTA)", "Services available locally", "Reviews", "QuoteCTA"] },
-    { "route": "app/fleet/page.tsx", "type": "fleet", "sections": ["Hero (corporate fleet detailing)", "Program features (on-site, volume pricing, account mgmt, scheduled maintenance)", "How it works", "QuoteCTA (Explore Fleet Programs)"] },
-    { "route": "app/team/page.tsx", "type": "team", "sections": ["Hero", "Story / values", "Certifications (licensed & insured, factory-trained)", "QuoteCTA"] },
-    { "route": "app/gallery/page.tsx", "type": "gallery", "sections": ["SectionHeading", "responsive image grid (before/after, masonry-ish)", "QuoteCTA"] },
-    { "route": "app/blog/page.tsx", "type": "blog-index", "sections": ["SectionHeading", "post card grid (3-4 placeholder posts linking to /blog/[slug])"] },
-    { "route": "app/blog/[slug]/page.tsx", "type": "blog-post-template", "note": "ONE dynamic placeholder post page; generateStaticParams from a small posts list", "sections": ["article header", "body (placeholder copy)", "QuoteCTA"] },
-    { "route": "app/contact/page.tsx", "type": "contact", "sections": ["Hero (Get Free Quote)", "QuoteForm + contact details (phone, hours, area, response time)", "Service areas note"] },
-    { "route": "app/api/quote/route.ts", "type": "api", "sections": ["POST stub: validate + return { ok: true } (no real email backend yet)"] },
-    { "route": "app/not-found.tsx", "type": "404", "sections": ["on-brand 404 with home CTA"] }
+    { "route": "app/layout.tsx", "type": "layout", "sections": ["fonts (Montserrat+JetBrains Mono via next/font/google)", "CSS globals with all :root design tokens from this spec", "metadata: title='Daniells Auto Care | Premium Mobile Auto Detailing NJ', description='Professional mobile auto detailing in Northern NJ. Same-day service, ceramic coating, paint correction. 300+ five-star reviews. Free quotes.', openGraph image", "JSON-LD Organization schema with LocalBusiness markup, address, phone, geo coordinates for Northern NJ", "Navbar", "{children}", "Footer", "Analytics: GA4 snippet if configured"] },
+    { "route": "app/page.tsx", "type": "home", "background": "#050505", "sections": ["Hero: dark surface (#050505). Montserrat display headline (4xl-6xl clamp, 700, #FFFFFF). Subheadline (#B0B0B0). Dual CTA (primary+outline). Stat strip preview (4 glass stat tiles). Red gradient trust marquee bar beneath hero (signature move 3).", "Services grid: 8 ServiceCards in 3-column responsive grid. Each has icon, name, short desc, Treatment Log.", "Why choose us: 4 GlassCards (mobile service, licensed/insured, warranty 2-10yr, 15-min response). Background #0A0A0A.", "Gradient CTA Bar (trust marquee) between sections 2-3.", "Process: 4-step 'Book → Detail → Protect → Enjoy' with numbered steps and red connecting line. Background #0A0A0A.", "Gallery preview: 6-image responsive grid (2-col desktop) with Red Glow Reveal on hover. Background #141414.", "Gradient CTA Bar between sections 4-5.", "Reviews: 3 ReviewCards + Google rating badge (4.9★). Background #141414.", "Service areas teaser: grid of 10 towns linking to /service-areas/[slug] + full Marquee of area names.", "Final CTA: Gradient CTA Bar full-width. Headline 'Ready For Showroom-Quality?' + primary button + phone button. Background gradient then #050505."] },
+    { "route": "app/services/page.tsx", "type": "services-overview", "sections": ["SectionHeading (eyebrow: 'Our Services', title: 'Precision Detailing, Certified Results')", "Grid of all 8 ServiceCards in 3-column responsive grid with TreatmentLogs", "QuoteCTA (Gradient CTA Bar with trust marquee)"] },
+    { "route": "app/services/[slug]/page.tsx", "type": "service-detail-template", "note": "ONE dynamic page for all services. generateStaticParams from services array. 404 if unknown slug.", "sections": ["Hero: service name (Montserrat, 4xl, 700), icon, long description, Treatment Log block, primary CTA + phone CTA. Background #050505.", "What's Included: numbered list of treatment stages (from service.stage count) with descriptive items. Background #0A0A0A.", "Why It Matters: 2-3 benefit cards explaining impact. Background #0A0A0A.", "Related Services: 3 ServiceCards (excluding current). Background #0A0A0A.", "QuoteCTA (Gradient CTA Bar)"] },
+    { "route": "app/service-areas/page.tsx", "type": "areas-overview", "sections": ["SectionHeading (eyebrow: 'Service Areas', title: 'Mobile Detailing Across Northern NJ')", "Grid/list of 10 towns, each card: town name (Montserrat, 600), 'mobile detailing available', icon. Links to /service-areas/[slug]. Background #0A0A0A.", "Marquee of area names", "QuoteCTA"] },
+    { "route": "app/service-areas/[slug]/page.tsx", "type": "area-detail-template", "note": "ONE dynamic page for all areas. generateStaticParams from areas. 404 if unknown.", "sections": ["Hero: 'Mobile Auto Detailing in {town}, NJ' (Montserrat, 4xl, 700), description, primary CTA. Background #050505.", "Services Available: grid of ServiceCards most relevant to the area. Background #0A0A0A.", "Local Reviews: ReviewCards if available. Background #141414.", "QuoteCTA"] },
+    { "route": "app/fleet/page.tsx", "type": "fleet", "sections": ["Hero: 'Corporate Fleet Detailing' with description and CTA. Background #050505.", "Program Benefits: 4 GlassCards (on-site mobile, volume pricing, account management, scheduled maintenance) with Red Glow Reveal fleet variant. Background #0A0A0A.", "How It Works: 3-step process. Background #080808 (#surface-dark-2 exception per design system).", "QuoteCTA"] },
+    { "route": "app/team/page.tsx", "type": "team", "sections": ["Hero: 'Our Team' with story/values. Background #050505.", "Certifications: GlassCards listing trust items (licensed & insured, factory-trained, warranty details). Background #0A0A0A.", "Stats: StatStrip of 4 stats. Background #0A0A0A.", "QuoteCTA"] },
+    { "route": "app/gallery/page.tsx", "type": "gallery", "sections": ["SectionHeading (eyebrow: 'Gallery', title: 'Before & After Transformations')", "Responsive image grid (2-col desktop, 1-col mobile). Each image has Red Glow Reveal (gallery variant) on hover. Background #0A0A0A (exception per design system).", "QuoteCTA"] },
+    { "route": "app/blog/page.tsx", "type": "blog-index", "sections": ["SectionHeading (eyebrow: 'Blog', title: 'Auto Care Tips & Insights')", "Post card grid (3-col desktop). Each card: image, title (Montserrat, 600), date (#6E6E6E), excerpt (#B0B0B0). GlassCard with hover red glow. Background #0A0A0A."] },
+    { "route": "app/blog/[slug]/page.tsx", "type": "blog-post-template", "note": "ONE dynamic placeholder. generateStaticParams from posts list.", "sections": ["Article header (title, date, reading time). Montserrat heading.", "Body (readable width, Montserrat, 1rem, line-height 1.7, #B0B0B0).", "JSON-LD Article schema.", "QuoteCTA"] },
+    { "route": "app/contact/page.tsx", "type": "contact", "sections": ["Hero: 'Get Your Free Quote' with description, phone number, response time. Background #050505.", "QuoteForm: Full quote form with all fields. Background #141414 (#surface exception per design system).", "Contact details: phone, hours, service area, response time, licensed badge. Background #0A0A0A."] },
+    { "route": "app/api/quote/route.ts", "type": "api", "sections": ["POST handler: validate required fields (name, phone, email, service), return { ok: true, message } on success, return 400 with field errors on validation failure. Rate limit: 5 per IP per minute."] },
+    { "route": "app/not-found.tsx", "type": "404", "sections": ["Centered on-brand 404: 'Page Not Found' heading, 'Back to Home' primary CTA. Background #050505."] }
   ],
+  "seo": {
+    "titleTemplate": "{page} | Daniells Auto Care",
+    "homeTitle": "Daniells Auto Care | Premium Mobile Auto Detailing NJ",
+    "homeDescription": "Professional mobile auto detailing in Northern NJ. Same-day service, ceramic coating, paint correction. 300+ five-star reviews. Free quotes in 15 minutes.",
+    "titleRules": "50-60 chars per page, unique, primary keyword near beginning, brand at end with | separator",
+    "metaDescriptionRules": "150-160 chars, unique per page, include keyword naturally, server-rendered in next metadata export",
+    "headingRules": "Exactly one H1 per page containing primary keyword. Sequential hierarchy H1→H2→H3. All headings visible in server HTML (no client-only headings).",
+    "urlRules": "Human-readable, hyphens not underscores, lowercase, under 75 chars, reflect hierarchy",
+    "schemas": ["Organization (homepage — name, address NJ, phone, url)", "LocalBusiness (homepage — same data, geo coordinates)", "Service (each /services/[slug] — name, description, areaServed, provider)", "Article (each /blog/[slug])"],
+    "imageSeo": "All images: descriptive alt text (not file names), WebP/AVIF format, explicit width/height, lazy load below fold, preload hero, under 200KB standard / 500KB hero"
+  },
+  "performance": {
+    "coreWebVitals": "LCP < 2.5s, INP < 200ms, CLS < 0.1",
+    "fonts": "font-display: swap on all fonts, subset to latin, preload Montserrat 700",
+    "images": "next/image with explicit width/height, lazy loading below fold, priority on hero, AVIF/WebP via next/image",
+    "noRenderBlockers": "No render-blocking CSS or JS in <head>"
+  },
+  "accessibility": {
+    "contrast": "≥4.5:1 for all text (white #FFFFFF on #0A0A0A = 19.2:1 ✓, light #B0B0B0 on #0A0A0A = 8.9:1 ✓)",
+    "focus": "visible focus rings on all interactive elements (2px solid #E80505, offset 2px)",
+    "altText": "Descriptive alt text on all images. Decorative images: empty alt=''",
+    "labels": "All form inputs have associated labels. Icon-only buttons have aria-label",
+    "keyboard": "Full keyboard navigation. No keyboard traps. Skip-to-content link",
+    "targetSize": "Minimum 44px touch targets on mobile",
+    "reducedMotion": "prefers-reduced-motion respected throughout (framer-motion respects, marquee pauses)"
+  },
+  "security": {
+    "https": "TLS enforced via Vercel",
+    "secrets": "No API keys, tokens, or secrets in client bundles",
+    "rateLimit": "API routes: 5 req/IP/min on /api/quote",
+    "inputValidation": "Server-side validation on all form submissions. Sanitize inputs.",
+    "xss": "React's built-in XSS protection. No dangerouslySetInnerHTML without sanitization",
+    "headers": "Content-Security-Policy, X-Content-Type-Options: nosniff, X-Frame-Options: DENY via next.config.js headers()"
+  },
+  "analytics": {
+    "ga4": "Add GA4 measurement ID in env if available",
+    "events": "Track: form_start, form_submit, cta_click, phone_call, service_view, quote_request",
+    "consent": "Cookie consent banner if GA4 enabled (per GDPR/CCPA)"
+  },
   "assets": {
     "policy": "Phase 1 = curated dark-toned Unsplash auto-detailing/luxury-car photos (known-good URLs). Phase 2 = OpenRouter image worker replaces with branded generated assets.",
     "matrix": [
@@ -131,17 +234,28 @@
       { "key": "service-{slug}", "use": "service-detail hero per service", "count": 8 },
       { "key": "gallery-*", "use": "gallery before/after + results", "count": "6-9" },
       { "key": "fleet", "use": "fleet hero (vans/cars lineup)" },
-      { "key": "og", "use": "Open Graph share image 1200x630" }
+      { "key": "og", "use": "Open Graph share image 1200x630, dark bg with red accent + 'Daniells Auto Care' text" }
     ]
   },
   "globalRules": [
-    "Dark theme only. Background #0A0A0A/#000. Glass surfaces per design-system.md.",
-    "Brand red #E80505 for CTAs/accents; never red small body text (contrast).",
-    "Every page imports Navbar/Footer via layout; do not redefine.",
-    "All content comes from lib/site.ts (this spec) — no invented facts, no lorem in shipped UI.",
-    "framer-motion Reveal on section entrances; respect prefers-reduced-motion.",
-    "lucide-react icons only; no emoji.",
-    "Responsive: 375/768/1024/1440; mobile-first; no horizontal scroll.",
-    "Accessibility: focus rings, alt text, labelled form fields, 44px targets."
+    "DARK THEME ONLY. Backgrounds alternate per backgroundRhythm: hero=#050505, standard=#0A0A0A, testimonials=#141414, footer=#050505. Pure #000000 is an anti-pattern — never use it as background surface.",
+    "BRAND RED #E80505 for CTAs, accents, focus rings, Treatment Log borders, Gradient CTA Bar, status dots. NEVER red for body text (contrast). NEVER red stars (stars are trust yellow #FBBF24).",
+    "USE CSS CUSTOM PROPERTIES defined in :root. Map them to Tailwind config. All design tokens must be CSS vars first.",
+    "FONTS: Montserrat (headings + body, weight 400/600/700). JetBrains Mono (Treatment Log, code stamps, specs). Google Fonts via next/font/google with font-display:swap.",
+    "SIGNATURE MOVES must be implemented exactly as specified: Treatment Log on every ServiceCard, Red Glow Reveal on all cards/gallery, Gradient CTA Bar between sections. These are what make the site unmistakable — do not omit or reduce them.",
+    "TREATMENT LOG: JetBrains Mono, 0.65rem, uppercase, letter-spacing 0.06em, red top/bottom border rgba(232,5,5,0.3), bg #080808, fields separated by · in #484848. Format: [SVC-CODE] · {name} · STAGE {n} · EST. {x}-HRS · ● {STATUS}",
+    "RED GLOW REVEAL: mousemove tracking via --mx/--my CSS vars. On hover: border→rgba(232,5,5,0.3), translateY(-2px), shadow→shadow-red, radial gradient fades in at cursor. All transitions 200ms cubic-bezier(0.2,0,0,1).",
+    "GRADIENT CTA BAR: linear-gradient(135deg,#E80505,#980404), full-width, 24px padding, trust marquee (30s infinite), subtle pulse (4s alternate opacity 0.85-1.0). Red dot separators between items.",
+    "BUTTONS: Primary = #E80505 bg, hover #980404, uppercase, letter-spacing 0.05em, rounded 4px, font-weight 700. Outline = transparent, white #2A2A2A border→#E80505 on hover. Phone = transparent, #E80505 border. All: 200ms ease transition.",
+    "Every page imports Navbar/Footer from layout. Do not redefine.",
+    "All content from lib/site.ts (this spec) — no invented facts, no lorem ipsum in shipped UI.",
+    "framer-motion Reveal on section entrances (opacity 0→1, y 20→0, 0.7s, cubic-bezier(0.2,0,0,1)). Respect prefers-reduced-motion.",
+    "lucide-react icons only. No emoji.",
+    "Responsive: 375/768/1024/1440px. Mobile-first. No horizontal scroll.",
+    "Accessibility: focus rings (2px #E80505, offset 2px), descriptive alt text, labelled form fields, 44px touch targets, skip-to-content link.",
+    "SEO: Unique title (50-60 chars) and meta description (150-160 chars) per page. Exactly one H1 with primary keyword. JSON-LD schema on relevant pages. Next.js metadata API.",
+    "Performance: next/image with width/height, lazy load below fold, priority on hero. font-display:swap. AVIF/WebP.",
+    "Security: Server-side form validation. Rate limit /api/quote. No secrets in client bundles. next.config.js security headers.",
+    "ANTI-PATTERNS (NEVER DO THESE): glass surfaces/backdrop-blur (not the concept), cream/off-white/paper backgrounds, Sora or Inter fonts (must be Montserrat), serif fonts, rounded-full buttons (anti-pattern: use 4px), emoji, gold/amber/yellow as accent, light theme, generic car-wash vibe, AI-slop copy, lorem ipsum, placeholders in production."
   ]
 }
