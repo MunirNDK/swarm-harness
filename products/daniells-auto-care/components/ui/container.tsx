@@ -1,19 +1,14 @@
-import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
+import { cn } from '@/lib/utils';
+import React from 'react';
 
-export function Container({
-  className,
-  children,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
+interface ContainerProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function Container({ children, className }: ContainerProps) {
   return (
-    <div
-      className={cn(
-        "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8",
-        className
-      )}
-      {...props}
-    >
+    <div className={cn('mx-auto max-w-7xl px-4 sm:px-6 lg:px-8', className)}>
       {children}
     </div>
   );

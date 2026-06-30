@@ -1,54 +1,52 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
 import { SectionHeading } from '@/components/ui/section-heading';
+import { GlassCard } from '@/components/ui/glass-card';
 import { Reveal } from '@/components/ui/reveal';
 import { QuoteCTA } from '@/components/quote-cta';
-import { BeforeAfter } from '@/components/before-after';
-import { beforeAfter } from '@/lib/site';
+import { IMAGES } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Detailing Gallery — Before & After | Daniells Auto Care',
-  description:
-    'See real before-and-after results from our professional auto detailing, ceramic coating, paint correction, window tinting, and fleet services across Northern New Jersey.',
-  alternates: {
-    canonical: '/gallery',
-  },
+  title: 'Gallery',
 };
 
 export default function GalleryPage() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
       <Section className="pt-32 pb-16">
         <Container>
           <SectionHeading
-            eyebrow="Our Work"
-            title="Before & After Gallery"
-            subtitle="Real results from real projects across Northern New Jersey. Drag the slider to reveal the transformation each vehicle receives."
+            title="Gallery"
+            subtitle="Before and after transformations, luxury details, and ceramic coating results."
           />
         </Container>
       </Section>
 
-      {/* Before/After Grid */}
       <Section className="pb-32">
         <Container>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {beforeAfter.map((item, index) => (
-              <Reveal key={item.id} index={index} className="flex flex-col">
-                <BeforeAfter
-                  before={item.before}
-                  after={item.after}
-                  title={item.title}
-                  tag={item.tag}
-                />
+          <div className="grid gap-6 grid-cols-2 lg:grid-cols-3">
+            {IMAGES.gallery.map((src, index) => (
+              <Reveal key={src} staggerIndex={index}>
+                <GlassCard
+                  hover
+                  className="p-0 overflow-hidden"
+                >
+                  <Image
+                    src={src}
+                    alt={`Gallery image ${index + 1}`}
+                    width={600}
+                    height={400}
+                    className="w-full h-auto object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </GlassCard>
               </Reveal>
             ))}
           </div>
         </Container>
       </Section>
 
-      {/* Quote CTA */}
       <QuoteCTA />
     </main>
   );

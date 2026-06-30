@@ -6,7 +6,6 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -23,26 +22,22 @@ const config: Config = {
         },
       },
       fontFamily: {
-        heading: ['var(--font-sora)', 'system-ui', 'sans-serif'],
-        body: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-      },
-      container: {
-        center: true,
-        padding: {
-          DEFAULT: '1rem',
-          sm: '1.5rem',
-          lg: '2rem',
-        },
-        screens: {
-          sm: '640px',
-          md: '768px',
-          lg: '1024px',
-          xl: '1280px',
-          '2xl': '1440px',
-        },
+        heading: ['var(--font-sora)', 'sans-serif'],
+        body: ['var(--font-inter)', 'sans-serif'],
       },
       borderRadius: {
         '3xl': '1.5rem',
+        full: '9999px',
+        xl: '0.75rem',
+      },
+      maxWidth: {
+        '7xl': '80rem',
+      },
+      backdropBlur: {
+        xl: '20px',
+      },
+      letterSpacing: {
+        tight: '-0.02em',
       },
     },
   },

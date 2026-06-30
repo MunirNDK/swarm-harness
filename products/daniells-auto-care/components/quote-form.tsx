@@ -1,262 +1,244 @@
-"use client";
+'use client';
 
-import { useState, FormEvent } from "react";
-import { Button } from "@/components/ui/button";
-import { GlassCard } from "@/components/ui/glass-card";
-import { services } from "@/lib/site";
-import { cn } from "@/lib/utils";
+import { useState, FormEvent } from 'react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { SERVICES, BUSINESS } from '@/lib/site';
+import { Loader2, CheckCircle, Send } from 'lucide-react';
 
-export function QuoteForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    vehicle: "",
-    service: "",
-    message: "",
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+interface QuoteFormProps {
+  className?: string;
+}
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
-    if (!formData.phone.trim()) newErrors.phone = "Phone is required";
-    else if (!/^[\d\s\(\)\-\+\.]+$/.test(formData.phone))
-      newErrors.phone = "Invalid phone number";
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "Invalid email";
-    if (!formData.vehicle.trim()) newErrors.vehicle = "Vehicle is required";
-    if (!formData.service) newErrors.service = "Please select a service";
-    return newErrors;
+interface FormData {
+  name: string;
+  phone: string;
+  email: string;
+  vehicle: string;
+  service: string;
+  message: string;
+}
+
+const initialForm: FormData = {
+  name: '',
+  phone: '',
+  email: '',
+  vehicle: '',
+  service: '',
+  message: '',
+};
+
+export function QuoteForm({ className }: QuoteFormProps) {
+  const [form, setForm] = useState<FormData>(initialForm);
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const validate = (): boolean => {
+    const errs: Partial<Record<keyof FormData, string>> = {};
+    if (!form.name.trim()) errs.name = 'Name is required';
+    if (!form.phone.trim()) errs.phone = 'Phone is required';
+    if (!form.email.trim()) {
+      errs.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      errs.email = 'Invalid email address';
+    }
+    if (!form.vehicle.trim()) errs.vehicle = 'Vehicle is required';
+    if (!form.service) errs.service = 'Service is required';
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-    setErrors({});
-    setStatus("loading");
+    if (!validate()) return;
 
+    setLoading(true);
     try {
-      const res = await fetch("/api/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const res = await fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error("Failed to send");
-      setStatus("success");
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        vehicle: "",
-        service: "",
-        message: "",
-      });
+      const data = await res.json();
+      if (data.ok) {
+        setSuccess(true);
+        setForm(initialForm);
+      }
     } catch {
-      setStatus("error");
+      setErrors({ name: 'Something went wrong. Please try again.' });
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => {
-        const next = { ...prev };
-        delete next[name];
-        return next;
-      });
-    }
+  const update = (field: keyof FormData, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) setErrors((prev) => { const n = { ...prev }; delete n[field]; return n; });
   };
 
-  if (status === "success") {
+  if (success) {
     return (
-      <GlassCard className="p-8 text-center">
-        <div className="text-2xl font-bold text-white mb-2">
-          Quote Request Sent!
-        </div>
-        <p className="text-dac-muted">
-          We&apos;ll get back to you within {15} minutes.
+      <div className={cn('glass-card p-8 sm:p-10 text-center', className)}>
+        <CheckCircle className="w-12 h-12 text-dac-red mx-auto mb-4" />
+        <h3 className="font-heading text-xl font-semibold text-dac-white mb-2">Quote Request Sent!</h3>
+        <p className="text-dac-muted text-sm">
+          We&apos;ll get back to you within {BUSINESS.responseTime}. Need immediate help? Call{' '}
+          <a href={BUSINESS.phoneHref} className="text-dac-red hover:underline">{BUSINESS.phone}</a>.
         </p>
-      </GlassCard>
+        <Button
+          variant="secondary"
+          className="mt-6"
+          onClick={() => setSuccess(false)}
+        >
+          Request Another Quote
+        </Button>
+      </div>
     );
   }
 
   return (
-    <GlassCard className="p-6 md:p-8">
-      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-white mb-1">
-              Name *
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className={cn(
-                "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition",
-                errors.name && "border-red-500"
-              )}
-              placeholder="Your full name"
-            />
-            {errors.name && (
-              <p className="mt-1 text-xs text-red-400">{errors.name}</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-white mb-1">
-              Phone *
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className={cn(
-                "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition",
-                errors.phone && "border-red-500"
-              )}
-              placeholder="(123) 456-7890"
-            />
-            {errors.phone && (
-              <p className="mt-1 text-xs text-red-400">{errors.phone}</p>
-            )}
-          </div>
+    <form onSubmit={handleSubmit} className={cn('glass-card p-6 sm:p-8', className)} noValidate>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+        <div className="sm:col-span-2">
+          <h3 className="font-heading text-xl font-semibold text-dac-white mb-1">Get Your Free Quote</h3>
+          <p className="text-dac-muted text-sm">Fill in the details and we&apos;ll respond within 15 minutes.</p>
         </div>
+
+        {/* Name */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-white mb-1">
-            Email
+          <label htmlFor="q-name" className="block text-sm font-medium text-dac-white mb-1.5">
+            Name <span className="text-dac-red">*</span>
           </label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
+            id="q-name"
+            type="text"
+            value={form.name}
+            onChange={(e) => update('name', e.target.value)}
             className={cn(
-              "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition",
-              errors.email && "border-red-500"
+              'w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-dac-white placeholder:text-dac-faint focus:outline-none focus:border-dac-red transition-colors',
+              errors.name && 'border-dac-red',
+            )}
+            placeholder="Your full name"
+          />
+          {errors.name && <p className="text-dac-red text-xs mt-1">{errors.name}</p>}
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label htmlFor="q-phone" className="block text-sm font-medium text-dac-white mb-1.5">
+            Phone <span className="text-dac-red">*</span>
+          </label>
+          <input
+            id="q-phone"
+            type="tel"
+            value={form.phone}
+            onChange={(e) => update('phone', e.target.value)}
+            className={cn(
+              'w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-dac-white placeholder:text-dac-faint focus:outline-none focus:border-dac-red transition-colors',
+              errors.phone && 'border-dac-red',
+            )}
+            placeholder="(201) 555-0123"
+          />
+          {errors.phone && <p className="text-dac-red text-xs mt-1">{errors.phone}</p>}
+        </div>
+
+        {/* Email */}
+        <div>
+          <label htmlFor="q-email" className="block text-sm font-medium text-dac-white mb-1.5">
+            Email <span className="text-dac-red">*</span>
+          </label>
+          <input
+            id="q-email"
+            type="email"
+            value={form.email}
+            onChange={(e) => update('email', e.target.value)}
+            className={cn(
+              'w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-dac-white placeholder:text-dac-faint focus:outline-none focus:border-dac-red transition-colors',
+              errors.email && 'border-dac-red',
             )}
             placeholder="you@example.com"
           />
-          {errors.email && (
-            <p className="mt-1 text-xs text-red-400">{errors.email}</p>
-          )}
+          {errors.email && <p className="text-dac-red text-xs mt-1">{errors.email}</p>}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="vehicle" className="block text-sm font-medium text-white mb-1">
-              Vehicle *
-            </label>
-            <input
-              type="text"
-              id="vehicle"
-              name="vehicle"
-              value={formData.vehicle}
-              onChange={handleChange}
-              className={cn(
-                "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition",
-                errors.vehicle && "border-red-500"
-              )}
-              placeholder="Year Make Model"
-            />
-            {errors.vehicle && (
-              <p className="mt-1 text-xs text-red-400">{errors.vehicle}</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="service" className="block text-sm font-medium text-white mb-1">
-              Service *
-            </label>
-            <select
-              id="service"
-              name="service"
-              value={formData.service}
-              onChange={handleChange}
-              className={cn(
-                "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition appearance-none",
-                errors.service && "border-red-500"
-              )}
-            >
-              <option value="" disabled className="bg-dac-black">
-                Select a service
-              </option>
-              {services.map((s) => (
-                <option key={s.slug} value={s.slug} className="bg-dac-black">
-                  {s.name}
-                </option>
-              ))}
-            </select>
-            {errors.service && (
-              <p className="mt-1 text-xs text-red-400">{errors.service}</p>
-            )}
-          </div>
-        </div>
+
+        {/* Vehicle */}
         <div>
-          <label htmlFor="message" className="block text-sm font-medium text-white mb-1">
-            Message
+          <label htmlFor="q-vehicle" className="block text-sm font-medium text-dac-white mb-1.5">
+            Vehicle <span className="text-dac-red">*</span>
+          </label>
+          <input
+            id="q-vehicle"
+            type="text"
+            value={form.vehicle}
+            onChange={(e) => update('vehicle', e.target.value)}
+            className={cn(
+              'w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-dac-white placeholder:text-dac-faint focus:outline-none focus:border-dac-red transition-colors',
+              errors.vehicle && 'border-dac-red',
+            )}
+            placeholder="Year Make Model"
+          />
+          {errors.vehicle && <p className="text-dac-red text-xs mt-1">{errors.vehicle}</p>}
+        </div>
+
+        {/* Service */}
+        <div className="sm:col-span-2">
+          <label htmlFor="q-service" className="block text-sm font-medium text-dac-white mb-1.5">
+            Service <span className="text-dac-red">*</span>
+          </label>
+          <select
+            id="q-service"
+            value={form.service}
+            onChange={(e) => update('service', e.target.value)}
+            className={cn(
+              'w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-dac-white focus:outline-none focus:border-dac-red transition-colors appearance-none',
+              errors.service && 'border-dac-red',
+            )}
+          >
+            <option value="" className="bg-dac-ink">Select a service</option>
+            {SERVICES.map((s) => (
+              <option key={s.slug} value={s.slug} className="bg-dac-ink">
+                {s.name}
+              </option>
+            ))}
+          </select>
+          {errors.service && <p className="text-dac-red text-xs mt-1">{errors.service}</p>}
+        </div>
+
+        {/* Message */}
+        <div className="sm:col-span-2">
+          <label htmlFor="q-message" className="block text-sm font-medium text-dac-white mb-1.5">
+            Message <span className="text-dac-faint">(optional)</span>
           </label>
           <textarea
-            id="message"
-            name="message"
+            id="q-message"
             rows={3}
-            value={formData.message}
-            onChange={handleChange}
-            className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition resize-none"
-            placeholder="Tell us about your vehicle or any special requests..."
+            value={form.message}
+            onChange={(e) => update('message', e.target.value)}
+            className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-2.5 text-sm text-dac-white placeholder:text-dac-faint focus:outline-none focus:border-dac-red transition-colors resize-none"
+            placeholder="Tell us about your vehicle or specific needs..."
           />
         </div>
-        <Button
-          type="submit"
-          className="w-full"
-          size="lg"
-          disabled={status === "loading"}
-        >
-          {status === "loading" ? (
-            <span className="flex items-center gap-2">
-              <svg
-                className="animate-spin h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-              Sending...
-            </span>
-          ) : (
-            "Get Free Quote"
-          )}
-        </Button>
-        {status === "error" && (
-          <p className="text-sm text-red-400 text-center">
-            Something went wrong. Please try again or call us directly.
-          </p>
+      </div>
+
+      <Button
+        type="submit"
+        size="lg"
+        className="w-full mt-6"
+        disabled={loading}
+      >
+        {loading ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Sending...
+          </>
+        ) : (
+          <>
+            <Send className="w-4 h-4" />
+            Get Free Quote
+          </>
         )}
-      </form>
-    </GlassCard>
+      </Button>
+    </form>
   );
 }

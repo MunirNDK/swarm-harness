@@ -1,187 +1,224 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, Phone } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { nav, services, areas, business, logo } from "@/lib/site";
-import { QuoteButton } from "@/components/quote-modal";
-import { Container } from "@/components/ui/container";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { NAV, BUSINESS, SERVICES, AREAS } from '@/lib/site';
+import { Button } from '@/components/ui/button';
+import { Container } from '@/components/ui/container';
+import { Phone, Menu, X, ChevronDown } from 'lucide-react';
 
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handler, { passive: true });
+    handler();
+    return () => window.removeEventListener('scroll', handler);
   }, []);
 
   useEffect(() => {
     setMobileOpen(false);
-    setActiveDropdown(null);
+    setOpenDropdown(null);
   }, [pathname]);
 
-  const toggleDropdown = (label: string) => {
-    setActiveDropdown(activeDropdown === label ? null : label);
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  const isActive = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
   };
 
-  const dropdownContent = (type: "services" | "areas") => {
-    if (type === "services") {
-      return services.map((s) => (
-        <Link
-          key={s.slug}
-          href={`/services/${s.slug}`}
-          className="block px-4 py-2 text-sm text-dac-muted hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-        >
-          {s.name}
-        </Link>
-      ));
-    }
-    return areas.map((area) => (
-      <Link
-        key={area}
-        href={`/service-areas/${area.toLowerCase().replace(/\s+/g, "-")}`}
-        className="block px-4 py-2 text-sm text-dac-muted hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-      >
-        {area}
-      </Link>
-    ));
+  const servicesChildren = SERVICES.map((s) => ({
+    label: s.name,
+    href: `/services/${s.slug}`,
+  }));
+
+  const areasChildren = AREAS.map((a) => ({
+    label: a,
+    href: `/service-areas/${a.toLowerCase().replace(/\s+/g, '-')}`,
+  }));
+
+  const childMap: Record<string, { label: string; href: string }[]> = {
+    services: servicesChildren,
+    areas: areasChildren,
+  };
+
+  const dropdownToggle = (key: string) => {
+    setOpenDropdown((prev) => (prev === key ? null : key));
   };
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-dac-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg"
-          : "bg-transparent"
+        'fixed top-0 inset-x-0 z-50 transition-all duration-300',
+        scrolled
+          ? 'glass border-b border-white/10 py-2'
+          : 'py-4',
       )}
     >
-      <Container>
-        <nav className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <img src={logo} alt="Daniells Auto Care" className="h-9 w-auto" />
-          </Link>
+      <Container className="flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="font-heading font-bold text-xl sm:text-2xl tracking-tight text-dac-white shrink-0">
+          Daniells <span className="text-dac-red">Auto Care</span>
+        </Link>
 
-          {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-1">
-            {nav.primary.map((item) => {
-              if (item.children) {
-                return (
-                  <div key={item.label} className="relative group">
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-full transition-colors",
-                        pathname.startsWith(item.href)
-                          ? "text-white bg-white/10"
-                          : "text-dac-muted hover:text-white hover:bg-white/5"
-                      )}
-                    >
-                      {item.label}
-                      <ChevronDown className="h-4 w-4" />
-                    </Link>
-                    <div className="absolute top-full left-0 mt-2 w-56 bg-dac-black/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl py-2 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200">
-                      {dropdownContent(item.children)}
-                    </div>
-                  </div>
-                );
-              }
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={cn(
-                    "px-3 py-2 text-sm font-medium rounded-full transition-colors",
-                    pathname === item.href
-                      ? "text-white bg-white/10"
-                      : "text-dac-muted hover:text-white hover:bg-white/5"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-3">
-            <a
-              href={business.phoneHref}
-              className="flex items-center gap-2 text-sm font-medium text-dac-muted hover:text-white transition-colors"
-            >
-              <Phone className="h-4 w-4" />
-              {business.phone}
-            </a>
-            <QuoteButton variant="primary">{nav.cta.label}</QuoteButton>
-          </div>
-
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 text-white"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </nav>
-      </Container>
-
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="lg:hidden bg-dac-black/95 backdrop-blur-xl border-t border-white/10">
-          <Container className="py-4 space-y-2">
-            {nav.primary.map((item) => {
-              if (item.children) {
-                return (
-                  <div key={item.label}>
+        {/* Desktop nav */}
+        <nav className="hidden lg:flex items-center gap-1" aria-label="Main">
+          {NAV.primary.map((item) => {
+            const hasChildren = (item as { children?: string }).children;
+            const children = hasChildren ? childMap[hasChildren] : null;
+            return (
+              <div key={item.href} className="relative">
+                {children ? (
+                  <>
                     <button
-                      onClick={() => toggleDropdown(item.label)}
-                      className="flex items-center justify-between w-full px-4 py-3 text-left text-base font-medium text-white rounded-xl hover:bg-white/5"
+                      onClick={() => dropdownToggle(hasChildren!)}
+                      className={cn(
+                        'flex items-center gap-1 px-3 py-2 rounded-full text-sm font-medium transition-colors',
+                        isActive(item.href)
+                          ? 'text-dac-red bg-dac-red/10'
+                          : 'text-dac-muted hover:text-dac-white hover:bg-white/5',
+                      )}
+                      aria-expanded={openDropdown === hasChildren}
                     >
                       {item.label}
                       <ChevronDown
                         className={cn(
-                          "h-5 w-5 transition-transform",
-                          activeDropdown === item.label && "rotate-180"
+                          'w-3.5 h-3.5 transition-transform',
+                          openDropdown === hasChildren && 'rotate-180',
                         )}
                       />
                     </button>
-                    {activeDropdown === item.label && (
-                      <div className="ml-4 mt-1 space-y-1">
-                        {dropdownContent(item.children)}
+                    {openDropdown === hasChildren && (
+                      <div className="absolute top-full left-0 mt-2 w-56 py-2 glass-card rounded-xl shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+                        {children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className="block px-4 py-2 text-sm text-dac-muted hover:text-dac-white hover:bg-white/5 transition-colors"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
                       </div>
                     )}
-                  </div>
-                );
-              }
+                  </>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      'px-3 py-2 rounded-full text-sm font-medium transition-colors block',
+                      isActive(item.href)
+                        ? 'text-dac-red bg-dac-red/10'
+                        : 'text-dac-muted hover:text-dac-white hover:bg-white/5',
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* CTA + Phone (desktop) */}
+        <div className="hidden lg:flex items-center gap-3">
+          <a
+            href={BUSINESS.phoneHref}
+            className="flex items-center gap-2 text-sm font-medium text-dac-muted hover:text-dac-white transition-colors"
+          >
+            <Phone className="w-4 h-4 text-dac-red" />
+            {BUSINESS.phone}
+          </a>
+          <Button href={NAV.cta.href} size="sm">{NAV.cta.label}</Button>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="lg:hidden p-2 text-dac-white rounded-xl hover:bg-white/5 transition-colors"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+        >
+          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </Container>
+
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 top-16 bg-dac-black/95 backdrop-blur-xl z-40 overflow-y-auto">
+          <Container className="py-6 flex flex-col gap-2">
+            {NAV.primary.map((item) => {
+              const mHasChildren = (item as { children?: string }).children;
+              const children = mHasChildren ? childMap[mHasChildren] : null;
               return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="block px-4 py-3 text-base font-medium text-white rounded-xl hover:bg-white/5"
-                >
-                  {item.label}
-                </Link>
+                <div key={item.href}>
+                  {children ? (
+                    <>
+                      <button
+                        onClick={() => dropdownToggle(mHasChildren!)}
+                        className={cn(
+                          'flex items-center justify-between w-full p-3 rounded-xl text-base font-medium',
+                          isActive(item.href)
+                            ? 'text-dac-red bg-dac-red/10'
+                            : 'text-dac-white hover:bg-white/5',
+                        )}
+                      >
+                        {item.label}
+                        <ChevronDown
+                          className={cn(
+                            'w-4 h-4 transition-transform',
+                            openDropdown === mHasChildren && 'rotate-180',
+                          )}
+                        />
+                      </button>
+                      {openDropdown === mHasChildren && (
+                        <div className="ml-4 mt-1 border-l border-white/10 pl-4 space-y-1">
+                          {children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className="block py-2 text-sm text-dac-muted hover:text-dac-white transition-colors"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        'block p-3 rounded-xl text-base font-medium transition-colors',
+                        isActive(item.href)
+                          ? 'text-dac-red bg-dac-red/10'
+                          : 'text-dac-white hover:bg-white/5',
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </div>
               );
             })}
-            <div className="pt-4 border-t border-white/10 space-y-3">
+            <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
               <a
-                href={business.phoneHref}
-                className="flex items-center gap-2 px-4 py-3 text-base font-medium text-dac-muted hover:text-white"
+                href={BUSINESS.phoneHref}
+                className="flex items-center gap-2 text-dac-muted hover:text-dac-white transition-colors p-2"
               >
-                <Phone className="h-5 w-5" />
-                {business.phone}
+                <Phone className="w-4 h-4 text-dac-red" />
+                {BUSINESS.phone}
               </a>
-              <QuoteButton variant="primary" className="w-full">
-                {nav.cta.label}
-              </QuoteButton>
+              <Button href={NAV.cta.href} className="w-full">{NAV.cta.label}</Button>
             </div>
           </Container>
         </div>
