@@ -1,5 +1,5 @@
 name: Build Site (omp)
-# Orchestrator dispatches this. omp builds products/<slug> from specs/<slug> with LSP-aware edits, then opens a PR.
+# Orchestrator dispatches this. omp builds products/<slug> from specs/<slug> on GitHub's cloud.
 on:
   workflow_dispatch:
     inputs:
@@ -10,12 +10,8 @@ on:
       issue_number:
         description: PCR issue number (for PR linking)
         required: false
-      agent:
-        description: omp agent to use (builder, fixer, verifier, reviser, asset-gen)
-        required: false
-        default: builder
       task:
-        description: Specific task for the agent (leave blank for default spec-based build)
+        description: Override the default build task
         required: false
 
 permissions:
@@ -35,45 +31,20 @@ jobs:
           curl -fsSL https://omp.sh/install | sh
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Configure omp
-        run: |
-          echo "model: openrouter/deepseek/deepseek-v4-pro" > .omp/config.yml
-          echo "thinking: off" >> .omp/config.yml
-
-      - name: Run omp agent
+      - name: Build with omp
         id: omp
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           SLUG: ${{ inputs.product_slug }}
-          AGENT: ${{ inputs.agent }}
-          TASK: ${{ inputs.task }}
         run: |
-          if [ -n "$TASK" ]; then
-            omp -p --agent "$AGENT" "$TASK"
-          else
-            case "$AGENT" in
-              builder)
-                omp -p --agent builder "Read specs/$SLUG/site-spec.json and design-system.md. Build all pages and components into products/$SLUG/."
-                ;;
-              fixer)
-                omp -p --agent fixer "Fix all build and type errors in products/$SLUG/. Run next build + npx tsc --noEmit and iterate until clean (max 6)."
-                ;;
-              verifier)
-                omp -p --agent verifier "Verify products/$SLUG/ — run next build, tsc, security review, a11y check, SEO check. Return verdict."
-                ;;
-              reviser)
-                echo "Reviser needs a task — pass --task"
-                exit 1
-                ;;
-              asset-gen)
-                omp -p --agent asset-gen "Read specs/$SLUG/site-spec.json and design-system.md. Generate all images from the asset matrix. Save to products/$SLUG/public/assets/."
-                ;;
-              *)
-                echo "Unknown agent: $AGENT"
-                exit 1
-                ;;
-            esac
+          TASK="${{ inputs.task }}"
+          if [ -z "$TASK" ]; then
+            TASK="Read specs/$SLUG/site-spec.json and design-system.md. Build all pages and components into products/$SLUG/. Follow the design system exactly. Import shared components only from paths listed in the spec. All content from the spec — no invented facts, no lorem ipsum. TypeScript strict mode. next/image with width/height. framer-motion animations, respect prefers-reduced-motion. lucide-react icons only, no emoji. Responsive 375/768/1024/1440. Accessibility: contrast 4.5:1, focus rings, alt text, labelled inputs. SEO: unique title/meta per page, JSON-LD. After writing all files, run 'npx next build' in products/$SLUG/ and fix any errors before yielding."
           fi
+          omp -p \
+            --model openrouter/deepseek/deepseek-v4-pro \
+            --thinking off \
+            "Build the project: $TASK"
 
       - name: Install product deps
         working-directory: products/${{ inputs.product_slug }}
@@ -83,9 +54,8 @@ jobs:
         working-directory: products/${{ inputs.product_slug }}
         run: |
           npx next build 2>&1 | tee /tmp/build.log
-          BUILD_EXIT=${PIPESTATUS[0]}
-          if [ $BUILD_EXIT -ne 0 ]; then
-            echo "::warning::Build failed — dispatch fixer agent to self-heal"
+          if [ ${PIPESTATUS[0]} -ne 0 ]; then
+            echo "::warning::Build failed — dispatch Fix Build (omp)"
             echo "build_failed=true" >> $GITHUB_OUTPUT
           else
             echo "build_failed=false" >> $GITHUB_OUTPUT
@@ -99,8 +69,7 @@ jobs:
         run: |
           gh workflow run "Fix Build (omp)" \
             --repo ${{ github.repository }} \
-            -f product_slug=${{ inputs.product_slug }} \
-            -f max_iters=6
+            -f product_slug=${{ inputs.product_slug }}
 
       - name: Open pull request
         if: steps.build_check.outputs.build_failed != 'true'
@@ -117,6 +86,18 @@ jobs:
           git add products/ specs/ evidence/
           git commit -m "feat: build $SLUG site (omp swarm)"
           git push -u origin "$BRANCH"
-          BODY="## omp Swarm Build: **$SLUG**\n\nBuilt by the swarm (DeepSeek V4 Pro via omp) from \`specs/$SLUG\`.\n\nGate: next build + tsc"
-          [ -n "$NUM" ] && BODY="$BODY"$'\n\n'"Closes #$NUM"
-          gh pr create --title "PCR: $SLUG (omp build)" --body "$(echo -e "$BODY")" --base main --head "$BRANCH"
+          cat > /tmp/pr-body.md << 'ENDBODY'
+          ## omp Swarm Build
+
+          Built by the swarm (DeepSeek V4 Pro via omp) from the spec.
+
+          Gate: next build + tsc
+          ENDBODY
+          if [ -n "$NUM" ]; then
+            echo "" >> /tmp/pr-body.md
+            echo "Closes #$NUM" >> /tmp/pr-body.md
+          fi
+          gh pr create \
+            --title "PCR: $SLUG (omp build)" \
+            --body-file /tmp/pr-body.md \
+            --base main --head "$BRANCH"

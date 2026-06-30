@@ -1,5 +1,5 @@
 name: Verify PCR (omp)
-# Runs on PR: omp verifier agent checks build, tsc, security, a11y, SEO
+# Runs on PR: omp verifier checks build, tsc, security, a11y, SEO
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -26,11 +26,6 @@ jobs:
           curl -fsSL https://omp.sh/install | sh
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Configure omp
-        run: |
-          echo "model: openrouter/deepseek/deepseek-v4-pro" > .omp/config.yml
-          echo "thinking: off" >> .omp/config.yml
-
       - name: Install deps
         run: |
           for dir in products/*/package.json; do
@@ -40,15 +35,16 @@ jobs:
           done
 
       - name: Verify with omp
-        id: verify
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: |
           for dir in products/*/; do
             slug=$(basename "$dir")
             echo "::group::Verifying $slug"
-            omp -p --agent verifier \
-              "Verify products/$slug/ — run next build, npx tsc --noEmit, scan all source files for security issues, check accessibility, verify SEO. Return clear verdict."
+            omp -p \
+              --model openrouter/deepseek/deepseek-v4-pro \
+              --thinking off \
+              "Verify products/$slug/ — run next build and npx tsc --noEmit. Scan all source files for security issues. Check accessibility. Verify SEO metadata, JSON-LD, sitemap. Return a clear verdict with blocking issues."
             echo "::endgroup::"
           done
 

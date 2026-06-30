@@ -1,5 +1,5 @@
 name: Fix Build (omp)
-# Self-heals build errors using omp's fixer agent on a GitHub Actions cloud runner
+# Self-heals build errors using omp on a GitHub Actions cloud runner
 on:
   workflow_dispatch:
     inputs:
@@ -10,10 +10,6 @@ on:
       branch:
         description: Branch to fix
         required: false
-      max_iters:
-        description: Max fix iterations
-        required: false
-        default: "6"
 
 permissions:
   contents: write
@@ -32,24 +28,19 @@ jobs:
           curl -fsSL https://omp.sh/install | sh
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Configure omp
-        run: |
-          echo "model: openrouter/deepseek/deepseek-v4-pro" > .omp/config.yml
-          echo "thinking: off" >> .omp/config.yml
-
-      - name: Install product deps
+      - name: Install deps
         working-directory: products/${{ inputs.product_slug }}
         run: npm install --no-audit --no-fund 2>/dev/null || true
 
-      - name: Self-heal with omp fixer
-        id: fix
+      - name: Self-heal with omp
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           SLUG: ${{ inputs.product_slug }}
-          MAX_ITERS: ${{ inputs.max_iters }}
         run: |
-          omp -p --agent fixer \
-            "Fix all build and type errors in products/$SLUG/. Run 'npx next build' and 'npx tsc --noEmit'. For each error, read the file, fix it using LSP references where helpful, and rebuild. Keep iterating until clean — max $MAX_ITERS iterations. Preserve the design and content. Report final pass/fail."
+          omp -p \
+            --model openrouter/deepseek/deepseek-v4-pro \
+            --thinking off \
+            "Fix all build and type errors in products/$SLUG/. Run 'npx next build' and 'npx tsc --noEmit'. For each error, read the file, fix it, and rebuild. Iterate until clean — max 6 iterations. Preserve the design and content. Report final pass/fail."
 
       - name: Commit and push fixes
         if: always()
@@ -60,7 +51,7 @@ jobs:
           git config user.email "swarm-bot@users.noreply.github.com"
           if ! git diff --exit-code; then
             git add products/${{ inputs.product_slug }}/
-            git commit -m "fix: self-heal build for ${{ inputs.product_slug }} (omp fixer)"
+            git commit -m "fix: self-heal build (omp fixer)"
             git push
           else
             echo "No changes to commit"
