@@ -1,0 +1,125 @@
+name: Build Site (omp)
+# Orchestrator dispatches this. omp builds products/<slug> from specs/<slug> with LSP-aware edits, then opens a PR.
+on:
+  workflow_dispatch:
+    inputs:
+      product_slug:
+        description: Spec slug under specs/
+        required: true
+        default: daniells-auto-care
+      issue_number:
+        description: PCR issue number (for PR linking)
+        required: false
+      agent:
+        description: omp agent to use (builder, fixer, verifier, reviser, asset-gen)
+        required: false
+        default: builder
+      task:
+        description: Specific task for the agent (leave blank for default spec-based build)
+        required: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install omp
+        run: |
+          curl -fsSL https://omp.sh/install | sh
+          echo "$HOME/.omp/bin" >> $GITHUB_PATH
+
+      - name: Configure omp
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          echo "OPENROUTER_API_KEY=*** > .env
+          echo "model: openrouter/deepseek/deepseek-v4-pro" > .omp/config.yml
+          echo "thinking: off" >> .omp/config.yml
+
+      - name: Run omp agent
+        id: omp
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          SLUG: ${{ inputs.product_slug }}
+          AGENT: ${{ inputs.agent }}
+          TASK: ${{ inputs.task }}
+        run: |
+          if [ -n "$TASK" ]; then
+            omp -p --agent "$AGENT" "$TASK"
+          else
+            case "$AGENT" in
+              builder)
+                omp -p --agent builder "Read specs/$SLUG/site-spec.json and design-system.md. Build all pages and components into products/$SLUG/."
+                ;;
+              fixer)
+                omp -p --agent fixer "Fix all build and type errors in products/$SLUG/. Run next build + npx tsc --noEmit and iterate until clean (max 6)."
+                ;;
+              verifier)
+                omp -p --agent verifier "Verify products/$SLUG/ — run next build, tsc, security review, a11y check, SEO check. Return verdict."
+                ;;
+              reviser)
+                echo "Reviser needs a task — pass --task"
+                exit 1
+                ;;
+              asset-gen)
+                omp -p --agent asset-gen "Read specs/$SLUG/site-spec.json and design-system.md. Generate all images from the asset matrix. Save to products/$SLUG/public/assets/."
+                ;;
+              *)
+                echo "Unknown agent: $AGENT"
+                exit 1
+                ;;
+            esac
+          fi
+
+      - name: Install product deps
+        working-directory: products/${{ inputs.product_slug }}
+        run: npm install --no-audit --no-fund 2>/dev/null || true
+
+      - name: Build verification
+        working-directory: products/${{ inputs.product_slug }}
+        run: |
+          npx next build 2>&1 | tee /tmp/build.log
+          BUILD_EXIT=${PIPESTATUS[0]}
+          if [ $BUILD_EXIT -ne 0 ]; then
+            echo "::warning::Build failed — dispatch fixer agent to self-heal"
+            echo "build_failed=true" >> $GITHUB_OUTPUT
+          else
+            echo "build_failed=false" >> $GITHUB_OUTPUT
+          fi
+        id: build_check
+
+      - name: Auto-trigger fixer if build failed
+        if: steps.build_check.outputs.build_failed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "Fix Build (omp)" \
+            --repo ${{ github.repository }} \
+            -f product_slug=${{ inputs.product_slug }} \
+            -f max_iters=6
+
+      - name: Open pull request
+        if: steps.build_check.outputs.build_failed != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SLUG="${{ inputs.product_slug }}"
+          NUM="${{ inputs.issue_number }}"
+          BRANCH="pcr/${NUM:-0}-$SLUG"
+          git config user.name "swarm-bot"
+          git config user.email "swarm-bot@users.noreply.github.com"
+          git fetch origin main
+          git checkout -B "$BRANCH" FETCH_HEAD
+          git add products/ specs/ evidence/
+          git commit -m "feat: build $SLUG site (omp swarm)"
+          git push -u origin "$BRANCH"
+          BODY="## omp Swarm Build: **$SLUG**\n\nBuilt by the swarm (DeepSeek V4 Pro via omp) from \`specs/$SLUG\`.\n\nGate: next build + tsc"
+          [ -n "$NUM" ] && BODY="$BODY"$'\n\n'"Closes #$NUM"
+          gh pr create --title "PCR: $SLUG (omp build)" --body "$(echo -e "$BODY")" --base main --head "$BRANCH"

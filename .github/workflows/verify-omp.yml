@@ -1,0 +1,64 @@
+name: Verify PCR (omp)
+# Runs on PR: omp verifier agent checks build, tsc, security, a11y, SEO
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      product_slug:
+        description: Product slug to verify
+        required: true
+        default: daniells-auto-care
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install omp
+        run: |
+          curl -fsSL https://omp.sh/install | sh
+          echo "$HOME/.omp/bin" >> $GITHUB_PATH
+
+      - name: Configure omp
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          echo "OPENROUTER_API_KEY=*** > .env
+          echo "model: openrouter/deepseek/deepseek-v4-pro" > .omp/config.yml
+          echo "thinking: off" >> .omp/config.yml
+
+      - name: Install deps
+        run: |
+          for dir in products/*/package.json; do
+            if [ -f "$dir" ]; then
+              (cd "$(dirname "$dir")" && npm install --no-audit --no-fund 2>/dev/null || true)
+            fi
+          done
+
+      - name: Verify with omp
+        id: verify
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          for dir in products/*/; do
+            slug=$(basename "$dir")
+            echo "::group::Verifying $slug"
+            omp -p --agent verifier \
+              "Verify products/$slug/ — run next build, npx tsc --noEmit, scan all source files for security issues, check accessibility, verify SEO. Return clear verdict."
+            echo "::endgroup::"
+          done
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body "🔍 **omp Verification Complete** — Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
