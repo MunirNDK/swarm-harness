@@ -1,26 +1,31 @@
-import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
+import { cn } from '@/lib/utils';
+import React from 'react';
 
-interface GlassCardProps extends HTMLAttributes<HTMLDivElement> {
+interface GlassCardProps {
+  children: React.ReactNode;
+  className?: string;
   glow?: boolean;
+  hover?: boolean;
+  as?: keyof JSX.IntrinsicElements;
 }
 
 export function GlassCard({
-  className,
   children,
+  className,
   glow = false,
-  ...props
+  hover = false,
+  as: Tag = 'div',
 }: GlassCardProps) {
   return (
-    <div
+    <Tag
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl",
-        glow && "before:absolute before:inset-0 before:-z-10 before:bg-[#E80505]/10 before:blur-3xl",
-        className
+        'glass-card p-6 sm:p-8',
+        glow && 'red-glow',
+        hover && 'transition-transform duration-300 hover:scale-[1.02]',
+        className,
       )}
-      {...props}
     >
       {children}
-    </div>
+    </Tag>
   );
 }

@@ -1,224 +1,206 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { StarRating } from "@/components/ui/star-rating";
 import { Reveal } from "@/components/ui/reveal";
 import { ServiceCard } from "@/components/service-card";
 import { StatStrip } from "@/components/stat-strip";
 import { ReviewCard } from "@/components/review-card";
 import { QuoteCTA } from "@/components/quote-cta";
 import { Marquee } from "@/components/marquee";
-import { BeforeAfter } from "@/components/before-after";
-import { site, beforeAfter } from "@/lib/site";
-import { cn } from "@/lib/utils";
 import {
-  Sparkles,
-  CarFront,
-  Armchair,
-  ShieldCheck,
-  Wand2,
-  Layers,
-  SunDim,
-  Truck,
-  Phone,
-  Clock,
-  Shield,
-  BadgeCheck,
-  CalendarCheck,
-  SprayCan,
-  Sparkles as SparklesIcon,
-} from "lucide-react";
+  BUSINESS,
+  SERVICES,
+  AREAS,
+  STATS,
+  REVIEWS,
+  IMAGES,
+  SITE,
+} from "@/lib/site";
+import { Truck, Shield, Award, Zap, Phone, ArrowRight } from "lucide-react";
 
-const processSteps = [
-  {
-    icon: CalendarCheck,
-    title: "Book",
-    description:
-      "Schedule your appointment online or call us. We respond within 15 minutes with a free, no-obligation quote.",
-  },
-  {
-    icon: SprayCan,
-    title: "Detail",
-    description:
-      "Our mobile team arrives at your location with professional-grade equipment and products, delivering a meticulous detail.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Protect",
-    description:
-      "We apply premium protection — ceramic coating, paint sealant, or window tint — to keep your vehicle looking flawless for years.",
-  },
-];
+export const metadata: Metadata = {
+  title: SITE.name,
+};
 
 const whyChooseUs = [
   {
     icon: Truck,
     title: "Mobile Service",
-    description:
-      "We come to your home or office across Northern New Jersey — same-day service available.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Licensed & Insured",
-    description:
-      "Fully licensed and insured for your peace of mind. Professional, factory-trained technicians.",
+    description: `We come to your home or office across ${BUSINESS.serviceArea} — same-day service available.`,
   },
   {
     icon: Shield,
-    title: "Industry-Leading Warranties",
-    description:
-      "2–10 year ceramic coating warranty and lifetime window tint warranty — protection you can trust.",
+    title: BUSINESS.trust[0],
+    description: "Fully licensed and insured for your peace of mind. Professional, factory-trained technicians.",
   },
   {
-    icon: Clock,
-    title: "15-Minute Quote Response",
-    description:
-      "We value your time. Get a detailed, transparent quote within 15 minutes of your inquiry.",
+    icon: Award,
+    title: "Factory-Trained",
+    description: `Our technicians are ${BUSINESS.trust[1].toLowerCase()}, delivering meticulous results on every vehicle.`,
   },
-];
+  {
+    icon: Zap,
+    title: `${BUSINESS.responseTime.split(" ")[0]} Response`,
+    description: `We value your time. Get a detailed, transparent quote within ${BUSINESS.responseTime}.`,
+  },
+] as const;
+
+const processSteps = [
+  {
+    step: "01",
+    title: "Book",
+    description:
+      "Schedule your appointment online or call us. We respond within 15 minutes with a free, no-obligation quote.",
+  },
+  {
+    step: "02",
+    title: "Detail",
+    description:
+      "Our mobile team arrives at your location with professional-grade equipment and products, delivering a meticulous detail.",
+  },
+  {
+    step: "03",
+    title: "Protect",
+    description:
+      "We apply premium protection — ceramic coating, paint sealant, or window tint — to keep your vehicle looking flawless for years.",
+  },
+] as const;
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section */}
-      <Section className="relative min-h-screen flex items-center overflow-hidden" id="hero">
+      {/* ===== Hero ===== */}
+      <Section
+        className="relative min-h-screen flex items-center overflow-hidden pt-0 pb-0"
+        id="hero"
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src={site.images.hero}
-            alt="Professional auto detailing hero background"
+            src={IMAGES.hero}
+            alt="Professional auto detailing"
             fill
-            className="object-cover opacity-30"
+            className="object-cover"
             priority
+            sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-dac-black/80 via-dac-ink/60 to-dac-ink" />
+          <div className="absolute inset-0 bg-gradient-to-b from-dac-black/80 via-dac-black/60 to-dac-black" />
         </div>
 
-        <Container className="relative z-10 py-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <Reveal>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-tight">
-                  <span className="bg-gradient-to-r from-white via-white to-dac-red bg-clip-text text-transparent">
-                    {site.business.tagline}
-                  </span>
-                </h1>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <p className="text-lg text-dac-muted max-w-xl">
-                  Premium mobile auto detailing across Northern New Jersey.
-                  Same-day service, 100% satisfaction guaranteed, and a
-                  15-minute quote response.
-                </p>
-              </Reveal>
-              <Reveal delay={0.2}>
-                <div className="flex flex-wrap gap-4">
-                  <Button asChild size="lg">
-                    <a href={site.business.primaryCtas[0].href}>
-                      {site.business.primaryCtas[0].label}
-                    </a>
-                  </Button>
-                  <Button variant="secondary" size="lg" asChild>
-                    <a href={site.business.primaryCtas[1].href}>
-                      <Phone className="mr-2 h-5 w-5" />
-                      {site.business.primaryCtas[1].label}
-                    </a>
-                  </Button>
-                </div>
-              </Reveal>
-            </div>
+        <Container className="relative z-10 py-24 sm:py-28 lg:py-32">
+          {/* Headline + CTAs */}
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <Reveal>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-heading tracking-tight leading-tight">
+                <span className="text-gradient">
+                  {BUSINESS.tagline}
+                </span>
+              </h1>
+            </Reveal>
 
-            <Reveal delay={0.3} className="lg:justify-self-end">
-              <GlassCard className="p-6 sm:p-8 space-y-6 max-w-md">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-dac-faint">Response Time</p>
-                    <p className="text-2xl font-bold text-white">
-                      {site.business.responseTime}
-                    </p>
-                  </div>
-                  <div className="h-12 w-12 rounded-full bg-dac-red/20 flex items-center justify-center">
-                    <Clock className="h-6 w-6 text-dac-red" />
-                  </div>
-                </div>
+            <Reveal staggerIndex={1}>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Button href={BUSINESS.primaryCtas[0].href} size="lg">
+                  {BUSINESS.primaryCtas[0].label}
+                </Button>
+                <Button
+                  href={BUSINESS.primaryCtas[1].href}
+                  variant="secondary"
+                  size="lg"
+                >
+                  <Phone className="h-5 w-5" />
+                  {BUSINESS.primaryCtas[1].label}
+                </Button>
+              </div>
+            </Reveal>
 
-                {/* Progress bar */}
-                <div className="w-full bg-white/10 rounded-full h-2">
-                  <div
-                    className="bg-dac-red h-2 rounded-full"
-                    style={{ width: "75%" }}
-                  />
-                </div>
-
-                <div className="flex flex-wrap gap-2">
+            {/* Glass Stat Strip */}
+            <Reveal staggerIndex={2}>
+              <GlassCard className="inline-block mx-auto">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 px-4 py-2">
                   {[
-                    "Same-Day Service",
-                    "Licensed & Insured",
-                    "2–10 Year Warranty",
-                  ].map((pill) => (
-                    <span
-                      key={pill}
-                      className="px-3 py-1 text-xs font-medium rounded-full bg-dac-red/10 text-dac-red border border-dac-red/20"
-                    >
-                      {pill}
-                    </span>
+                    { value: BUSINESS.reviewsCount, label: "Reviews" },
+                    { value: BUSINESS.experienceYears, label: "Years" },
+                    { value: BUSINESS.vehiclesDetailed, label: "Vehicles" },
+                    { value: "15 min", label: "Response" },
+                  ].map((stat) => (
+                    <div key={stat.label} className="text-center">
+                      <div className="font-heading text-2xl sm:text-3xl font-bold text-dac-red">
+                        {stat.value}
+                      </div>
+                      <div className="text-dac-muted text-xs font-medium uppercase tracking-wider mt-1">
+                        {stat.label}
+                      </div>
+                    </div>
                   ))}
                 </div>
-
-                <div className="pt-2">
-                  <p className="text-sm text-dac-faint">
-                    Trusted by{" "}
-                    <span className="text-white font-semibold">
-                      {site.stats[0].value}
-                    </span>{" "}
-                    clients across{" "}
-                    <span className="text-white font-semibold">
-                      {site.areas.length}+ towns
-                    </span>
-                  </p>
-                </div>
               </GlassCard>
+            </Reveal>
+
+            {/* Trust Badges */}
+            <Reveal staggerIndex={3}>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                {BUSINESS.trust.map((badge) => (
+                  <span
+                    key={badge}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-full bg-dac-red/10 text-dac-red border border-dac-red/20"
+                  >
+                    <Shield className="h-3.5 w-3.5" />
+                    {badge}
+                  </span>
+                ))}
+              </div>
             </Reveal>
           </div>
 
           {/* Area Marquee */}
           <div className="mt-16">
-            <Marquee items={site.areas} speed={40} />
+            <Marquee speed={40}>
+              {AREAS.map((area) => (
+                <span
+                  key={area}
+                  className="text-dac-muted text-sm font-medium px-6"
+                >
+                  {area}
+                </span>
+              ))}
+            </Marquee>
           </div>
         </Container>
       </Section>
 
-      {/* Trust StatStrip */}
+      {/* ===== Trust StatStrip ===== */}
       <Section id="trust">
         <Container>
-          <Reveal>
-            <StatStrip stats={site.stats} />
-          </Reveal>
+          <StatStrip stats={STATS} />
         </Container>
       </Section>
 
-      {/* Services Grid */}
+      {/* ===== Services Grid ===== */}
       <Section id="services">
         <Container>
           <SectionHeading
             eyebrow="Our Services"
             title="Complete Auto Detailing Solutions"
-            subtitle="From interior deep cleans to ceramic coatings, we offer a full range of mobile detailing services."
+            subtitle="From interior deep cleans to ceramic coatings, we offer a full range of mobile detailing services across Northern New Jersey."
           />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {site.services.map((service, index) => (
-              <Reveal key={service.slug} delay={index * 0.05}>
-                <ServiceCard service={service} />
-              </Reveal>
+            {SERVICES.map((service, index) => (
+              <ServiceCard
+                key={service.slug}
+                service={service}
+                index={index}
+              />
             ))}
           </div>
         </Container>
       </Section>
 
-      {/* Why Choose Us */}
+      {/* ===== Why Choose Us ===== */}
       <Section id="why-us">
         <Container>
           <SectionHeading
@@ -226,17 +208,21 @@ export default function HomePage() {
             title="The Difference Is in the Details"
             subtitle="We combine mobile convenience with factory-trained expertise and industry-leading warranties."
           />
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {whyChooseUs.map((item, index) => (
-              <Reveal key={item.title} delay={index * 0.1}>
-                <GlassCard className="p-6 text-center h-full">
-                  <div className="mx-auto w-12 h-12 rounded-full bg-dac-red/10 flex items-center justify-center mb-4">
+              <Reveal key={item.title} staggerIndex={index}>
+                <GlassCard className="flex gap-6 items-start h-full">
+                  <div className="shrink-0 w-12 h-12 rounded-xl bg-dac-red/10 flex items-center justify-center">
                     <item.icon className="h-6 w-6 text-dac-red" />
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-dac-muted">{item.description}</p>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white font-heading">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-dac-muted mt-1 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
                 </GlassCard>
               </Reveal>
             ))}
@@ -244,7 +230,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* Process Steps */}
+      {/* ===== Process Steps ===== */}
       <Section id="process">
         <Container>
           <SectionHeading
@@ -254,139 +240,106 @@ export default function HomePage() {
           />
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
             {processSteps.map((step, index) => (
-              <Reveal key={step.title} delay={index * 0.15}>
-                <div className="relative text-center">
-                  <div className="mx-auto w-16 h-16 rounded-full bg-dac-red/10 border border-dac-red/20 flex items-center justify-center mb-4">
-                    <step.icon className="h-8 w-8 text-dac-red" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
+              <Reveal key={step.step} staggerIndex={index}>
+                <GlassCard className="text-center h-full relative overflow-hidden">
+                  <span className="block font-heading text-7xl sm:text-8xl font-bold text-dac-red/10 leading-none select-none">
+                    {step.step}
+                  </span>
+                  <h3 className="text-xl font-semibold text-white font-heading mt-2">
                     {step.title}
                   </h3>
-                  <p className="text-sm text-dac-muted">{step.description}</p>
-                  {index < processSteps.length - 1 && (
-                    <div className="hidden sm:block absolute top-8 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-px bg-gradient-to-r from-dac-red/50 to-transparent" />
-                  )}
-                </div>
+                  <p className="text-sm text-dac-muted mt-3 leading-relaxed max-w-xs mx-auto">
+                    {step.description}
+                  </p>
+                </GlassCard>
               </Reveal>
             ))}
           </div>
         </Container>
       </Section>
 
-      {/* Before / After Showcase */}
+      {/* ===== Gallery Preview ===== */}
       <Section id="gallery">
         <Container>
           <SectionHeading
             eyebrow="Real Results"
-            title="Before & After Transformations"
-            subtitle="See the dramatic difference our detailing makes. Actual client vehicles, unretouched."
+            title="See Our Work"
+            subtitle="A glimpse of the showroom finishes we deliver every day across Northern New Jersey."
           />
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {beforeAfter.slice(0, 3).map((item, index) => (
-              <Reveal key={index} delay={index * 0.1}>
-                <BeforeAfter
-                  before={item.before}
-                  after={item.after}
-                  title={item.title}
-                  tag={item.tag}
-                />
+          <div className="mt-12 grid gap-4 grid-cols-2 md:grid-cols-3">
+            {IMAGES.gallery.slice(0, 6).map((src, index) => (
+              <Reveal key={src} staggerIndex={index}>
+                <GlassCard className="relative aspect-[4/3] overflow-hidden p-0">
+                  <Image
+                    src={src}
+                    alt={`Gallery image ${index + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                  />
+                </GlassCard>
               </Reveal>
             ))}
           </div>
           <div className="mt-8 text-center">
-            <Button variant="secondary" asChild>
-              <a href="/gallery">View Full Gallery</a>
+            <Button variant="secondary" href="/gallery">
+              View Full Gallery
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </Container>
       </Section>
 
-      {/* Reviews */}
+      {/* ===== Reviews ===== */}
       <Section id="reviews">
         <Container>
           <SectionHeading
             eyebrow="Testimonials"
             title="Loved by Hundreds of Clients"
-            subtitle={
-              <>
-                Rated{" "}
-                <span className="text-dac-red font-semibold">5.0</span> on
-                Google with{" "}
-                <span className="text-dac-red font-semibold">
-                  {site.business.googleReviews}
-                </span>{" "}
-                reviews
-              </>
-            }
+            subtitle={`Rated 5.0 on Google with ${BUSINESS.googleReviews} reviews across Northern New Jersey.`}
           />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {site.reviews.map((review, index) => (
-              <Reveal key={index} delay={index * 0.1}>
-                <ReviewCard review={review} />
-              </Reveal>
+            {REVIEWS.map((review, index) => (
+              <ReviewCard
+                key={review.name}
+                review={review}
+                index={index}
+              />
             ))}
           </div>
         </Container>
       </Section>
 
-      {/* Service Areas Teaser + Marquee */}
+      {/* ===== Service Areas Teaser + Marquee ===== */}
       <Section id="areas">
         <Container>
           <SectionHeading
             eyebrow="Service Areas"
             title="Proudly Serving Northern New Jersey"
-            subtitle="We bring our mobile detailing services to your doorstep across dozens of communities."
+            subtitle={`We bring our mobile detailing services to your doorstep across ${AREAS.length}+ communities.`}
           />
           <div className="mt-8">
-            <Marquee items={site.areas} speed={30} />
+            <Marquee speed={30}>
+              {AREAS.map((area) => (
+                <span
+                  key={area}
+                  className="text-dac-white/80 text-base font-medium px-6"
+                >
+                  {area}
+                </span>
+              ))}
+            </Marquee>
           </div>
           <div className="mt-8 text-center">
-            <Button variant="secondary" asChild>
-              <a href="/service-areas">See All Service Areas</a>
+            <Button variant="secondary" href="/service-areas">
+              See All Service Areas
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </Container>
       </Section>
 
-      {/* FAQ Section */}
-      <Section id="faq">
-        <Container>
-          <SectionHeading
-            eyebrow="FAQ"
-            title="Frequently Asked Questions"
-            subtitle="Answers to common questions about our auto detailing services."
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {site.faqs.map((faq, index) => (
-              <Reveal key={index} delay={index * 0.05}>
-                <GlassCard className="p-6">
-                  <h3 className="text-lg font-semibold text-white mb-2">{faq.q}</h3>
-                  <p className="text-sm text-dac-muted">{faq.a}</p>
-                </GlassCard>
-              </Reveal>
-            ))}
-          </div>
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": site.faqs.map((faq) => ({
-                  "@type": "Question",
-                  "name": faq.q,
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": faq.a
-                  }
-                }))
-              })
-            }}
-          />
-        </Container>
-      </Section>
-
-      {/* Quote CTA */}
+      {/* ===== Quote CTA ===== */}
       <QuoteCTA />
     </>
   );

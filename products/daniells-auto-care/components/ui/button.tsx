@@ -1,86 +1,77 @@
-import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-import Link from "next/link";
-import { ButtonHTMLAttributes, cloneElement, forwardRef, isValidElement, ReactElement } from "react";
+import { cn } from '@/lib/utils';
+import { cva, type VariantProps } from 'class-variance-authority';
+import React from 'react';
+import Link from 'next/link';
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-full font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dac-red focus-visible:ring-offset-2 focus-visible:ring-offset-dac-black disabled:pointer-events-none disabled:opacity-50",
+  'inline-flex items-center justify-center gap-2 rounded-full font-heading font-semibold text-sm sm:text-base transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dac-red whitespace-nowrap min-h-[44px] cursor-pointer select-none',
   {
     variants: {
       variant: {
         primary:
-          "bg-dac-red text-white hover:bg-dac-red-light active:bg-dac-red-med shadow-lg shadow-dac-red/20",
+          'bg-dac-red text-white hover:bg-dac-red-light active:bg-dac-red-med shadow-lg shadow-dac-red/25',
         secondary:
-          "bg-white/5 border border-white/10 text-white backdrop-blur-xl hover:bg-white/10 active:bg-white/20",
+          'glass text-dac-white hover:bg-white/10 active:bg-white/5',
         ghost:
-          "text-white/80 hover:text-white hover:bg-white/5",
+          'text-dac-white hover:bg-white/5 active:bg-white/10',
       },
       size: {
-        sm: "h-9 px-4 text-sm",
-        md: "h-11 px-6 text-base",
-        lg: "h-12 px-8 text-lg",
-        xl: "h-14 px-10 text-xl",
+        default: 'px-6 py-2.5',
+        sm: 'px-4 py-2 text-sm',
+        lg: 'px-8 py-3 text-lg',
       },
     },
     defaultVariants: {
-      variant: "primary",
-      size: "md",
+      variant: 'primary',
+      size: 'default',
     },
-  }
+  },
 );
 
-export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
+interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  href?: string;
-  external?: boolean;
   asChild?: boolean;
+  href?: string;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, href, external, asChild, children, ...props }, ref) => {
-    // Slot pattern: render the single child (e.g. <Link>) with button styles merged in.
-    if (asChild && isValidElement(children)) {
-      const child = children as ReactElement<any>;
-      return cloneElement(child, {
-        className: cn(buttonVariants({ variant, size }), className, child.props?.className),
-      });
-    }
-    if (href) {
-      const isExternal = external || href.startsWith("http") || href.startsWith("tel:") || href.startsWith("mailto:");
-      if (isExternal) {
-        return (
-          <a
-            href={href}
-            className={cn(buttonVariants({ variant, size, className }))}
-            target={external ? "_blank" : undefined}
-            rel={external ? "noopener noreferrer" : undefined}
-          >
-            {children}
-          </a>
-        );
-      }
+export function Button({
+  className,
+  variant,
+  size,
+  asChild,
+  href,
+  children,
+  ...props
+}: ButtonProps) {
+  if (href) {
+    const isExternal = href.startsWith('http') || href.startsWith('tel:') || href.startsWith('mailto:');
+    if (isExternal) {
       return (
-        <Link
+        <a
           href={href}
-          className={cn(buttonVariants({ variant, size, className }))}
+          className={cn(buttonVariants({ variant, size }), className)}
         >
           {children}
-        </Link>
+        </a>
       );
     }
-
     return (
-      <button
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
+      <Link
+        href={href}
+        className={cn(buttonVariants({ variant, size }), className)}
       >
         {children}
-      </button>
+      </Link>
     );
   }
-);
-Button.displayName = "Button";
 
-export { Button, buttonVariants };
+  return (
+    <button
+      className={cn(buttonVariants({ variant, size }), className)}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}

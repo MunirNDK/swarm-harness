@@ -1,5 +1,5 @@
-import { Star } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
+import { Star } from 'lucide-react';
 
 interface StarRatingProps {
   count: number;
@@ -8,23 +8,17 @@ interface StarRatingProps {
   className?: string;
 }
 
-export function StarRating({
-  count,
-  max = 5,
-  size = 20,
-  className,
-}: StarRatingProps) {
+export function StarRating({ count, max = 5, size = 16, className }: StarRatingProps) {
   return (
-    <div className={cn("flex items-center gap-0.5", className)}>
+    <div className={cn('flex gap-0.5', className)} aria-label={`${count} out of ${max} stars`}>
       {Array.from({ length: max }, (_, i) => (
         <Star
           key={i}
           size={size}
           className={cn(
-            i < count
-              ? "fill-amber-400 text-amber-400"
-              : "fill-none text-dac-faint"
+            i < count ? 'fill-dac-red text-dac-red' : 'fill-none text-dac-faint',
           )}
+          aria-hidden="true"
         />
       ))}
     </div>

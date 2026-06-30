@@ -1,50 +1,55 @@
-import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { cn } from '@/lib/utils';
+import { Reveal } from '@/components/ui/reveal';
 
 interface SectionHeadingProps {
   eyebrow?: string;
   title: string;
-  subtitle?: ReactNode;
-  align?: "center" | "left";
+  subtitle?: string;
   centered?: boolean;
-  center?: boolean;
   className?: string;
+  gradient?: boolean;
 }
 
 export function SectionHeading({
   eyebrow,
   title,
   subtitle,
-  align,
-  centered,
-  center,
+  centered = false,
   className,
+  gradient = true,
 }: SectionHeadingProps) {
-  const isCentered = centered ?? center;
-  const resolvedAlign = align ?? (isCentered === false ? "left" : "center");
   return (
     <div
       className={cn(
-        "max-w-3xl",
-        resolvedAlign === "center" && "mx-auto text-center",
-        className
+        'mb-12 sm:mb-16',
+        centered && 'text-center',
+        className,
       )}
     >
       {eyebrow && (
-        <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-dac-red">
-          {eyebrow}
-        </p>
+        <Reveal>
+          <p className="text-dac-red font-heading text-sm sm:text-base font-semibold tracking-widest uppercase mb-3">
+            {eyebrow}
+          </p>
+        </Reveal>
       )}
-      <h2
-        className={cn(
-          "text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl",
-          "bg-gradient-to-r from-white via-white to-dac-red bg-clip-text text-transparent"
-        )}
-      >
-        {title}
-      </h2>
+      <Reveal>
+        <h2
+          className={cn(
+            'font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight',
+            gradient && 'text-gradient',
+            !gradient && 'text-dac-white',
+          )}
+        >
+          {title}
+        </h2>
+      </Reveal>
       {subtitle && (
-        <p className="mt-4 text-lg text-dac-muted">{subtitle}</p>
+        <Reveal>
+          <p className="mt-4 text-dac-muted text-base sm:text-lg max-w-2xl leading-relaxed">
+            {subtitle}
+          </p>
+        </Reveal>
       )}
     </div>
   );
