@@ -550,7 +550,7 @@ export const processSteps: { title: string; desc: string }[] = [
 ];
 
 export function areaIntro(town: string): string {
-  return `Looking for premium mobile auto detailing in ${town}, NJ? Daniells Auto Care brings professional detailing services directly to your doorstep in ${town} and throughout Northern New Jersey. From ceramic coating to interior deep cleaning, our factory-trained technicians deliver showroom results with same-day availability and free quotes.`;
+  return `Looking for premium mobile auto detailing in ${town}, NJ? Daniells Auto Care brings factory-trained detailing — from ceramic coating to interior deep cleans — directly to your doorstep in ${town}, with same-day availability and free quotes.`;
 }
 
 export const siteUrl = "https://daniellsautocare.com";

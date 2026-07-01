@@ -64,7 +64,7 @@ export default function ServicesPage() {
               >
                 Franklin Lakes
               </Link>{' '}
-              and{' '}
+              to{' '}
               <Link
                 href="/service-areas/ridgewood"
                 className="text-accent hover:text-accent-mid transition-colors duration-fast ease-default"
@@ -75,21 +75,7 @@ export default function ServicesPage() {
               >
                 Ridgewood
               </Link>{' '}
-              to{' '}
-              <Link
-                href="/service-areas/chatham"
-                className="text-accent hover:text-accent-mid transition-colors duration-fast ease-default"
-                data-track-category="navigation"
-                data-track-action="link_click"
-                data-track-label="chatham"
-                data-track-context="internal"
-              >
-                Chatham
-              </Link>{' '}
-              and beyond. {business.experienceYears} years of combined team experience,
-              over {business.vehiclesDetailed} vehicles detailed, backed by{' '}
-              {business.reviewsCount} five-star reviews. Every service comes
-              with a free, no-obligation quote and {business.responseTime}.
+              and beyond. Ceramic coating, paint correction, interior deep-cleans, and more, brought to your door.
             </p>
           </Reveal>
           <Reveal delay={240}>

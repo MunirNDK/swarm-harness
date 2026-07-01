@@ -158,7 +158,7 @@ export default function AreaDetailPage({ params }: Props) {
               </Reveal>
             ))}
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 justify-center">
             <Button
               variant="outline"
               href="/services"

@@ -15,6 +15,7 @@ import { StatStrip } from '@/components/stat-strip';
 import { BeforeAfterGrid } from '@/components/before-after';
 import { QuoteForm } from '@/components/quote-form';
 import { QuoteButton } from '@/components/quote-modal';
+import { FaqItem } from '@/components/faq-item';
 import {
   business,
   services,
@@ -93,17 +94,15 @@ export default function HomePage() {
                     lineHeight: 1.07,
                   }}
                 >
-                  Showroom Results.{' '}
+                  Flawless Mobile Detailing{' '}
                   <span style={{ color: 'var(--accent)' }}>
-                    At Your Doorstep.
+                    Across Northern NJ.
                   </span>
                 </h1>
               </Reveal>
               <Reveal delay={160}>
                 <p className="text-fg-soft text-lg leading-relaxed mb-8 max-w-lg">
-                  {business.tagline} We come to your home or office anywhere in
-                  Northern NJ — fully equipped, self-contained, ready to
-                  deliver a flawless finish.
+                  Professional mobile detailing across Northern NJ — we come to your home or office, fully equipped to deliver a flawless, showroom finish.
                 </p>
               </Reveal>
               <Reveal delay={240}>
@@ -326,7 +325,7 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* ── FAQ ── bg, <details> accordion + FAQPage JSON-LD (already in <JsonLd> above) */}
+      {/* ── FAQ ── bg, animated client-component accordion + FAQPage JSON-LD (already in <JsonLd> above) */}
       <Section surface="bg" id="faq">
         <Container>
           <SectionHeading
@@ -337,20 +336,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
             {faqs.map((faq, i) => (
               <Reveal key={faq.q} delay={i * 40}>
-                <details className="rounded-lg border border-border bg-surface overflow-hidden group">
-                  <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-sans font-bold text-fg text-sm uppercase tracking-[0.02em] hover:text-accent transition-colors duration-fast ease-default min-h-[44px]">
-                    <span>{faq.q}</span>
-                    <span
-                      className="flex-shrink-0 text-accent text-xl leading-none"
-                      aria-hidden="true"
-                    >
-                      +
-                    </span>
-                  </summary>
-                  <div className="px-6 pb-5 text-fg-soft text-sm leading-relaxed border-t border-border pt-4">
-                    {faq.a}
-                  </div>
-                </details>
+                <FaqItem faq={faq} index={i} />
               </Reveal>
             ))}
           </div>

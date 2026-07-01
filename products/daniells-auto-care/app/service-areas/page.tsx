@@ -48,12 +48,8 @@ export default function ServiceAreasPage() {
           </Reveal>
           <Reveal delay={160}>
             <p className="text-fg-soft text-lg leading-relaxed max-w-3xl mb-8">
-              Daniells Auto Care brings professional mobile auto detailing
-              directly to your doorstep across{' '}
-              {business.serviceArea}. Our fully equipped vans carry everything
-              needed — water, power, and professional-grade products — so you
-              never have to leave home. Same-day availability, free quotes, and{' '}
-              {business.reviewsCount} five-star reviews.
+              Daniells Auto Care brings professional mobile detailing directly to your doorstep across{' '}
+              {business.serviceArea}. Same-day availability, free quotes, and {business.reviewsCount} five-star reviews across the region.
             </p>
           </Reveal>
           <Reveal delay={240}>
