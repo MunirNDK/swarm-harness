@@ -1,86 +1,159 @@
-import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-import Link from "next/link";
-import { ButtonHTMLAttributes, cloneElement, forwardRef, isValidElement, ReactElement } from "react";
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import {
+  ButtonHTMLAttributes,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  ReactElement,
+} from 'react';
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-full font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dac-red focus-visible:ring-offset-2 focus-visible:ring-offset-dac-black disabled:pointer-events-none disabled:opacity-50",
-  {
-    variants: {
-      variant: {
-        primary:
-          "bg-dac-red text-white hover:bg-dac-red-light active:bg-dac-red-med shadow-lg shadow-dac-red/20",
-        secondary:
-          "bg-white/5 border border-white/10 text-white backdrop-blur-xl hover:bg-white/10 active:bg-white/20",
-        ghost:
-          "text-white/80 hover:text-white hover:bg-white/5",
-      },
-      size: {
-        sm: "h-9 px-4 text-sm",
-        md: "h-11 px-6 text-base",
-        lg: "h-12 px-8 text-lg",
-        xl: "h-14 px-10 text-xl",
-      },
-    },
-    defaultVariants: {
-      variant: "primary",
-      size: "md",
-    },
-  }
-);
+/* ═══════════════════════════════════════════════════════════════
+   Track props — Contract §5 / §10
+   ═══════════════════════════════════════════════════════════════ */
+export interface TrackProps {
+  category: string;
+  action:   string;
+  label:    string;
+  context?: string;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Variant + size maps — Design Spec §12.1-§12.3
+   ═══════════════════════════════════════════════════════════════ */
+const variantClasses: Record<string, string> = {
+  primary:
+    'bg-cta text-fg font-sans font-bold uppercase tracking-[0.05em] text-[0.95rem] ' +
+    'rounded-sm border-none cursor-pointer inline-flex items-center justify-center gap-2 ' +
+    'transition-all duration-base ease-default ' +
+    'hover:bg-accent-mid hover:-translate-y-px hover:shadow-red ' +
+    'active:translate-y-0 ' +
+    'focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ' +
+    'disabled:opacity-50 disabled:pointer-events-none',
+  outline:
+    'bg-transparent text-fg font-sans font-bold uppercase tracking-[0.05em] text-[0.95rem] ' +
+    'rounded-sm border border-border cursor-pointer inline-flex items-center justify-center gap-2 ' +
+    'transition-all duration-base ease-default ' +
+    'hover:border-accent hover:text-accent ' +
+    'focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ' +
+    'disabled:opacity-50 disabled:pointer-events-none',
+  phone:
+    'bg-transparent text-accent font-sans font-bold uppercase tracking-[0.05em] text-[0.95rem] ' +
+    'rounded-sm border border-accent cursor-pointer inline-flex items-center justify-center gap-rivet ' +
+    'transition-all duration-base ease-default ' +
+    'hover:bg-accent hover:text-fg ' +
+    'active:scale-[0.98] ' +
+    'focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ' +
+    'disabled:opacity-50 disabled:pointer-events-none',
+  ghost:
+    'bg-transparent text-fg-soft font-sans font-bold uppercase tracking-[0.05em] text-[0.95rem] ' +
+    'rounded-sm cursor-pointer inline-flex items-center justify-center gap-2 ' +
+    'transition-all duration-base ease-default ' +
+    'hover:text-fg ' +
+    'focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ' +
+    'disabled:opacity-50 disabled:pointer-events-none',
+  /* Legacy aliases */
+  secondary:
+    'bg-transparent text-fg font-sans font-bold uppercase tracking-[0.05em] text-[0.95rem] ' +
+    'rounded-sm border border-border cursor-pointer inline-flex items-center justify-center gap-2 ' +
+    'transition-all duration-base ease-default ' +
+    'hover:border-accent hover:text-accent ' +
+    'focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ' +
+    'disabled:opacity-50 disabled:pointer-events-none',
+};
+
+const sizeClasses: Record<string, string> = {
+  sm: 'h-9 px-4 text-sm',
+  md: 'py-[0.85rem] px-[1.75rem]',
+  lg: 'py-[1rem] px-[2rem] text-base',
+  xl: 'py-[1.1rem] px-[2.25rem] text-md',
+};
 
 export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  href?: string;
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?:  'primary' | 'outline' | 'phone' | 'ghost' | 'secondary';
+  size?:     'sm' | 'md' | 'lg' | 'xl';
+  href?:     string;
   external?: boolean;
-  asChild?: boolean;
+  asChild?:  boolean;
+  track?:    TrackProps;
+}
+
+function trackAttrs(track?: TrackProps): Record<string, string> {
+  if (!track) return {};
+  const attrs: Record<string, string> = {
+    'data-track-category': track.category,
+    'data-track-action':   track.action,
+    'data-track-label':    track.label,
+  };
+  if (track.context) attrs['data-track-context'] = track.context;
+  return attrs;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, href, external, asChild, children, ...props }, ref) => {
-    // Slot pattern: render the single child (e.g. <Link>) with button styles merged in.
+  (
+    {
+      className,
+      variant = 'primary',
+      size    = 'md',
+      href,
+      external,
+      asChild,
+      track,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const cls = cn(
+      variantClasses[variant] ?? variantClasses.primary,
+      sizeClasses[size] ?? sizeClasses.md,
+      className
+    );
+    const ta = trackAttrs(track);
+
+    // Slot / asChild pattern
     if (asChild && isValidElement(children)) {
-      const child = children as ReactElement<any>;
-      return cloneElement(child, {
-        className: cn(buttonVariants({ variant, size }), className, child.props?.className),
-      });
+      const child = children as ReactElement<Record<string, unknown>>;
+      return cloneElement(child, { className: cn(cls, child.props?.className as string), ...ta });
     }
+
+    // Anchor (external or tel:)
     if (href) {
-      const isExternal = external || href.startsWith("http") || href.startsWith("tel:") || href.startsWith("mailto:");
-      if (isExternal) {
+      const isExt =
+        external ||
+        href.startsWith('http') ||
+        href.startsWith('tel:') ||
+        href.startsWith('mailto:');
+
+      if (isExt) {
         return (
           <a
             href={href}
-            className={cn(buttonVariants({ variant, size, className }))}
-            target={external ? "_blank" : undefined}
-            rel={external ? "noopener noreferrer" : undefined}
+            className={cls}
+            target={external ? '_blank' : undefined}
+            rel={external ? 'noopener noreferrer' : undefined}
+            {...ta}
           >
             {children}
           </a>
         );
       }
+
       return (
-        <Link
-          href={href}
-          className={cn(buttonVariants({ variant, size, className }))}
-        >
+        <Link href={href} className={cls} {...ta}>
           {children}
         </Link>
       );
     }
 
     return (
-      <button
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      >
+      <button ref={ref} className={cls} {...(ta as Record<string, string>)} {...props}>
         {children}
       </button>
     );
   }
 );
-Button.displayName = "Button";
+Button.displayName = 'Button';
 
-export { Button, buttonVariants };
+export { Button };

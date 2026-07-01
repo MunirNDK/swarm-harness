@@ -2,45 +2,345 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Daniells Auto Care · Showroom Precision
+   Source: daniells-auto-care-consolidated-design-spec.md §2
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  color-scheme: dark;
+
+  /* BAY FLOOR — Dark Surface Layer */
+  --bg:           #0A0A0A;
+  --surface:      #141414;
+  --surface-2:    #1C1C1C;
+  --overlay:      rgba(5, 5, 5, 0.82);
+
+  /* UNDER-BAY — Deep Dark Surfaces */
+  --surface-dark:   #050505;
+  --surface-dark-2: #080808;
+
+  /* INK LAYER — White-on-Dark Text */
+  --ink:        #FFFFFF;
+  --ink-soft:   #B0B0B0;
+  --ink-faint:  #6E6E6E;
+  --muted:      #484848;
+  --rule:       #2A2A2A;
+
+  /* DETAILER'S RED — Primary Accent */
+  --accent:       #E80505;
+  --accent-deep:  #740404;
+  --accent-mid:   #980404;
+  --accent-light: #B30404;
+  --accent-soft:  rgba(232, 5, 5, 0.15);
+  --accent-mist:  rgba(232, 5, 5, 0.06);
+
+  /* SEMANTIC */
+  --success:      #4ADE80;
+  --success-soft: rgba(74, 222, 128, 0.12);
+  --warning:      #FBBF24;
+  --warning-soft: rgba(251, 191, 36, 0.12);
+  --danger:       #E80505;
+  --danger-soft:  rgba(232, 5, 5, 0.15);
+  --info:         #60A5FA;
+  --info-soft:    rgba(96, 165, 250, 0.12);
+
+  /* TYPOGRAPHY — set by next/font in layout.tsx */
+  --font-body:    'Montserrat', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+  /* TYPE SCALE */
+  --t-xs:      11px;
+  --t-sm:      13px;
+  --t-base:    16px;
+  --t-md:      18px;
+  --t-lg:      22px;
+  --t-xl:      26px;
+  --t-2xl:     32px;
+  --t-3xl:     clamp(34px, 4vw, 48px);
+  --t-4xl:     clamp(42px, 6vw, 64px);
+  --t-display: clamp(48px, 8vw, 80px);
+
+  /* SPACING — Bay Hardware Scale */
+  --pin:       4px;
+  --rivet:     8px;
+  --bolt:      12px;
+  --gauge:     16px;
+  --panel:     24px;
+  --bay:       32px;
+  --stall:     48px;
+  --deck:      64px;
+  --hangar:    96px;
+  --perimeter: 128px;
+
+  /* FLUID RHYTHM */
+  --section-v-pad: clamp(64px, 10vw, 120px);
+  --card-grid-min: min(320px, 100%);
+
+  /* LAYOUT */
+  --container-max-w: 80rem;
+  --nav-h:  80px;
+  --nav-bg: #050505;
+  --nav-fg: #FFFFFF;
+
+  /* BORDER RADIUS */
+  --r-none: 0px;
+  --r-sm:   4px;
+  --r-md:   8px;
+  --r-lg:   12px;
+  --r-full: 9999px;
+
+  /* MOTION */
+  --ease:        cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.3, 0.64, 1);
+  --d-fast:  120ms;
+  --d-base:  200ms;
+  --d-slow:  350ms;
+
+  /* SHADOWS */
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.4);
+  --shadow-lg:  0 12px 32px rgba(0,0,0,0.6), 0 6px 14px rgba(0,0,0,0.4);
+  --shadow-red: 0 4px 20px rgba(232, 5, 5, 0.25);
+
+  /* CONVERSION LAYER */
+  --cta-bg:         #E80505;
+  --cta-fg:         #FFFFFF;
+  --cta-bg-hover:   #980404;
+  --cta-bg-active:  #740404;
+  --cta-gradient:   linear-gradient(135deg, #E80505, #980404);
+  --trust-bg:       #141414;
+  --trust-border:   #2A2A2A;
+  --trust-star:     #FBBF24;
+  --input-bg:          #141414;
+  --input-border:      #2A2A2A;
+  --input-focus:       #E80505;
+  --input-error:       #E80505;
+  --input-success:     #4ADE80;
+  --input-placeholder: #484848;
+  --urgency:      #E80505;
+  --urgency-soft: rgba(232, 5, 5, 0.12);
+  --phone-fg:     #E80505;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   KEYFRAMES — Animation Catalog (§7, Appendix C)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Pulse Dot — red version */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(232,5,5,0.5); }
+  50%      { opacity: 0.7; box-shadow: 0 0 0 6px rgba(232,5,5,0); }
+}
+
+/* Pulse Dot — green version */
+@keyframes pulse-dot-green {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
+  50%      { opacity: 0.7; box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+}
+
+/* CTA Bar opacity pulse */
+@keyframes ctaPulse {
+  from { opacity: 0.85; }
+  to   { opacity: 1; }
+}
+
+/* Trust marquee horizontal scroll */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Fade-Up headline entrance */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stagger-rise grid items */
+@keyframes staggerRise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════ */
 @layer base {
   html {
     scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    @apply bg-black text-white font-body;
-    background: linear-gradient(180deg, #000000, #0A0A0A);
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--t-base);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
   }
 
-  /* Focus ring */
-  *:focus-visible {
-    @apply outline-none ring-2 ring-dac-red ring-offset-2 ring-offset-black;
+  /* Heading base — all headings uppercase, tight tracking */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+    color: var(--ink);
   }
 
-  /* Reduce motion for users who prefer it */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  /* Focus ring — accent outline, never remove default without replacement */
+  *:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Phone links — red, bold */
+  a[href^="tel:"] {
+    color: var(--phone-fg);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color var(--d-base) var(--ease);
+  }
+
+  a[href^="tel:"]:hover {
+    color: var(--accent-mid);
+  }
+
+  /* Images */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
-@layer components {
-  /* Gradient headline utility for headlines */
-  .gradient-headline {
-    @apply bg-gradient-to-r from-white via-white to-dac-red bg-clip-text text-transparent;
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════ */
+@layer utilities {
+  /* Screen-reader only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border-width: 0;
   }
 
-  /* Glass utility to use inside components */
-  .glass-panel {
-    @apply bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-2xl;
+  /* Sr-only but focusable (for skip link) */
+  .sr-only.focus\:not-sr-only:focus,
+  .sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
   }
+
+  /* Fade-up animation utility */
+  .animate-fade-up {
+    animation: fadeUp var(--d-slow) var(--ease) both;
+  }
+
+  /* Pulse-dot utilities */
+  .animate-pulse-dot-red {
+    animation: pulse-dot 2s var(--ease) infinite;
+  }
+
+  .animate-pulse-dot-green {
+    animation: pulse-dot-green 2s var(--ease) infinite;
+  }
+
+  /* Marquee utility */
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  /* CTA pulse */
+  .animate-cta-pulse {
+    animation: ctaPulse 4s var(--ease) infinite alternate;
+  }
+
+  /* Section vertical padding */
+  .section-v-pad {
+    padding-top: var(--section-v-pad);
+    padding-bottom: var(--section-v-pad);
+  }
+
+  /* CTA gradient background */
+  .bg-cta-gradient {
+    background: var(--cta-gradient);
+  }
+
+  /* Glow card CSS vars for cursor tracking */
+  .glow-card-inner {
+    --mx: 50%;
+    --my: 50%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PREFERS-REDUCED-MOTION — Always respect
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENT-LEVEL CSS — where Tailwind utilities fall short
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Form field base */
+.field-input,
+.field-select,
+.field-textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-base);
+  padding: 0.7rem 0.85rem;
+  transition: border-color var(--d-fast) var(--ease);
+  appearance: none;
+}
+
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: var(--input-placeholder);
+}
+
+.field-input.error,
+.field-select.error,
+.field-textarea.error {
+  border-color: var(--input-error);
+}
+
+/* Marquee edge mask */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
 }

@@ -1,52 +1,101 @@
-"use client";
+'use client';
 
-import { motion, useReducedMotion } from "framer-motion";
-import { ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  ElementType,
+  ReactNode,
+  HTMLAttributes,
+} from 'react';
+import { cn } from '@/lib/utils';
 
-interface RevealProps {
-  children: ReactNode;
+interface RevealProps extends HTMLAttributes<HTMLElement> {
+  delay?:     number;
+  as?:        ElementType;
+  children:   ReactNode;
   className?: string;
-  delay?: number;
-  index?: number;
-  direction?: "up" | "down" | "left" | "right";
+  /** Legacy compat — accepted but unused; Reveal always fades up */
+  index?:     number;
+  /** Legacy compat — accepted but unused */
+  direction?: 'up' | 'down' | 'left' | 'right';
 }
 
+/**
+ * Reveal — Contract §10, §13.3 HEADLINE_ENTRANCE / §13.4 SCROLL_RHYTHM
+ * Fade-up 14px / 350ms via IntersectionObserver at 15% threshold.
+ *
+ * Progressive enhancement: content is VISIBLE by default (SSR / no-JS / crawlers
+ * always render it). On mount, JS hides only below-the-fold elements and reveals
+ * them on scroll. In-view and above-the-fold content never hides (no flash).
+ * Respects prefers-reduced-motion. A safety timer guarantees content is never
+ * left hidden even if the observer never fires.
+ */
 export function Reveal({
-  children,
+  delay     = 0,
+  as        = 'div',
   className,
-  delay,
-  index = 0,
-  direction = "up",
+  children,
+  style,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  index:     _index,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  direction: _direction,
+  ...props
 }: RevealProps) {
-  const resolvedDelay = delay ?? index * 0.05;
-  const prefersReducedMotion = useReducedMotion();
+  const Tag                   = as;
+  const ref                   = useRef<HTMLElement>(null);
+  // Start visible so SSR HTML shows content; JS may hide below-fold items.
+  const [hidden, setHidden]   = useState(false);
 
-  const directionOffset = {
-    up: { y: 20 },
-    down: { y: -20 },
-    left: { x: 20 },
-    right: { x: -20 },
-  };
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
 
-  const initial = prefersReducedMotion
-    ? { opacity: 1, x: 0, y: 0 }
-    : { opacity: 0, ...directionOffset[direction] };
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || typeof IntersectionObserver === 'undefined') return; // stay visible
 
-  const animate = { opacity: 1, x: 0, y: 0 };
+    // Only elements currently below the fold get the fade-up treatment.
+    const rect = el.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (inView) return; // above/in fold — keep visible, no animation flash
+
+    setHidden(true);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHidden(false);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+    );
+    observer.observe(el);
+
+    // Safety net: never leave content hidden (e.g. non-scrolling render).
+    const timer = window.setTimeout(() => setHidden(false), 2500);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
+  }, []);
 
   return (
-    <motion.div
-      initial={initial}
-      whileInView={animate}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{
-        duration: 0.6,
-        ease: "easeOut",
-        delay: resolvedDelay,
+    <Tag
+      ref={ref}
+      className={cn(className)}
+      style={{
+        opacity:    hidden ? 0 : 1,
+        transform:  hidden ? 'translateY(14px)' : 'translateY(0)',
+        transition: `opacity 350ms cubic-bezier(0.2,0,0,1) ${delay}ms, transform 350ms cubic-bezier(0.2,0,0,1) ${delay}ms`,
+        willChange: 'opacity, transform',
+        ...style,
       }}
-      className={className}
+      {...props}
     >
       {children}
-    </motion.div>
+    </Tag>
   );
 }

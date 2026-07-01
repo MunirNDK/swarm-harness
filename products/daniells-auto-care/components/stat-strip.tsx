@@ -1,25 +1,44 @@
-import { GlassCard } from "@/components/ui/glass-card";
-import { stats as defaultStats } from "@/lib/site";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
+import { stats as defaultStats } from '@/lib/site';
 
-interface StatStripProps {
-  className?: string;
-  stats?: { value: string; label: string }[];
+interface Stat {
+  value: string;
+  label: string;
 }
 
-export function StatStrip({ className, stats = defaultStats }: StatStripProps) {
+interface StatStripProps {
+  stats?:     Stat[];
+  className?: string;
+}
+
+/**
+ * StatStrip — Contract §10, §12.9
+ * Accent top-border tiles, stat number in accent red, mono label.
+ * Server component.
+ */
+export function StatStrip({ stats = defaultStats, className }: StatStripProps) {
   return (
     <div
       className={cn(
-        "grid grid-cols-2 md:grid-cols-4 gap-4",
+        'grid grid-cols-2 md:grid-cols-4',
         className
       )}
     >
       {stats.map((stat) => (
-        <GlassCard key={stat.label} className="p-6 text-center">
-          <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-          <div className="text-sm text-dac-muted">{stat.label}</div>
-        </GlassCard>
+        <div
+          key={stat.label}
+          className="border-t-2 border-accent border-b border-b-border px-gauge py-panel text-center"
+        >
+          <p
+            className="font-sans font-extrabold text-accent leading-none"
+            style={{ fontSize: 'var(--t-3xl)' }}
+          >
+            {stat.value}
+          </p>
+          <p className="font-mono text-xs text-fg-faint uppercase tracking-[0.1em] mt-rivet">
+            {stat.label}
+          </p>
+        </div>
       ))}
     </div>
   );

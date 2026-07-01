@@ -1,141 +1,261 @@
-import Image from "next/image"
-import {
-  Shield,
-  GraduationCap,
-  ShieldCheck,
-  BadgeCheck,
-  Check,
-} from "lucide-react"
-import { Container } from "@/components/ui/container"
-import { Section } from "@/components/ui/section"
-import { SectionHeading } from "@/components/ui/section-heading"
-import { Reveal } from "@/components/ui/reveal"
-import { GlassCard } from "@/components/ui/glass-card"
-import { Button } from "@/components/ui/button"
-import { QuoteCTA } from "@/components/quote-cta"
-import { site } from "@/lib/site"
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import { Shield, GraduationCap, ShieldCheck, BadgeCheck } from 'lucide-react';
+import { pageMeta, breadcrumbLd } from '@/lib/seo';
+import { business, whyChooseUs, team } from '@/lib/site';
+import { Breadcrumbs } from '@/components/ui/breadcrumbs';
+import { Container } from '@/components/ui/container';
+import { Section } from '@/components/ui/section';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { GlowCard } from '@/components/ui/glow-card';
+import { Reveal } from '@/components/ui/reveal';
+import { JsonLd } from '@/components/ui/jsonld';
+import { Button } from '@/components/ui/button';
+import { TrustMarquee } from '@/components/trust-marquee';
+import { QuoteButton } from '@/components/quote-modal';
 
-const values = [
+const BREADCRUMBS = [
+  { label: 'Home',     href: '/' },
+  { label: 'Our Team', href: '/team' },
+];
+
+export const metadata: Metadata = pageMeta({
+  title:       'Our Team — Factory-Trained Detailing Technicians',
+  description:
+    'Daniells Auto Care is a licensed, insured, factory-trained mobile detailing team with 5+ years of combined team experience and 140+ five-star reviews across Northern New Jersey.',
+  path: '/team',
+});
+
+const CREDENTIALS = [
   {
     icon: Shield,
-    title: "Licensed & Insured",
-    description: "Fully licensed and insured, giving you complete peace of mind with every service.",
+    title: 'Licensed & Fully Insured',
+    desc: 'Every service is backed by full commercial liability insurance — complete peace of mind while we work on your vehicle.',
   },
   {
     icon: GraduationCap,
-    title: "Factory-Trained Technicians",
-    description: "Our detailers undergo intensive factory training to deliver precision and quality.",
+    title: 'Factory-Trained Technicians',
+    desc: 'Our detailers undergo professional detailing training and use commercial-grade products and equipment on every job.',
   },
   {
     icon: ShieldCheck,
-    title: "2–10 Year Ceramic Coating Warranty",
-    description: "We stand behind our work with a manufacturer-backed ceramic coating warranty.",
+    title: '2–10 Year Ceramic Coating Warranty',
+    desc: 'Our premium ceramic coatings carry a manufacturer-backed warranty of up to 10 years — documented protection, not a promise.',
   },
   {
     icon: BadgeCheck,
-    title: "Lifetime Window Tint Warranty",
-    description: "Our premium window tint is backed by a lifetime warranty against bubbling, peeling, and fading.",
+    title: 'Lifetime Window Tint Warranty',
+    desc: 'Our professional-grade window film is warranted for life against bubbling, peeling, and fading.',
   },
-]
-
-const certifications = site.business.trust
+];
 
 export default function TeamPage() {
   return (
     <>
-      {/* Hero */}
-      <Section className="relative min-h-[70vh] md:min-h-[80vh] flex items-center overflow-hidden bg-dac-ink">
-        {/* Background Image with dark overlay */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={site.images.hero}
-            alt=""
-            fill
-            priority
-            className="object-cover opacity-20"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-dac-ink" />
-        </div>
-        <Container className="relative z-10 text-center">
+      <JsonLd data={breadcrumbLd(BREADCRUMBS)} />
+
+      {/* ── Breadcrumbs ── */}
+      <div className="bg-surface-dark border-b border-border">
+        <Container>
+          <div className="py-3">
+            <Breadcrumbs items={BREADCRUMBS} />
+          </div>
+        </Container>
+      </div>
+
+      {/* ── Hero ── */}
+      <Section surface="surface-dark" id="team-hero">
+        <Container>
           <Reveal>
-            <div className="space-y-8">
-              <h1 className="text-4xl md:text-6xl font-bold font-sora tracking-tight">
-                <span className="bg-gradient-to-r from-white via-white to-dac-red bg-clip-text text-transparent">
-                  Passionate Detailers. <br />Perfectionists. <br />Your Car&apos;s Best Friends.
-                </span>
-              </h1>
-              <p className="text-dac-muted text-lg md:text-xl max-w-2xl mx-auto">
-                Backed by over 8 years of experience, our factory-trained team delivers the highest standard of care for every vehicle that rolls into our bay.
+            <div className="max-w-2xl">
+              <p className="mb-4 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+                Daniells Auto Care
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="primary" size="lg" asChild>
-                  <a href="/contact">Get Free Quote</a>
-                </Button>
-                <Button variant="secondary" size="lg" asChild>
-                  <a href="tel:+19739167868">Call (973) 916-7868</a>
-                </Button>
-              </div>
+              <h1
+                className="font-sans font-bold uppercase tracking-[-0.02em] text-fg"
+                style={{ fontSize: 'clamp(2.25rem,5vw,3.75rem)', lineHeight: '1.05' }}
+              >
+                Our Team
+              </h1>
+              <p className="mt-6 text-fg-soft text-lg leading-relaxed max-w-xl">
+                {business.experienceYears} years of combined team experience. {business.vehiclesDetailed} vehicles
+                detailed. {business.reviewsCount} five-star reviews. A professional mobile detailing
+                operation built on craft, reliability, and genuine care for your vehicle.
+              </p>
             </div>
           </Reveal>
         </Container>
       </Section>
 
-      {/* Values */}
-      <Section>
+      {/* ── Company Story ── */}
+      <Section surface="surface" id="story">
+        <Container>
+          <div className="max-w-3xl">
+            <Reveal>
+              <SectionHeading
+                kicker="About Us"
+                title="Precision. Mobile. Professional."
+                align="left"
+              />
+            </Reveal>
+            <Reveal delay={60}>
+              <div className="space-y-4 text-fg-soft leading-relaxed">
+                <p>
+                  Daniells Auto Care was built on a straightforward idea: bring showroom-quality
+                  detailing directly to our clients without compromising on the craft. With{' '}
+                  {business.experienceYears} years of combined team experience, we have refined our
+                  mobile operation to deliver professional-grade results at homes, offices, and
+                  commercial facilities across {business.serviceArea}.
+                </p>
+                <p>
+                  Our team is fully mobile — equipped with self-contained vans carrying water tanks,
+                  power generators, and commercial detailing equipment. We do not need your hookups,
+                  and you do not need to leave your driveway. Every appointment is attended by
+                  factory-trained technicians who follow the same rigorous process on every vehicle,
+                  regardless of make, model, or price point.
+                </p>
+                <p>
+                  We are licensed and fully insured. That matters because we work on vehicles that
+                  belong to people. Our service history of {business.vehiclesDetailed} detailed
+                  vehicles and {business.reviewsCount} five-star ratings reflects a culture of
+                  accountability: we stand behind every job, and we always do a final walkaround
+                  before we leave.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ── Credentials ── */}
+      <Section surface="bg" id="credentials">
         <Container>
           <SectionHeading
-            eyebrow="Why We're Different"
-            title="Core Values"
-            subtitle="What drives every detail and every service at Daniells Auto Care."
+            kicker="Credentials"
+            title="Why You Can Trust Us"
+            subtitle="Real training, real insurance, real warranties — not just promises."
           />
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, idx) => (
-              <Reveal key={idx} index={idx}>
-                <GlassCard className="p-8 h-full flex flex-col items-center text-center">
-                  <div className="w-14 h-14 rounded-full bg-dac-red/10 flex items-center justify-center mb-6">
-                    <value.icon className="w-7 h-7 text-dac-red" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-bay">
+            {CREDENTIALS.map((c, i) => (
+              <Reveal key={c.title} delay={i * 60}>
+                <GlowCard className="h-full p-8 flex flex-col gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-surface2 border border-border flex items-center justify-center text-accent flex-shrink-0">
+                    <c.icon className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  <h3 className="text-xl font-semibold font-sora text-white mb-3">
-                    {value.title}
+                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base">
+                    {c.title}
                   </h3>
-                  <p className="text-dac-muted">{value.description}</p>
-                </GlassCard>
+                  <p className="text-fg-soft text-sm leading-relaxed">{c.desc}</p>
+                </GlowCard>
               </Reveal>
             ))}
           </div>
         </Container>
       </Section>
 
-      {/* Certifications */}
-      <Section className="bg-dac-black/50">
+      {/* ── Meet the Team ── */}
+      <Section surface="surface" id="meet-the-team">
         <Container>
           <SectionHeading
-            eyebrow="Trust & Credentials"
-            title="Licensed, Insured & Factory-Trained"
-            subtitle="We don't just talk about quality — we back it with real credentials and warranties."
+            kicker="The Crew"
+            title="Meet the Team"
+            subtitle="Each member of our team is trained in the latest detailing techniques and committed to exceeding your expectations."
           />
-          <div className="mt-16">
-            <Reveal>
-              <GlassCard className="p-8 md:p-12 max-w-3xl mx-auto">
-                <ul className="space-y-6">
-                  {certifications.map((cert, idx) => (
-                    <li key={idx} className="flex items-start gap-4">
-                      <div className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-full bg-dac-red/10 flex items-center justify-center">
-                        <Check className="w-4 h-4 text-dac-red" />
-                      </div>
-                      <span className="text-lg text-white">{cert}</span>
-                    </li>
-                  ))}
-                </ul>
-              </GlassCard>
-            </Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-bay">
+            {team.map((member, i) => (
+              <Reveal key={member.name} delay={i * 60}>
+                <GlowCard className="h-full flex flex-col">
+                  <div className="relative aspect-square w-full overflow-hidden">
+                    <Image
+                      src={member.image}
+                      alt={`${member.name}, ${member.role} at Daniells Auto Care`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col gap-1 flex-1">
+                    <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base">
+                      {member.name}
+                    </h3>
+                    <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+                      {member.role}
+                    </p>
+                  </div>
+                </GlowCard>
+              </Reveal>
+            ))}
           </div>
         </Container>
       </Section>
 
-      {/* Quote CTA */}
-      <QuoteCTA />
+      {/* ── Why Choose Us (from site data — no fabricated content) ── */}
+      <Section surface="surface" id="why-us">
+        <Container>
+          <SectionHeading
+            kicker="What Sets Us Apart"
+            title="The Daniells Difference"
+            subtitle="Six reasons Northern NJ vehicle owners choose us — and stay with us."
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-bay">
+            {whyChooseUs.map((item, i) => (
+              <Reveal key={item.title} delay={i * 50}>
+                <GlowCard className="h-full p-6 flex flex-col gap-3">
+                  <div
+                    className="w-2 h-8 rounded-full bg-accent flex-shrink-0"
+                    aria-hidden="true"
+                  />
+                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-sm">
+                    {item.title}
+                  </h3>
+                  <p className="text-fg-soft text-sm leading-relaxed">{item.desc}</p>
+                </GlowCard>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ── Trust Marquee ── */}
+      <TrustMarquee />
+
+      {/* ── CTA ── */}
+      <Section surface="surface-dark-2" id="team-cta">
+        <Container>
+          <Reveal>
+            <div className="text-center max-w-xl mx-auto">
+              <h2
+                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4"
+                style={{ fontSize: 'clamp(1.75rem,3vw,2.5rem)' }}
+              >
+                Experience the Difference
+              </h2>
+              <p className="text-fg-soft mb-8 leading-relaxed">
+                Ready to put our team to work on your vehicle? Get your free quote — we respond in{' '}
+                {business.responseTime}.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <QuoteButton
+                  size="lg"
+                  track={{
+                    category: 'conversion',
+                    action:   'button_click',
+                    label:    'team_cta_get_quote',
+                  }}
+                />
+                <Button
+                  href={business.phoneHref}
+                  variant="phone"
+                  size="lg"
+                  track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
+                >
+                  {business.phone}
+                </Button>
+              </div>
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
     </>
-  )
+  );
 }

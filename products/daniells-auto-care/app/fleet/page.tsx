@@ -1,216 +1,197 @@
-import { Metadata } from "next";
-import { Calendar, Percent, Truck, UserCheck, ClipboardList, PenTool, ShieldCheck } from "lucide-react";
-import { site, images } from "@/lib/site";
-import { Container } from "@/components/ui/container";
-import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/ui/reveal";
-import { QuoteCTA } from "@/components/quote-cta";
-import { cn } from "@/lib/utils";
+import type { Metadata } from 'next';
+import Image from 'next/image';
+import { Truck, Calendar, UserCheck, ClipboardList } from 'lucide-react';
+import { pageMeta, serviceLd, breadcrumbLd } from '@/lib/seo';
+import { services, reviews, images, business } from '@/lib/site';
+import { Breadcrumbs } from '@/components/ui/breadcrumbs';
+import { Container } from '@/components/ui/container';
+import { Section } from '@/components/ui/section';
+import { SectionHeading } from '@/components/ui/section-heading';
+import { GlowCard } from '@/components/ui/glow-card';
+import { Reveal } from '@/components/ui/reveal';
+import { JsonLd } from '@/components/ui/jsonld';
+import { Button } from '@/components/ui/button';
+import { TrustMarquee } from '@/components/trust-marquee';
+import { ReviewCard } from '@/components/review-card';
+import { QuoteButton } from '@/components/quote-modal';
 
-const { business, services } = site;
-const fleetService = services.find((s) => s.slug === "fleet-detailing");
+const fleet = services.find((s) => s.slug === 'fleet-detailing')!;
 
-export const metadata: Metadata = {
-  title: "Fleet & Commercial Auto Detailing in Northern NJ | Daniells Auto Care",
+export const metadata: Metadata = pageMeta({
+  title: 'Fleet Detailing for NJ Businesses',
   description:
-    "Professional mobile fleet detailing with on-site service, volume pricing, scheduled maintenance, and dedicated account management. Trusted by businesses across Northern New Jersey — free quotes in 15 minutes.",
-};
+    'Mobile fleet detailing with on-site service, volume pricing, and dedicated account management for businesses in Northern New Jersey. Free fleet assessment in 15 min.',
+  path: '/fleet',
+});
 
-const benefits = [
+const BREADCRUMBS = [
+  { label: 'Home', href: '/' },
+  { label: 'Fleet Detailing', href: '/fleet' },
+];
+
+const BENEFITS = [
   {
     icon: Truck,
-    title: "On-Site Mobile Detailing",
-    description:
-      "We bring our commercial detailing rig directly to your office, depot, or jobsite — minimizing downtime and keeping your fleet on the road.",
-  },
-  {
-    icon: Percent,
-    title: "Volume Pricing",
-    description:
-      "Economies of scale built into every program: the more vehicles you enroll, the lower the per-unit cost.",
+    title: 'On-Site Mobile Service',
+    desc: 'We bring our full commercial detailing rig to your depot, office, or jobsite — minimising downtime and keeping your fleet on the road.',
   },
   {
     icon: Calendar,
-    title: "Scheduled Maintenance",
-    description:
-      "Regular detailing programs that keep your fleet consistently clean and protected, on a cadence that fits your operations.",
+    title: 'Flexible Scheduling',
+    desc: 'Weekly, bi-weekly, or monthly programs that keep every vehicle in your fleet consistently clean, protected, and presentation-ready.',
   },
   {
     icon: UserCheck,
-    title: "Dedicated Account Manager",
-    description:
-      "One point of contact for scheduling, invoicing, and special requests — so you never have to repeat yourself.",
+    title: 'Dedicated Account Contact',
+    desc: 'A single point of contact for scheduling, service history, and special requests — you never repeat yourself.',
   },
-];
-
-const processSteps = [
   {
     icon: ClipboardList,
-    title: "Request a Fleet Assessment",
-    description:
-      "Tell us about your vehicles, locations, and detailing goals. We’ll respond within 15 minutes.",
-  },
-  {
-    icon: PenTool,
-    title: "Custom Program Design",
-    description:
-      "We’ll build a tailored plan with the right services, frequency, and pricing for your fleet.",
-  },
-  {
-    icon: Truck,
-    title: "On-Site Execution",
-    description:
-      "Our mobile unit arrives at your scheduled time, completes the work, and leaves your fleet looking its best.",
+    title: 'Quality Reporting',
+    desc: 'After each service cycle, we provide a brief condition summary so you can track consistency and catch wear issues early.',
   },
 ];
 
-const faqs = [
+const TIERS = [
   {
-    q: "What types of vehicles qualify for fleet programs?",
-    a: "We service virtually any commercial vehicle, including sedans, SUVs, vans, box trucks, and light-duty fleet vehicles. If you have specialized equipment, we’ll tailor a plan.",
+    label: 'Small Fleet',
+    desc: 'Suitable for businesses running 3–10 vehicles. Monthly or bi-monthly scheduling keeps a compact fleet presentation-ready without disrupting daily operations.',
   },
   {
-    q: "Do you offer on-site mobile detailing for fleets?",
-    a: "Absolutely. Our mobile detailing rig comes fully equipped to handle interior and exterior detailing at your location, minimizing downtime and logistics.",
+    label: 'Mid-Size Fleet',
+    desc: 'Designed for companies operating 11–30 vehicles. Bi-weekly or monthly rotations with scheduled on-site visits and a dedicated account contact.',
   },
   {
-    q: "Is there a minimum number of vehicles required for volume pricing?",
-    a: "Volume pricing typically starts at 3 or more vehicles, but we work with businesses of any size. The more vehicles in your fleet, the greater the per-unit savings.",
+    label: 'Large Fleet',
+    desc: 'For businesses managing 31 or more vehicles. Weekly rolling schedules, priority dispatch, volume pricing, and full service reporting.',
   },
 ];
 
 export default function FleetPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative flex min-h-[70vh] items-center overflow-hidden bg-[#0A0A0A]">
-        {/* Background image */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url('${images.fleet}')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          aria-hidden
-        />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/80 via-black/70 to-[#0A0A0A]" />
+      <JsonLd
+        data={[
+          serviceLd({ name: fleet.name, description: fleet.long, slug: fleet.slug }),
+          breadcrumbLd(BREADCRUMBS),
+        ]}
+      />
 
-        <Container className="relative z-10 py-24 md:py-32">
+      {/* ── Breadcrumbs ── */}
+      <div className="bg-surface-dark border-b border-border">
+        <Container>
+          <div className="py-3">
+            <Breadcrumbs items={BREADCRUMBS} />
+          </div>
+        </Container>
+      </div>
+
+      {/* ── Hero ── */}
+      <section className="relative flex min-h-[60vh] items-center overflow-hidden bg-surface-dark">
+        <Image
+          src={images.fleet}
+          alt="A row of commercial vehicles awaiting professional on-site mobile detailing"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-25"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to bottom,rgba(5,5,5,0.75) 0%,rgba(10,10,10,1) 100%)',
+          }}
+          aria-hidden="true"
+        />
+        <Container className="relative z-10 py-20 md:py-28">
           <Reveal>
-            <div className="max-w-3xl">
-              <p className="font-sora text-sm font-semibold uppercase tracking-[0.2em] text-[#E80505]">
-                Corporate Fleet Detailing
-              </p>
-              <h1 className="mt-4 font-sora text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl">
-                Keep Your Entire Fleet{" "}
-                <span className="bg-gradient-to-r from-white via-white to-[#E80505] bg-clip-text text-transparent">
-                  Looking Professional
-                </span>
-              </h1>
-              <p className="mt-6 max-w-xl text-lg text-[#A1A1AA]">
-                {fleetService?.long ||
-                  "Dedicated corporate detailing programs with on-site mobile service, volume pricing and account management."}
-              </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  asChild
-                  className="w-full sm:w-auto"
-                >
-                  <a href="/contact">Get Free Quote</a>
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  asChild
-                  className="w-full sm:w-auto"
-                >
-                  <a href={business.phoneHref}>Call {business.phone}</a>
-                </Button>
-              </div>
+            <p className="mb-4 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+              Corporate Fleet Programs
+            </p>
+            <h1
+              className="font-sans font-bold uppercase tracking-[-0.02em] text-fg"
+              style={{ fontSize: 'clamp(2.25rem,5vw,3.75rem)', lineHeight: '1.05' }}
+            >
+              Mobile Fleet Detailing
+              <br />
+              <span className="text-accent">Built for Business</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-fg-soft text-lg leading-relaxed">
+              {fleet.long}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <QuoteButton
+                size="lg"
+                track={{
+                  category: 'conversion',
+                  action:   'button_click',
+                  label:    'fleet_hero_get_quote',
+                }}
+              >
+                Request Fleet Assessment
+              </QuoteButton>
+              <Button
+                href={business.phoneHref}
+                variant="phone"
+                size="lg"
+                track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
+              >
+                {business.phone}
+              </Button>
             </div>
           </Reveal>
         </Container>
       </section>
 
-      {/* Program Overview Intro */}
-      <Section id="overview" background="ink">
-        <Container>
-          <Reveal>
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="text-lg leading-relaxed text-[#A1A1AA]">
-                A professional fleet image builds trust with clients and
-                employees. At Daniells Auto Care, we make it easy to maintain a
-                spotless fleet with on-site mobile detailing, predictable
-                scheduling, and transparent volume pricing. Whether you run a
-                small business or manage a large commercial fleet across{" "}
-                {business.serviceArea}, our dedicated account managers ensure
-                every vehicle reflects the quality of your brand — without
-                disrupting your operations.
-              </p>
-              <p className="mt-4 text-lg leading-relaxed text-[#A1A1AA]">
-                Backed by over {business.experienceYears} of experience and{" "}
-                {business.vehiclesDetailed} vehicles detailed, we have the
-                equipment, expertise, and insurance to handle any fleet size.
-                From ceramic coating protection to regular wash-and-vac programs,
-                we customize a plan that fits your needs and budget.
-              </p>
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
-
-      {/* Benefits (Why Choose Us) */}
-      <Section id="benefits">
+      {/* ── Benefits ── */}
+      <Section surface="surface" id="benefits">
         <Container>
           <SectionHeading
-            eyebrow="Fleet Solutions"
-            title="Why Fleets Choose Daniells Auto Care"
-            subtitle="A dedicated program built around your business — not the other way around."
+            kicker="Fleet Solutions"
+            title="Why Businesses Choose Daniells"
+            subtitle="A dedicated program built around your operations — not the other way around."
           />
-          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {benefits.map((benefit, idx) => (
-              <Reveal key={benefit.title} delay={idx * 0.05}>
-                <GlassCard className="flex h-full flex-col items-start p-8">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E80505]/10 text-[#E80505]">
-                    <benefit.icon className="h-6 w-6" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-bay">
+            {BENEFITS.map((b, i) => (
+              <Reveal key={b.title} delay={i * 60}>
+                <GlowCard className="h-full p-8 flex flex-col gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-surface2 border border-border flex items-center justify-center text-accent flex-shrink-0">
+                    <b.icon className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  <h3 className="mt-5 font-sora text-lg font-semibold text-white">
-                    {benefit.title}
+                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base">
+                    {b.title}
                   </h3>
-                  <p className="mt-3 text-[#A1A1AA]">{benefit.description}</p>
-                </GlassCard>
+                  <p className="text-fg-soft text-sm leading-relaxed">{b.desc}</p>
+                </GlowCard>
               </Reveal>
             ))}
           </div>
         </Container>
       </Section>
 
-      {/* How It Works */}
-      <Section id="how-it-works" background="ink">
+      {/* ── Process ── */}
+      <Section surface="bg" id="process">
         <Container>
           <SectionHeading
-            eyebrow="Process"
-            title="How Our Fleet Program Works"
-            subtitle="Simple, transparent, and built for minimal disruption."
+            kicker="How It Works"
+            title="Our Fleet Program Process"
+            subtitle="Three steps from first contact to a consistently clean, professional fleet."
           />
-          <div className="mt-16 grid gap-8 md:grid-cols-3">
-            {processSteps.map((step, idx) => (
-              <Reveal key={step.title} delay={idx * 0.1}>
-                <div className="relative flex flex-col items-center text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#E80505]/30 bg-[#E80505]/10 text-[#E80505]">
-                    <step.icon className="h-6 w-6" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-bay">
+            {fleet.process.map((step, i) => (
+              <Reveal key={step.title} delay={i * 80}>
+                <div className="flex flex-col gap-4">
+                  <div
+                    className="w-10 h-10 rounded-full bg-accent flex items-center justify-center font-mono font-bold text-fg text-sm flex-shrink-0"
+                    aria-hidden="true"
+                  >
+                    {i + 1}
                   </div>
-                  <h3 className="mt-5 font-sora text-lg font-semibold text-white">
+                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base">
                     {step.title}
                   </h3>
-                  <p className="mt-3 text-[#A1A1AA]">{step.description}</p>
+                  <p className="text-fg-soft text-sm leading-relaxed">{step.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -218,34 +199,105 @@ export default function FleetPage() {
         </Container>
       </Section>
 
-      {/* FAQ */}
-      <Section id="faq" background="ink">
+      {/* ── Volume Pricing Tiers (no fabricated prices) ── */}
+      <Section surface="surface" id="pricing">
         <Container>
           <SectionHeading
-            eyebrow="FAQ"
-            title="Fleet Detailing Questions"
-            subtitle="Answers to common questions about our commercial fleet programs."
+            kicker="Custom Volume Pricing"
+            title="Fleet Programs by Size"
+            subtitle="Every program is custom-quoted based on fleet size, vehicle types, and service frequency. Request a free fleet assessment to receive your tailored proposal — no obligation."
           />
-          <div className="mt-12 mx-auto max-w-3xl space-y-4">
-            {faqs.map((faq, idx) => (
-              <Reveal key={idx} delay={idx * 0.05}>
-                <GlassCard className="p-6">
-                  <h3 className="font-sora text-lg font-semibold text-white">
-                    {faq.q}
-                  </h3>
-                  <p className="mt-2 text-[#A1A1AA]">{faq.a}</p>
-                </GlassCard>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-bay">
+            {TIERS.map((tier, i) => (
+              <Reveal key={tier.label} delay={i * 80} className="h-full">
+                <GlowCard className="h-full flex flex-col">
+                  <div className="p-6 flex flex-col flex-1 gap-4">
+                    <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg">
+                      {tier.label}
+                    </h3>
+                    <p className="text-fg-soft text-sm leading-relaxed flex-1">{tier.desc}</p>
+                    <div className="mt-auto">
+                      <QuoteButton
+                        variant="outline"
+                        size="md"
+                        track={{
+                          category: 'conversion',
+                          action:   'button_click',
+                          label:    `fleet_tier_custom_quote`,
+                        }}
+                      >
+                        Custom Quote
+                      </QuoteButton>
+                    </div>
+                  </div>
+                </GlowCard>
               </Reveal>
             ))}
           </div>
         </Container>
       </Section>
 
-      {/* Quote CTA */}
-      <QuoteCTA
-        headline="Explore Fleet Programs"
-        subheadline="Let’s design a program that fits your fleet size and budget."
-      />
+      {/* ── Reviews ── */}
+      <Section surface="bg" id="reviews">
+        <Container>
+          <SectionHeading
+            kicker="What Clients Say"
+            title="140+ Five-Star Reviews"
+            subtitle="Northern NJ businesses and vehicle owners trust Daniells Auto Care."
+            align="center"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-bay">
+            {reviews.map((r) => (
+              <Reveal key={r.name}>
+                <ReviewCard review={r} />
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ── Trust Marquee ── */}
+      <TrustMarquee />
+
+      {/* ── Fleet CTA ── */}
+      <Section surface="surface-dark-2" id="fleet-cta">
+        <Container>
+          <Reveal>
+            <div className="text-center max-w-2xl mx-auto">
+              <h2
+                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4"
+                style={{ fontSize: 'clamp(1.75rem,3vw,2.5rem)' }}
+              >
+                Build a Fleet Program Today
+              </h2>
+              <p className="text-fg-soft mb-8 leading-relaxed">
+                Tell us about your fleet and we&apos;ll respond within {business.responseTime} with a
+                custom proposal — no obligation.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <QuoteButton
+                  size="lg"
+                  track={{
+                    category: 'conversion',
+                    action:   'button_click',
+                    label:    'fleet_cta_get_quote',
+                  }}
+                >
+                  Request Free Assessment
+                </QuoteButton>
+                <Button
+                  href={business.phoneHref}
+                  variant="phone"
+                  size="lg"
+                  track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
+                >
+                  {business.phone}
+                </Button>
+              </div>
+            </div>
+          </Reveal>
+        </Container>
+      </Section>
     </>
   );
 }
