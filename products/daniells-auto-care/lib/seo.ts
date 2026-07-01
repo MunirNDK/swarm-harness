@@ -22,12 +22,18 @@ export function pageMeta({
   const url     = `${siteUrl}${path}`;
   const ogImage = image ?? '/assets/og.webp';
 
+  // Normalize: strip any brand suffix a caller may have included, then append it
+  // exactly once. `title.absolute` bypasses the root layout template so root and
+  // nested pages are consistent (Next applies templates only to nested segments).
+  const base      = title.replace(/\s*[|–—-]\s*Daniells Auto Care\s*$/i, '').trim();
+  const fullTitle = `${base} | ${business.name}`;
+
   return {
-    title,
+    title: { absolute: fullTitle },
     description,
     alternates: { canonical: url },
     openGraph: {
-      title,
+      title:    fullTitle,
       description,
       url,
       siteName: business.name,
@@ -38,13 +44,13 @@ export function pageMeta({
           url:    `${siteUrl}${ogImage}`,
           width:  1200,
           height: 630,
-          alt:    title,
+          alt:    fullTitle,
         },
       ],
     },
     twitter: {
       card:        'summary_large_image',
-      title,
+      title:       fullTitle,
       description,
       images:      [`${siteUrl}${ogImage}`],
     },

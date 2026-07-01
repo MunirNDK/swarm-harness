@@ -24,7 +24,12 @@ interface RevealProps extends HTMLAttributes<HTMLElement> {
 /**
  * Reveal — Contract §10, §13.3 HEADLINE_ENTRANCE / §13.4 SCROLL_RHYTHM
  * Fade-up 14px / 350ms via IntersectionObserver at 15% threshold.
- * Respects prefers-reduced-motion (skips animation).
+ *
+ * Progressive enhancement: content is VISIBLE by default (SSR / no-JS / crawlers
+ * always render it). On mount, JS hides only below-the-fold elements and reveals
+ * them on scroll. In-view and above-the-fold content never hides (no flash).
+ * Respects prefers-reduced-motion. A safety timer guarantees content is never
+ * left hidden even if the observer never fires.
  */
 export function Reveal({
   delay     = 0,
@@ -38,49 +43,54 @@ export function Reveal({
   direction: _direction,
   ...props
 }: RevealProps) {
-  const Tag                          = as;
-  const ref                          = useRef<HTMLElement>(null);
-  const [visible, setVisible]        = useState(false);
-  const [reduced, setReduced]        = useState(false);
-
-  // Detect reduced-motion preference on mount (SSR-safe)
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(mq.matches);
-  }, []);
+  const Tag                   = as;
+  const ref                   = useRef<HTMLElement>(null);
+  // Start visible so SSR HTML shows content; JS may hide below-fold items.
+  const [hidden, setHidden]   = useState(false);
 
   useEffect(() => {
-    if (reduced) {
-      setVisible(true);
-      return;
-    }
     const el = ref.current;
     if (!el) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || typeof IntersectionObserver === 'undefined') return; // stay visible
+
+    // Only elements currently below the fold get the fade-up treatment.
+    const rect = el.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (inView) return; // above/in fold — keep visible, no animation flash
+
+    setHidden(true);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
+          setHidden(false);
           observer.unobserve(el);
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
     );
     observer.observe(el);
-    return () => observer.disconnect();
-  }, [reduced]);
+
+    // Safety net: never leave content hidden (e.g. non-scrolling render).
+    const timer = window.setTimeout(() => setHidden(false), 2500);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timer);
+    };
+  }, []);
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Tag
       ref={ref}
       className={cn(className)}
       style={{
-        opacity:   visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(14px)',
-        transition: reduced
-          ? 'none'
-          : `opacity 350ms cubic-bezier(0.2,0,0,1) ${delay}ms, transform 350ms cubic-bezier(0.2,0,0,1) ${delay}ms`,
+        opacity:    hidden ? 0 : 1,
+        transform:  hidden ? 'translateY(14px)' : 'translateY(0)',
+        transition: `opacity 350ms cubic-bezier(0.2,0,0,1) ${delay}ms, transform 350ms cubic-bezier(0.2,0,0,1) ${delay}ms`,
+        willChange: 'opacity, transform',
         ...style,
       }}
       {...props}
