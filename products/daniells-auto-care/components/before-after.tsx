@@ -84,7 +84,7 @@ export function BeforeAfter({
 
   return (
     <div
-      className={cn('flex flex-col', className)}
+      className={cn('flex flex-col select-none', className)}
       data-track-category="content"
       data-track-action="view"
       data-track-label={id}
@@ -94,6 +94,7 @@ export function BeforeAfter({
         ref={containerRef}
         className="relative aspect-[3/2] w-full overflow-hidden rounded-lg border border-border bg-surface"
         style={{ touchAction: 'none' }}
+        onDragStart={(e) => e.preventDefault()}
       >
         {/* After image (base layer) */}
         <Image
@@ -101,7 +102,8 @@ export function BeforeAfter({
           alt={title ? `${title} — after` : 'After'}
           fill
           sizes="(max-width:768px) 100vw, 50vw"
-          className="object-cover"
+          className="object-cover pointer-events-none"
+          draggable={false}
         />
 
         {/* Before image (clipped) */}
@@ -110,8 +112,9 @@ export function BeforeAfter({
           alt={title ? `${title} — before` : 'Before'}
           fill
           sizes="(max-width:768px) 100vw, 50vw"
-          className="object-cover"
+          className="object-cover pointer-events-none"
           style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
+          draggable={false}
         />
 
         {/* Red divider line */}
@@ -121,33 +124,23 @@ export function BeforeAfter({
           style={{ left: `${position}%`, transform: 'translateX(-50%)' }}
         />
 
-        {/* VS pill on the divider */}
+        {/*
+          Single drag handle — circular knob centered on the divider.
+          Contains a two-headed ⟷ grip (left + right chevrons).
+          The VS pill has been removed to eliminate overlap with this knob.
+        */}
         <div
           aria-hidden="true"
-          className="absolute z-[4] flex items-center justify-center"
-          style={{
-            left:      `${position}%`,
-            top:       '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <span
-            className="bg-surface-dark border border-accent rounded-full px-2 py-0.5 font-mono text-[0.6rem] tracking-[0.1em] text-accent uppercase whitespace-nowrap"
-          >
-            VS
-          </span>
-        </div>
-
-        {/* Draggable handle */}
-        <div
-          className="absolute top-1/2 z-[5] -translate-y-1/2 cursor-ew-resize"
-          style={{ left: `${position}%`, transform: 'translate(-50%, -50%)' }}
+          className="absolute z-[5] cursor-ew-resize"
+          style={{ left: `${position}%`, top: '50%', transform: 'translate(-50%, -50%)' }}
           onPointerDown={onPointerDown}
         >
-          <div className="w-10 h-10 rounded-full bg-surface-dark/80 border border-border flex items-center justify-center">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path d="M7 4L13 10L7 16"  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-fg" />
-              <path d="M13 4L7 10L13 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-fg" />
+          <div className="w-10 h-10 rounded-full bg-surface-dark/90 border border-accent flex items-center justify-center shadow-[0_0_8px_rgba(232,5,5,0.35)]">
+            <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
+              {/* Left chevron */}
+              <path d="M8 1L2 7L8 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-fg" />
+              {/* Right chevron */}
+              <path d="M12 1L18 7L12 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-fg" />
             </svg>
           </div>
         </div>

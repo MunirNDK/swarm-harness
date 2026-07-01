@@ -67,87 +67,74 @@ export default function BlogPage() {
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-bay">
             {blogPosts.map((post, i) => (
-              <Reveal key={post.slug} delay={i * 60}>
-                <GlowCard className="h-full flex flex-col overflow-hidden">
-                  {/* Featured Image */}
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="block relative aspect-[16/9] overflow-hidden"
-                    tabIndex={-1}
-                    aria-hidden="true"
-                    data-track-category="navigation"
-                    data-track-action="link_click"
-                    data-track-label={`blog_image_${post.slug}`}
-                    data-track-context="internal"
-                  >
-                    <Image
-                      src={post.image}
-                      alt={post.imageAlt}
-                      fill
-                      sizes="(max-width:768px) 100vw,(max-width:1024px) 50vw,33vw"
-                      className="object-cover transition-transform duration-base ease-default hover:scale-105"
-                    />
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background:
-                          'linear-gradient(to top,rgba(10,10,10,0.6),transparent)',
-                      }}
-                      aria-hidden="true"
-                    />
-                  </Link>
-
-                  {/* Card Body */}
-                  <div className="flex flex-col flex-1 p-6 gap-3">
-                    {/* Category badge + Date */}
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <span className="flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent bg-accent-soft border border-[rgba(232,5,5,0.2)] rounded-full px-2 py-0.5">
-                        <Tag className="w-3 h-3" aria-hidden="true" />
-                        {post.category}
-                      </span>
-                      <time
-                        dateTime={post.date}
-                        className="flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint"
-                      >
-                        <Calendar className="w-3 h-3" aria-hidden="true" />
-                        {new Date(post.date).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day:   'numeric',
-                          year:  'numeric',
-                        })}
-                      </time>
+              <Reveal key={post.slug} delay={i * 60} className="h-full">
+                {/* Single link wrapping the whole card — no nested anchors */}
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="block h-full"
+                  aria-label={`Read article: ${post.title}`}
+                  data-track-category="navigation"
+                  data-track-action="link_click"
+                  data-track-label={`blog_${post.slug}`}
+                  data-track-context="internal"
+                >
+                  <GlowCard className="h-full flex flex-col overflow-hidden">
+                    {/* Featured Image */}
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src={post.image}
+                        alt={post.imageAlt}
+                        fill
+                        sizes="(max-width:768px) 100vw,(max-width:1024px) 50vw,33vw"
+                        className="object-cover transition-transform duration-base ease-default group-hover:scale-105"
+                      />
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background:
+                            'linear-gradient(to top,rgba(10,10,10,0.6),transparent)',
+                        }}
+                        aria-hidden="true"
+                      />
                     </div>
 
-                    {/* Title link */}
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base leading-snug hover:text-accent transition-colors duration-fast"
-                      data-track-category="navigation"
-                      data-track-action="link_click"
-                      data-track-label={`blog_title_${post.slug}`}
-                      data-track-context="internal"
-                    >
-                      {post.title}
-                    </Link>
+                    {/* Card Body */}
+                    <div className="flex flex-col flex-1 p-6 gap-3">
+                      {/* Category badge + Date */}
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <span className="flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent bg-accent-soft border border-[rgba(232,5,5,0.2)] rounded-full px-2 py-0.5">
+                          <Tag className="w-3 h-3" aria-hidden="true" />
+                          {post.category}
+                        </span>
+                        <time
+                          dateTime={post.date}
+                          className="flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint"
+                        >
+                          <Calendar className="w-3 h-3" aria-hidden="true" />
+                          {new Date(post.date).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day:   'numeric',
+                            year:  'numeric',
+                          })}
+                        </time>
+                      </div>
 
-                    {/* Excerpt ≤160 chars */}
-                    <p className="text-fg-soft text-sm leading-relaxed flex-1">{post.excerpt}</p>
+                      {/* Title (heading — no nested anchor) */}
+                      <p className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base leading-snug hover:text-accent transition-colors duration-fast">
+                        {post.title}
+                      </p>
 
-                    {/* Read more */}
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="inline-flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent hover:gap-2.5 transition-all duration-fast mt-auto min-h-[44px]"
-                      data-track-category="navigation"
-                      data-track-action="link_click"
-                      data-track-label={`blog_readmore_${post.slug}`}
-                      data-track-context="internal"
-                      aria-label={`Read more: ${post.title}`}
-                    >
-                      Read Article
-                      <ArrowRight className="w-3 h-3" aria-hidden="true" />
-                    </Link>
-                  </div>
-                </GlowCard>
+                      {/* Excerpt ≤160 chars */}
+                      <p className="text-fg-soft text-sm leading-relaxed flex-1">{post.excerpt}</p>
+
+                      {/* Read more indicator (not a link — card itself is the link) */}
+                      <div className="inline-flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent mt-auto min-h-[44px]">
+                        Read Article
+                        <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                      </div>
+                    </div>
+                  </GlowCard>
+                </Link>
               </Reveal>
             ))}
           </div>

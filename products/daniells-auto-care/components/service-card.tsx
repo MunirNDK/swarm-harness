@@ -10,8 +10,8 @@ import {
   Truck,
   type LucideProps,
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { GlowCard } from '@/components/ui/glow-card';
-import { TreatmentLog, getLogProps } from '@/components/treatment-log';
 
 /* Icon map — all 8 service icons, imported statically for server components */
 const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
@@ -26,16 +26,15 @@ const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
 };
 
 interface ServiceLike {
-  slug:    string;
-  name:    string;
-  icon:    string;
-  short:   string;
-  process: { title: string; desc: string }[];
+  slug:  string;
+  name:  string;
+  icon:  string;
+  short: string;
 }
 
 interface ServiceCardProps {
-  service?:    ServiceLike;
-  className?:  string;
+  service?:   ServiceLike;
+  className?: string;
   /** Legacy flat props — used when service object is not provided */
   slug?:  string;
   name?:  string;
@@ -46,7 +45,9 @@ interface ServiceCardProps {
 /**
  * ServiceCard — Contract §10, §6, §12.4
  * Server component — wraps GlowCard (client) for the red-glow-reveal.
- * Every card has a TreatmentLog — REQUIRED per contract §11.
+ * Entire card is clickable via a stretched <Link> (absolute inset-0).
+ * No nested anchors — the "View service" CTA is a visual hint, not an anchor.
+ * h-full ensures equal row heights in a grid context.
  */
 export function ServiceCard({
   service,
@@ -57,20 +58,18 @@ export function ServiceCard({
   short: flatShort,
 }: ServiceCardProps) {
   const resolved: ServiceLike = service ?? {
-    slug:    flatSlug  ?? '',
-    name:    flatName  ?? '',
-    icon:    flatIcon  ?? 'Sparkles',
-    short:   flatShort ?? '',
-    process: [],
+    slug:  flatSlug  ?? '',
+    name:  flatName  ?? '',
+    icon:  flatIcon  ?? 'Sparkles',
+    short: flatShort ?? '',
   };
-  const { slug, name, icon, short, process: proc } = resolved;
+  const { slug, name, icon, short } = resolved;
   const IconComponent = ICON_MAP[icon] ?? Sparkles;
-  const logProps      = getLogProps(slug, name, proc.length);
 
   return (
     <GlowCard
       as="article"
-      className={className}
+      className={cn('h-full', className)}
       data-track-category="content"
       data-track-action="view"
       data-track-label={slug}
@@ -97,25 +96,12 @@ export function ServiceCard({
           {short}
         </p>
 
-        {/* Treatment Log — REQUIRED on every service card */}
-        <TreatmentLog
-          code={logProps.code}
-          title={logProps.title}
-          stage={logProps.stage}
-          est={logProps.est}
-          status={logProps.status}
-        />
-
-        {/* CTA — no price shown (no data) */}
-        <Link
-          href={`/services/${slug}`}
-          className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.05em] text-accent hover:text-accent-mid transition-colors duration-fast ease-default mt-1 min-h-[44px]"
-          data-track-category="navigation"
-          data-track-action="link_click"
-          data-track-label={`service_${slug}`}
-          data-track-context="internal"
+        {/* View hint — visual affordance pushed to the bottom; not an anchor */}
+        <span
+          className="mt-auto inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.05em] text-accent"
+          aria-hidden="true"
         >
-          Get Free Quote
+          View service
           <svg
             width="14"
             height="14"
@@ -131,7 +117,22 @@ export function ServiceCard({
               strokeLinejoin="round"
             />
           </svg>
-        </Link>
+        </span>
+
+        {/*
+          Stretched link — covers the entire GlowCard (which is position:relative).
+          Positions relative to GlowCard, not the inner div (which is position:static).
+          No anchor nested inside this anchor — the hint above is a <span>.
+        */}
+        <Link
+          href={`/services/${slug}`}
+          className="absolute inset-0 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset rounded-[inherit]"
+          aria-label={`Learn more about ${name}`}
+          data-track-category="navigation"
+          data-track-action="link_click"
+          data-track-label={slug}
+          data-track-context="internal"
+        />
       </div>
     </GlowCard>
   );

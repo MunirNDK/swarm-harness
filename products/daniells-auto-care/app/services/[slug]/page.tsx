@@ -12,7 +12,6 @@ import { JsonLd } from '@/components/ui/jsonld';
 import { GlowCard } from '@/components/ui/glow-card';
 import { ServiceCard } from '@/components/service-card';
 import { QuoteButton } from '@/components/quote-modal';
-import { TreatmentLog, getLogProps } from '@/components/treatment-log';
 import { business, services } from '@/lib/site';
 import { pageMeta, serviceLd, faqLd, breadcrumbLd } from '@/lib/seo';
 
@@ -45,8 +44,6 @@ export default function ServiceDetailPage({ params }: Props) {
   const relatedServices = services
     .filter((s) => s.slug !== service.slug)
     .slice(0, 3);
-
-  const logProps = getLogProps(service.slug, service.name, service.process.length);
 
   const sdLd = serviceLd(
     { name: service.name, description: service.long, slug: service.slug },
@@ -85,19 +82,6 @@ export default function ServiceDetailPage({ params }: Props) {
                 <p className="text-fg-soft text-lg leading-relaxed mb-6">
                   {service.long}
                 </p>
-              </Reveal>
-
-              {/* Treatment Log on detail page */}
-              <Reveal delay={220}>
-                <div className="mb-6">
-                  <TreatmentLog
-                    code={logProps.code}
-                    title={logProps.title}
-                    stage={logProps.stage}
-                    est={logProps.est}
-                    status={logProps.status}
-                  />
-                </div>
               </Reveal>
 
               <Reveal delay={260}>
@@ -346,7 +330,7 @@ export default function ServiceDetailPage({ params }: Props) {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 text-white hover:bg-white/10 hover:border-white"
+                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
                   track={{
                     category: 'conversion',
                     action: 'link_click',

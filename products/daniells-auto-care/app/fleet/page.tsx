@@ -12,7 +12,6 @@ import { Reveal } from '@/components/ui/reveal';
 import { JsonLd } from '@/components/ui/jsonld';
 import { Button } from '@/components/ui/button';
 import { TrustMarquee } from '@/components/trust-marquee';
-import { TreatmentLog, getLogProps } from '@/components/treatment-log';
 import { ReviewCard } from '@/components/review-card';
 import { QuoteButton } from '@/components/quote-modal';
 
@@ -69,8 +68,6 @@ const TIERS = [
 ];
 
 export default function FleetPage() {
-  const log = getLogProps('fleet-detailing', fleet.name, fleet.process.length);
-
   return (
     <>
       <JsonLd
@@ -212,33 +209,26 @@ export default function FleetPage() {
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-bay">
             {TIERS.map((tier, i) => (
-              <Reveal key={tier.label} delay={i * 80}>
+              <Reveal key={tier.label} delay={i * 80} className="h-full">
                 <GlowCard className="h-full flex flex-col">
-                  <div className="px-6 pt-6">
-                    <TreatmentLog
-                      code={log.code}
-                      title={tier.label.toUpperCase()}
-                      stage={log.stage}
-                      est={log.est}
-                      status={log.status}
-                    />
-                  </div>
                   <div className="p-6 flex flex-col flex-1 gap-4">
                     <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg">
                       {tier.label}
                     </h3>
                     <p className="text-fg-soft text-sm leading-relaxed flex-1">{tier.desc}</p>
-                    <QuoteButton
-                      variant="outline"
-                      size="md"
-                      track={{
-                        category: 'conversion',
-                        action:   'button_click',
-                        label:    `fleet_tier_custom_quote`,
-                      }}
-                    >
-                      Custom Quote
-                    </QuoteButton>
+                    <div className="mt-auto">
+                      <QuoteButton
+                        variant="outline"
+                        size="md"
+                        track={{
+                          category: 'conversion',
+                          action:   'button_click',
+                          label:    `fleet_tier_custom_quote`,
+                        }}
+                      >
+                        Custom Quote
+                      </QuoteButton>
+                    </div>
                   </div>
                 </GlowCard>
               </Reveal>
@@ -252,7 +242,7 @@ export default function FleetPage() {
         <Container>
           <SectionHeading
             kicker="What Clients Say"
-            title="300+ Five-Star Reviews"
+            title="140+ Five-Star Reviews"
             subtitle="Northern NJ businesses and vehicle owners trust Daniells Auto Care."
             align="center"
           />

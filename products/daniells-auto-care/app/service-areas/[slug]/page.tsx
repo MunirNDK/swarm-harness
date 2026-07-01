@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!area) return {};
   return pageMeta({
     title: `Auto Detailing in ${area}, NJ | Daniells Auto Care`,
-    description: `Professional mobile auto detailing in ${area}, NJ. Same-day service, free quotes, 300+ 5-star reviews. Ceramic coating, paint correction & more.`,
+    description: `Professional mobile auto detailing in ${area}, NJ. Same-day service, free quotes, 140+ 5-star reviews. Ceramic coating, paint correction & more.`,
     path: `/service-areas/${params.slug}`,
   });
 }
@@ -116,7 +116,7 @@ export default function AreaDetailPage({ params }: Props) {
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { value: business.reviewsCount, label: 'Five-Star Reviews' },
-                  { value: business.experienceYears, label: 'Years Experience' },
+                  { value: business.experienceYears, label: 'Years Combined Experience' },
                   { value: business.vehiclesDetailed, label: 'Vehicles Detailed' },
                   { value: business.responseTime, label: 'Quote Response' },
                 ].map((stat) => (
@@ -337,7 +337,7 @@ export default function AreaDetailPage({ params }: Props) {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 text-white hover:bg-white/10 hover:border-white"
+                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
                   track={{
                     category: 'conversion',
                     action: 'link_click',

@@ -7,9 +7,9 @@ export const business = {
   serviceArea: "Northern New Jersey",
   mobile: true,
   responseTime: "15-minute quote response",
-  experienceYears: "8+",
+  experienceYears: "5+",
   vehiclesDetailed: "2,000+",
-  reviewsCount: "300+",
+  reviewsCount: "140+",
   googleReviews: "100+",
   trust: [
     "Licensed & Insured",
@@ -71,7 +71,7 @@ export const services = [
         a: "Absolutely. As a mobile detailing service, we come to your location anywhere in Northern New Jersey. We bring all necessary equipment, water, and power—no need for you to travel.",
       },
     ],
-    metaDescription: "Professional mobile car detailing in Northern NJ. Complete interior & exterior restoration with same-day service. Free quotes, 300+ five-star reviews. Call (973) 916-7868.",
+    metaDescription: "Professional mobile car detailing in Northern NJ. Complete interior & exterior restoration with same-day service. Free quotes, 140+ five-star reviews. Call (973) 916-7868.",
   },
   {
     slug: "exterior-detailing",
@@ -424,8 +424,8 @@ export const areas = [
 ];
 
 export const stats = [
-  { value: "300+", label: "Five-Star Reviews" },
-  { value: "8+", label: "Years Experience" },
+  { value: "140+", label: "Five-Star Reviews" },
+  { value: "5+", label: "Years Combined Experience" },
   { value: "2,000+", label: "Vehicles Detailed" },
   { value: "15 min", label: "Quote Response" },
 ];
@@ -509,8 +509,8 @@ export const whyChooseUs: { title: string; desc: string }[] = [
     desc: "We bring professional auto detailing directly to your home or workplace anywhere in Northern New Jersey. No waiting at a shop—just showroom results at your doorstep.",
   },
   {
-    title: "8+ Years of Experience",
-    desc: "With over eight years in the industry and 2,000+ vehicles detailed, our factory-trained technicians have the expertise to handle any vehicle, from daily drivers to luxury cars.",
+    title: "5+ Years Combined Team Experience",
+    desc: "Our factory-trained technicians bring a combined ~5 years of hands-on detailing experience and have collectively serviced 2,000+ vehicles, from daily drivers to luxury cars.",
   },
   {
     title: "Licensed & Fully Insured",
@@ -521,7 +521,7 @@ export const whyChooseUs: { title: string; desc: string }[] = [
     desc: "Our premium ceramic coatings are backed by a warranty of up to 10 years, ensuring long-lasting protection and a brilliant gloss that stands the test of time.",
   },
   {
-    title: "300+ Five-Star Reviews",
+    title: "140+ Five-Star Reviews",
     desc: "Our customers consistently rate us five stars for quality, reliability, and service. Read our reviews to see why Northern NJ trusts Daniells Auto Care.",
   },
   {

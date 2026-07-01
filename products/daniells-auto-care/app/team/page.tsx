@@ -21,7 +21,7 @@ const BREADCRUMBS = [
 export const metadata: Metadata = pageMeta({
   title:       'Our Team — Factory-Trained Detailing Technicians',
   description:
-    'Daniells Auto Care is a licensed, insured, factory-trained mobile detailing team with 8+ years of experience and 300+ five-star reviews across Northern New Jersey.',
+    'Daniells Auto Care is a licensed, insured, factory-trained mobile detailing team with 5+ years of combined team experience and 140+ five-star reviews across Northern New Jersey.',
   path: '/team',
 });
 
@@ -77,7 +77,7 @@ export default function TeamPage() {
                 Our Team
               </h1>
               <p className="mt-6 text-fg-soft text-lg leading-relaxed max-w-xl">
-                {business.experienceYears} years of experience. {business.vehiclesDetailed} vehicles
+                {business.experienceYears} years of combined team experience. {business.vehiclesDetailed} vehicles
                 detailed. {business.reviewsCount} five-star reviews. A professional mobile detailing
                 operation built on craft, reliability, and genuine care for your vehicle.
               </p>
@@ -101,10 +101,10 @@ export default function TeamPage() {
               <div className="space-y-4 text-fg-soft leading-relaxed">
                 <p>
                   Daniells Auto Care was built on a straightforward idea: bring showroom-quality
-                  detailing directly to our clients without compromising on the craft. Over{' '}
-                  {business.experienceYears}, we have refined our mobile operation to deliver
-                  professional-grade results at homes, offices, and commercial facilities across{' '}
-                  {business.serviceArea}.
+                  detailing directly to our clients without compromising on the craft. With{' '}
+                  {business.experienceYears} years of combined team experience, we have refined our
+                  mobile operation to deliver professional-grade results at homes, offices, and
+                  commercial facilities across {business.serviceArea}.
                 </p>
                 <p>
                   Our team is fully mobile — equipped with self-contained vans carrying water tanks,

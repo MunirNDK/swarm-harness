@@ -190,7 +190,7 @@ export default function ServiceAreasPage() {
                 body: 'Call (973) 916-7868 or fill out our form and we respond within 15 minutes to confirm your appointment.',
               },
               {
-                heading: '8+ Years Experience',
+                heading: '5+ Years Combined Experience',
                 body: 'Factory-trained technicians with over 2,000 vehicles detailed across Northern New Jersey.',
               },
               {
@@ -255,7 +255,7 @@ export default function ServiceAreasPage() {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 text-white hover:bg-white/10 hover:border-white"
+                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
                   track={{
                     category: 'conversion',
                     action: 'link_click',

@@ -20,8 +20,8 @@ export function Footer() {
   return (
     <footer className="bg-surface-dark border-t border-border">
       <Container className="py-12">
-        {/* Grid: 1.5fr 1fr 1fr on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr] gap-12">
+        {/* Grid: Brand | Services | Company | Service Areas on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-12">
 
           {/* Brand column */}
           <div className="space-y-4">
@@ -128,7 +128,7 @@ export function Footer() {
             <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-4">
               Company
             </p>
-            <ul className="space-y-2 mb-6">
+            <ul className="space-y-2">
               {[
                 { label: 'Our Team',      href: '/team' },
                 { label: 'Gallery',       href: '/gallery' },
@@ -151,9 +151,11 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+          </div>
 
-            {/* Service area pills */}
-            <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-3">
+          {/* Service Areas column — own column on desktop */}
+          <div>
+            <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-4">
               Service Areas
             </p>
             <div className="flex flex-wrap gap-1.5">

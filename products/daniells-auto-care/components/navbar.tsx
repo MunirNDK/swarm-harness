@@ -120,12 +120,11 @@ export function Navbar() {
     <header
       ref={mobileMenuRef}
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-base ease-default',
+        'sticky top-0 left-0 right-0 z-50 transition-all duration-base ease-default',
         scrolled
           ? 'bg-surface-dark/90 backdrop-blur-xl border-b border-border shadow-md'
-          : 'bg-transparent'
+          : 'bg-surface-dark'
       )}
-      style={{ top: '0' }}
     >
       <Container>
         <nav

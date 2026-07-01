@@ -86,7 +86,7 @@ export default function ServicesPage() {
               >
                 Chatham
               </Link>{' '}
-              and beyond. {business.experienceYears} years in the industry,
+              and beyond. {business.experienceYears} years of combined team experience,
               over {business.vehiclesDetailed} vehicles detailed, backed by{' '}
               {business.reviewsCount} five-star reviews. Every service comes
               with a free, no-obligation quote and {business.responseTime}.
@@ -247,7 +247,7 @@ export default function ServicesPage() {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 text-white hover:bg-white/10 hover:border-white"
+                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
                   track={{
                     category: 'conversion',
                     action: 'link_click',

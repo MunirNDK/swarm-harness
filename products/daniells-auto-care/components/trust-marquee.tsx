@@ -8,7 +8,7 @@
  */
 
 const TRUST_ITEMS = [
-  '300+ Five Star Reviews',
+  '140+ Five Star Reviews',
   'Licensed & Insured',
   'Same Day Service',
   'Mobile Service to Your Location',

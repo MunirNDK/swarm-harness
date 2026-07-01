@@ -32,7 +32,7 @@ import { pageMeta, localBusinessLd, organizationLd, faqLd } from '@/lib/seo';
 export const metadata: Metadata = pageMeta({
   title: 'Mobile Auto Detailing Northern NJ | Daniells Auto Care',
   description:
-    'Professional mobile auto detailing in Northern NJ. Same-day service, 300+ 5-star reviews, free quotes. Ceramic coating, paint correction & more.',
+    'Professional mobile auto detailing in Northern NJ. Same-day service, 140+ 5-star reviews, free quotes. Ceramic coating, paint correction & more.',
   path: '/',
 });
 
@@ -192,8 +192,8 @@ export default function HomePage() {
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChooseUs.map((item, i) => (
-              <Reveal key={item.title} delay={i * 80}>
-                <GlowCard>
+              <Reveal key={item.title} delay={i * 80} className="h-full">
+                <GlowCard className="h-full flex flex-col">
                   <div className="p-8 h-full">
                     <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg mb-3">
                       {item.title}
@@ -275,7 +275,7 @@ export default function HomePage() {
         <Container>
           <SectionHeading
             kicker="Testimonials"
-            title="300+ Five-Star Reviews"
+            title="140+ Five-Star Reviews"
             subtitle={`Rated 5.0 on Google with ${business.googleReviews} verified reviews from Northern NJ drivers.`}
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -403,7 +403,7 @@ export default function HomePage() {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 text-white hover:bg-white/10 hover:border-white"
+                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
                   track={{
                     category: 'conversion',
                     action: 'link_click',
