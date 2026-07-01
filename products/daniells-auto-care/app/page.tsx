@@ -140,9 +140,6 @@ export default function HomePage() {
                 className="rounded-lg border border-border bg-surface p-8"
                 style={{ borderTop: '3px solid var(--accent)' }}
               >
-                <p className="font-mono text-[0.65rem] tracking-[0.12em] uppercase text-accent mb-1">
-                  SVC-INTAKE // FREE QUOTE
-                </p>
                 <h2
                   className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
                   style={{ fontSize: 'var(--t-xl)' }}

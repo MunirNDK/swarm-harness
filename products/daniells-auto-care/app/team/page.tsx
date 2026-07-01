@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Shield, GraduationCap, ShieldCheck, BadgeCheck } from 'lucide-react';
 import { pageMeta, breadcrumbLd } from '@/lib/seo';
-import { business, whyChooseUs } from '@/lib/site';
+import { business, whyChooseUs, team } from '@/lib/site';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
@@ -145,6 +146,42 @@ export default function TeamPage() {
                     {c.title}
                   </h3>
                   <p className="text-fg-soft text-sm leading-relaxed">{c.desc}</p>
+                </GlowCard>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ── Meet the Team ── */}
+      <Section surface="surface" id="meet-the-team">
+        <Container>
+          <SectionHeading
+            kicker="The Crew"
+            title="Meet the Team"
+            subtitle="Each member of our team is trained in the latest detailing techniques and committed to exceeding your expectations."
+          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-bay">
+            {team.map((member, i) => (
+              <Reveal key={member.name} delay={i * 60}>
+                <GlowCard className="h-full flex flex-col">
+                  <div className="relative aspect-square w-full overflow-hidden">
+                    <Image
+                      src={member.image}
+                      alt={`${member.name}, ${member.role} at Daniells Auto Care`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                  <div className="p-6 flex flex-col gap-1 flex-1">
+                    <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base">
+                      {member.name}
+                    </h3>
+                    <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+                      {member.role}
+                    </p>
+                  </div>
                 </GlowCard>
               </Reveal>
             ))}

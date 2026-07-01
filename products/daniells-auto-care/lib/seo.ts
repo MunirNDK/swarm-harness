@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { business, siteUrl, areas, services, stats, faqs } from '@/lib/site';
+import { business, siteUrl, areas, services, stats, faqs, social } from '@/lib/site';
 
 /* ═══════════════════════════════════════════════════════════════
    PAGE META — Next.js Metadata API helper
@@ -71,7 +71,7 @@ export function localBusinessLd(): object {
     url:          siteUrl,
     description:  business.tagline,
     areaServed:   areas.map((a) => ({ '@type': 'City', name: a })),
-    sameAs:       [],
+    sameAs:       social.map((s) => s.href),
     openingHours: 'Mo-Su 00:00-24:00',
     priceRange:   '$$',
     aggregateRating: {

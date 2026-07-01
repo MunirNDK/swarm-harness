@@ -574,5 +574,20 @@ export const beforeAfter: { id: string; title: string; tag: string; before: stri
   { id:'ford-trim', title:'Trim Restoration — Ford F-150', tag:'Exterior Detailing', before:'/assets/gallery/ford-trim-before.webp', after:'/assets/gallery/ford-trim-after.webp' },
 ];
 
+export const team: { name: string; role: string; image: string }[] = [
+  { name: 'Daniells Nina De Leon', role: 'Owner & CEO',                       image: '/assets/team/daniells-nina-de-leon.png' },
+  { name: 'Hilbert Nina De Leon',  role: 'Operations Manager',                image: '/assets/team/hilbert-nina-de-leon.png' },
+  { name: 'Jon Ramirez',           role: 'Lead Detailer',                     image: '/assets/team/jon-ramirez.png' },
+  { name: 'David Rodriguez',       role: 'Detail Technician',                 image: '/assets/team/david-rodriguez.png' },
+  { name: 'Emily Chen',            role: 'Customer Service Representative',   image: '/assets/team/emily-chen.png' },
+  { name: 'Ashley Johnson',        role: 'Scheduling Coordinator',            image: '/assets/team/ashley-johnson.png' },
+];
+
+export const social: { platform: string; label: string; href: string }[] = [
+  { platform: 'Instagram', label: 'instagram', href: 'https://www.instagram.com/daniells_auto_care' },
+  { platform: 'YouTube',   label: 'youtube',   href: 'https://www.youtube.com/@DaniellsNinaDeLeon' },
+  { platform: 'TikTok',   label: 'tiktok',    href: 'https://www.tiktok.com/@daniellsautocare' },
+];
+
 // Aggregate accessor used by pages that prefer a single `site` object.
-export const site = { business, services, areas, stats, reviews, nav, faqs, siteUrl, images, logo, beforeAfter };
+export const site = { business, services, areas, stats, reviews, nav, faqs, siteUrl, images, logo, beforeAfter, team, social };

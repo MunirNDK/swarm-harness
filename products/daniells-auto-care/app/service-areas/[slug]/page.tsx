@@ -118,7 +118,7 @@ export default function AreaDetailPage({ params }: Props) {
                   { value: business.reviewsCount, label: 'Five-Star Reviews' },
                   { value: business.experienceYears, label: 'Years Combined Experience' },
                   { value: business.vehiclesDetailed, label: 'Vehicles Detailed' },
-                  { value: business.responseTime, label: 'Quote Response' },
+                  { value: '15 min', label: 'Quote Response' },
                 ].map((stat) => (
                   <GlowCard key={stat.label}>
                     <div className="p-6 text-center">

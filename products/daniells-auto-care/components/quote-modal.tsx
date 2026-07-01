@@ -104,14 +104,11 @@ export function QuoteModal() {
         <div className="p-6 md:p-8">
           <h2
             id="quote-modal-title"
-            className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-1"
+            className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
             style={{ fontSize: 'var(--t-2xl)' }}
           >
             Get Your Free Quote
           </h2>
-          <p className="font-mono text-[0.7rem] tracking-[0.05em] uppercase text-fg-faint mb-6">
-            SVC-INTAKE // MOBILE DISPATCH
-          </p>
           <QuoteForm />
         </div>
       </div>
