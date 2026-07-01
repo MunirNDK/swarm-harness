@@ -1,6 +1,10 @@
-import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
+import { cn } from '@/lib/utils';
+import { HTMLAttributes } from 'react';
 
+/**
+ * Container — Contract §10
+ * max-w-container (80rem) mx-auto with responsive horizontal padding.
+ */
 export function Container({
   className,
   children,
@@ -9,7 +13,7 @@ export function Container({
   return (
     <div
       className={cn(
-        "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8",
+        'mx-auto w-full max-w-container px-panel md:px-bay',
         className
       )}
       {...props}

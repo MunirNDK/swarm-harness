@@ -1,217 +1,186 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { CheckCircle, ArrowRight } from 'lucide-react';
-import { site } from '@/lib/site';
-import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
-import { Button } from '@/components/ui/button';
-import { GlassCard } from '@/components/ui/glass-card';
 import { SectionHeading } from '@/components/ui/section-heading';
+import { Breadcrumbs } from '@/components/ui/breadcrumbs';
+import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/ui/reveal';
+import { JsonLd } from '@/components/ui/jsonld';
+import { GlowCard } from '@/components/ui/glow-card';
 import { ServiceCard } from '@/components/service-card';
-import { QuoteCTA } from '@/components/quote-cta';
+import { QuoteButton } from '@/components/quote-modal';
+import { TreatmentLog, getLogProps } from '@/components/treatment-log';
+import { business, services } from '@/lib/site';
+import { pageMeta, serviceLd, faqLd, breadcrumbLd } from '@/lib/seo';
 
-// Generate static params for all services
+type Props = { params: { slug: string } };
+
 export function generateStaticParams() {
-  return site.services.map((service) => ({
-    slug: service.slug,
-  }));
+  return services.map((s) => ({ slug: s.slug }));
 }
 
-// Generate metadata for each service page
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const service = site.services.find((s) => s.slug === params.slug);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const service = services.find((s) => s.slug === params.slug);
   if (!service) return {};
-
-  return {
-    title: `${service.name} in Northern NJ | ${site.business.name}`,
-    description: service.metaDescription || service.short,
-    openGraph: {
-      title: `${service.name} in Northern NJ | ${site.business.name}`,
-      description: service.metaDescription || service.short,
-    },
-  };
+  return pageMeta({
+    title: `${service.name} in Northern NJ | Daniells Auto Care`,
+    description: service.metaDescription,
+    path: `/services/${service.slug}`,
+  });
 }
 
-export default function ServiceDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const service = site.services.find((s) => s.slug === params.slug);
+export default function ServiceDetailPage({ params }: Props) {
+  const service = services.find((s) => s.slug === params.slug);
   if (!service) notFound();
 
-  const benefits = service.benefits || [];
-  const process = service.process || [];
-  const faq = service.faq || [];
+  const breadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Services', href: '/services' },
+    { label: service.name, href: `/services/${service.slug}` },
+  ];
 
-  // Get related services (excluding current, up to 3)
-  const relatedServices = site.services
+  const relatedServices = services
     .filter((s) => s.slug !== service.slug)
     .slice(0, 3);
 
-  // Build intro paragraph: long description + 2-3 sentences about Northern NJ and mobile
-  const introParagraph = `${service.long} At Daniells Auto Care, we bring professional ${service.name.toLowerCase()} to Northern New Jersey with our fully equipped mobile detailing service. Whether you're in Franklin Lakes, Ridgewood, or anywhere in our service area, our factory-trained technicians come to your home or office, delivering showroom-quality results without disrupting your day.`;
+  const logProps = getLogProps(service.slug, service.name, service.process.length);
 
-  // JSON-LD structured data
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: service.name,
-    description: service.metaDescription || service.short,
-    provider: {
-      '@type': 'LocalBusiness',
-      name: site.business.name,
-      telephone: site.business.phone,
-      areaServed: 'Northern New Jersey',
-    },
-    areaServed: 'Northern New Jersey',
-    ...(faq.length > 0 && {
-      hasFAQPage: {
-        '@type': 'FAQPage',
-        mainEntity: faq.map((item: { q: string; a: string }) => ({
-          '@type': 'Question',
-          name: item.q,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: item.a,
-          },
-        })),
-      },
-    }),
-  };
+  const sdLd = serviceLd(
+    { name: service.name, description: service.long, slug: service.slug },
+  );
+  const sdFaqLd = faqLd(service.faq);
+  const sdBcLd = breadcrumbLd(breadcrumbs);
 
   return (
     <>
-      {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={[sdLd, sdFaqLd, sdBcLd]} />
 
-      {/* Hero Section */}
-      <Section className="pt-32 pb-16 md:pt-40 md:pb-20">
+      {/* ── SERVICE HERO ── */}
+      <Section surface="surface-dark" id="service-hero">
         <Container>
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Text Content */}
-            <Reveal>
-              <div>
-                <p className="text-sm font-medium text-dac-red uppercase tracking-wider mb-4">
-                  Our Services
+          <Reveal>
+            <Breadcrumbs items={breadcrumbs} className="mb-8" />
+          </Reveal>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            {/* Left — h1 + description + CTAs */}
+            <div>
+              <Reveal delay={60}>
+                <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent mb-3">
+                  Professional Mobile Service · Northern NJ
                 </p>
-                <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                  <span className="bg-gradient-to-r from-white via-white to-dac-red bg-clip-text text-transparent">
-                    {service.name}
-                  </span>
+              </Reveal>
+              <Reveal delay={120}>
+                <h1
+                  className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
+                  style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', lineHeight: 1.07 }}
+                >
+                  {service.name}
                 </h1>
-                <p className="text-lg text-dac-muted leading-relaxed mb-8">
+              </Reveal>
+              <Reveal delay={180}>
+                <p className="text-fg-soft text-lg leading-relaxed mb-6">
                   {service.long}
                 </p>
+              </Reveal>
+
+              {/* Treatment Log on detail page */}
+              <Reveal delay={220}>
+                <div className="mb-6">
+                  <TreatmentLog
+                    code={logProps.code}
+                    title={logProps.title}
+                    stage={logProps.stage}
+                    est={logProps.est}
+                    status={logProps.status}
+                  />
+                </div>
+              </Reveal>
+
+              <Reveal delay={260}>
                 <div className="flex flex-wrap gap-4">
-                  <Button
-                    href="/contact"
-                    variant="primary"
+                  <QuoteButton
                     size="lg"
-                    className="min-h-[44px]"
+                    track={{
+                      category: 'conversion',
+                      action: 'button_click',
+                      label: `${service.slug}_get_quote`,
+                    }}
                   >
                     Get Free Quote
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
+                  </QuoteButton>
                   <Button
-                    href={site.business.phoneHref}
-                    variant="secondary"
+                    variant="phone"
                     size="lg"
-                    className="min-h-[44px]"
+                    href={business.phoneHref}
+                    track={{
+                      category: 'conversion',
+                      action: 'link_click',
+                      label: 'phone_call',
+                    }}
                   >
-                    {site.business.phone}
+                    {business.phone}
                   </Button>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            </div>
 
-            {/* Image */}
-            <Reveal direction="left" delay={0.2}>
-              <div className="relative">
+            {/* Right — service image */}
+            <Reveal delay={200}>
+              <div className="relative rounded-lg overflow-hidden border border-border">
                 {/* Red glow behind image */}
-                <div className="absolute inset-0 bg-dac-red/10 blur-3xl rounded-3xl" />
-                <GlassCard className="overflow-hidden p-0 relative">
-                  <Image
-                    src={service.image}
-                    alt={service.name}
-                    width={800}
-                    height={600}
-                    className="w-full h-auto object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority
-                  />
-                </GlassCard>
+                <div
+                  className="absolute inset-0 z-0 pointer-events-none"
+                  style={{
+                    background:
+                      'radial-gradient(ellipse 80% 80% at 50% 0%, rgba(232,5,5,0.12) 0%, transparent 70%)',
+                  }}
+                  aria-hidden="true"
+                />
+                <Image
+                  src={service.image}
+                  alt={`${service.name} — Daniells Auto Care mobile service in Northern New Jersey`}
+                  width={800}
+                  height={600}
+                  className="relative z-10 w-full h-auto object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
               </div>
             </Reveal>
           </div>
         </Container>
       </Section>
 
-      {/* Intro / Overview Section */}
-      <Section className="py-16 md:py-20 bg-dac-black/50">
-        <Container>
-          <div className="max-w-3xl mx-auto">
-            <Reveal>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold tracking-tight mb-6">
-                Professional {service.name} in Northern NJ
-              </h2>
-              <div className="prose prose-invert prose-lg max-w-none">
-                <p className="text-dac-muted leading-relaxed">
-                  {introParagraph}
-                </p>
-                <p className="text-dac-muted leading-relaxed mt-4">
-                  Ready to experience the difference?{' '}
-                  <a href="/contact" className="text-dac-red hover:underline font-medium">
-                    Contact us today
-                  </a>{' '}
-                  for a free, no-obligation quote, or explore our{' '}
-                  {relatedServices.length > 0 && (
-                    <>
-                      other services like{' '}
-                      {relatedServices.slice(0, 2).map((rs, i) => (
-                        <span key={rs.slug}>
-                          <a href={`/services/${rs.slug}`} className="text-dac-red hover:underline font-medium">
-                            {rs.name.toLowerCase()}
-                          </a>
-                          {i < relatedServices.slice(0, 2).length - 1 ? ', ' : ''}
-                        </span>
-                      ))}
-                      .
-                    </>
-                  )}
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
-
-      {/* What's Included / Benefits Section */}
-      {benefits.length > 0 && (
-        <Section className="py-16 md:py-20">
+      {/* ── BENEFITS ── bg */}
+      {service.benefits.length > 0 && (
+        <Section surface="bg" id="service-benefits">
           <Container>
             <SectionHeading
-              eyebrow="What's Included"
+              kicker="What's Included"
               title={`${service.name} Package`}
-              subtitle="Every service includes our commitment to quality, attention to detail, and 100% satisfaction guarantee."
+              subtitle="Every service includes our commitment to quality, meticulous attention to detail, and 100% satisfaction guarantee."
+              align="left"
             />
-            <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {benefits.map((benefit: string, index: number) => (
-                <Reveal key={index} delay={index * 0.05}>
-                  <GlassCard className="p-6 flex items-start gap-4">
-                    <CheckCircle className="h-6 w-6 text-dac-red flex-shrink-0 mt-0.5" />
-                    <p className="text-white font-medium">{benefit}</p>
-                  </GlassCard>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {service.benefits.map((benefit, i) => (
+                <Reveal key={i} delay={i * 50}>
+                  <GlowCard>
+                    <div className="p-6 flex items-start gap-4">
+                      {/* Red bullet */}
+                      <span
+                        className="flex-shrink-0 mt-1 w-2 h-2 rounded-full"
+                        style={{ background: 'var(--accent)' }}
+                        aria-hidden="true"
+                      />
+                      <p className="text-fg-soft text-sm leading-relaxed">
+                        {benefit}
+                      </p>
+                    </div>
+                  </GlowCard>
                 </Reveal>
               ))}
             </div>
@@ -219,27 +188,38 @@ export default function ServiceDetailPage({
         </Section>
       )}
 
-      {/* Our Process Section */}
-      {process.length > 0 && (
-        <Section className="py-16 md:py-20 bg-dac-black/50">
+      {/* ── PROCESS ── surface */}
+      {service.process.length > 0 && (
+        <Section surface="surface" id="service-process">
           <Container>
             <SectionHeading
-              eyebrow="Our Process"
+              kicker="Our Process"
               title={`How We Deliver ${service.name}`}
-              subtitle="A proven, step-by-step approach for consistent, showroom-quality results."
+              subtitle="A proven, step-by-step approach for consistent, showroom-quality results every time."
+              align="left"
             />
-            <div className="mt-12 max-w-4xl mx-auto space-y-8">
-              {process.map((step: { title: string; desc: string }, index: number) => (
-                <Reveal key={index} delay={index * 0.1}>
-                  <GlassCard className="p-6 md:p-8 flex gap-6">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-dac-red/20 flex items-center justify-center text-dac-red font-bold text-lg">
-                      {index + 1}
+            <div className="max-w-4xl space-y-6">
+              {service.process.map((step, i) => (
+                <Reveal key={i} delay={i * 80}>
+                  <GlowCard>
+                    <div className="p-6 md:p-8 flex gap-6">
+                      <div
+                        className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-fg text-sm"
+                        style={{ background: 'var(--accent)' }}
+                        aria-hidden="true"
+                      >
+                        {i + 1}
+                      </div>
+                      <div>
+                        <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base mb-2">
+                          {step.title}
+                        </h3>
+                        <p className="text-fg-soft text-sm leading-relaxed">
+                          {step.desc}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-white mb-2">{step.title}</h3>
-                      <p className="text-dac-muted leading-relaxed">{step.desc}</p>
-                    </div>
-                  </GlassCard>
+                  </GlowCard>
                 </Reveal>
               ))}
             </div>
@@ -247,23 +227,32 @@ export default function ServiceDetailPage({
         </Section>
       )}
 
-      {/* FAQ Section */}
-      {faq.length > 0 && (
-        <Section className="py-16 md:py-20">
+      {/* ── FAQ ── surface-dark + FAQPage JSON-LD (emitted above) */}
+      {service.faq.length > 0 && (
+        <Section surface="surface-dark" id="service-faq">
           <Container>
             <SectionHeading
-              eyebrow="FAQ"
+              kicker="FAQ"
               title={`${service.name} Questions`}
-              subtitle="Answers to common questions about our service."
-              centered
+              subtitle="Answers to common questions about this service."
             />
-            <div className="mt-12 max-w-3xl mx-auto space-y-6">
-              {faq.map((item: { q: string; a: string }, index: number) => (
-                <Reveal key={index} delay={index * 0.05}>
-                  <GlassCard className="p-6 md:p-8">
-                    <h3 className="text-lg font-semibold text-white mb-3">{item.q}</h3>
-                    <p className="text-dac-muted leading-relaxed">{item.a}</p>
-                  </GlassCard>
+            <div className="max-w-3xl mx-auto space-y-4">
+              {service.faq.map((item, i) => (
+                <Reveal key={i} delay={i * 60}>
+                  <details className="rounded-lg border border-border bg-surface overflow-hidden">
+                    <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-sans font-bold text-fg text-sm uppercase tracking-[0.02em] hover:text-accent transition-colors duration-fast ease-default min-h-[44px]">
+                      <span>{item.q}</span>
+                      <span
+                        className="flex-shrink-0 text-accent text-xl leading-none"
+                        aria-hidden="true"
+                      >
+                        +
+                      </span>
+                    </summary>
+                    <div className="px-6 pb-5 text-fg-soft text-sm leading-relaxed border-t border-border pt-4">
+                      {item.a}
+                    </div>
+                  </details>
                 </Reveal>
               ))}
             </div>
@@ -271,30 +260,144 @@ export default function ServiceDetailPage({
         </Section>
       )}
 
-      {/* Related Services Section */}
+      {/* ── RELATED SERVICES ── bg + internal linking */}
       {relatedServices.length > 0 && (
-        <Section className="py-16 md:py-20 bg-dac-black/50">
+        <Section surface="bg" id="related-services">
           <Container>
-            <Reveal>
-              <SectionHeading
-                eyebrow="Explore More"
-                title="Related Services"
-                subtitle="Complete your vehicle care with these complementary services."
-              />
-            </Reveal>
-            <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedServices.map((relatedService, index) => (
-                <Reveal key={relatedService.slug} delay={index * 0.1}>
-                  <ServiceCard service={relatedService} />
+            <SectionHeading
+              kicker="Explore More"
+              title="Related Services"
+              subtitle="Complete your vehicle care with these complementary services — all available as mobile service in Northern NJ."
+            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {relatedServices.map((rs, i) => (
+                <Reveal key={rs.slug} delay={i * 80}>
+                  <ServiceCard service={rs} />
                 </Reveal>
               ))}
+            </div>
+            <div className="flex flex-wrap gap-4">
+              <Button
+                variant="outline"
+                href="/services"
+                track={{
+                  category: 'navigation',
+                  action: 'link_click',
+                  label: 'all_services',
+                  context: 'internal',
+                }}
+              >
+                View All Services
+              </Button>
+              <Button
+                variant="outline"
+                href="/service-areas"
+                track={{
+                  category: 'navigation',
+                  action: 'link_click',
+                  label: 'service_areas',
+                  context: 'internal',
+                }}
+              >
+                See Service Areas
+              </Button>
             </div>
           </Container>
         </Section>
       )}
 
-      {/* Quote CTA Section */}
-      <QuoteCTA />
+      {/* ── INLINE CTA ── surface-dark */}
+      <Section surface="surface-dark" id="service-cta">
+        <Container>
+          <div
+            className="rounded-lg px-8 py-14 text-center"
+            style={{
+              background:
+                'linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%)',
+            }}
+          >
+            <Reveal>
+              <h2
+                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4"
+                style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)' }}
+              >
+                Ready to Book {service.name}?
+              </h2>
+              <p
+                className="text-lg mb-8 max-w-lg mx-auto"
+                style={{ color: 'rgba(255,255,255,0.82)' }}
+              >
+                Free quote in {business.responseTime}. We come to you anywhere
+                in Northern NJ — no shop visit required.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <QuoteButton
+                  size="xl"
+                  className="bg-fg text-accent hover:bg-fg/90 border-transparent"
+                  track={{
+                    category: 'conversion',
+                    action: 'button_click',
+                    label: `${service.slug}_cta_get_quote`,
+                  }}
+                >
+                  Get Free Quote
+                </QuoteButton>
+                <Button
+                  variant="phone"
+                  size="xl"
+                  href={business.phoneHref}
+                  className="border-white/60 text-white hover:bg-white/10 hover:border-white"
+                  track={{
+                    category: 'conversion',
+                    action: 'link_click',
+                    label: 'phone_call',
+                  }}
+                >
+                  {business.phone}
+                </Button>
+              </div>
+            </Reveal>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ── SERVICE AREAS INTERNAL LINKS ── */}
+      <Section surface="bg" id="service-areas-links">
+        <Container>
+          <p className="font-mono text-[0.65rem] tracking-[0.12em] uppercase text-accent mb-4">
+            Available In
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {[
+              'Franklin Lakes',
+              'Ridgewood',
+              'Tenafly',
+              'Englewood Cliffs',
+              'Chatham',
+              'Madison',
+              'Mountain Lakes',
+              'Basking Ridge',
+              'Bernardsville',
+              'Florham Park',
+            ].map((area) => {
+              const aSlug = area.toLowerCase().replace(/\s+/g, '-');
+              return (
+                <Link
+                  key={area}
+                  href={`/service-areas/${aSlug}`}
+                  className="rounded-full border border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.06em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-[44px] flex items-center"
+                  data-track-category="navigation"
+                  data-track-action="link_click"
+                  data-track-label={`area_${aSlug}`}
+                  data-track-context="internal"
+                >
+                  {area}
+                </Link>
+              );
+            })}
+          </div>
+        </Container>
+      </Section>
     </>
   );
 }

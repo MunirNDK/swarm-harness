@@ -1,50 +1,69 @@
-import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
+import { cn } from '@/lib/utils';
+import { ReactNode } from 'react';
 
 interface SectionHeadingProps {
-  eyebrow?: string;
-  title: string;
+  kicker?:   string;
+  title:     string;
   subtitle?: ReactNode;
-  align?: "center" | "left";
-  centered?: boolean;
-  center?: boolean;
+  align?:    'center' | 'left';
   className?: string;
+  /** Legacy compat aliases */
+  eyebrow?:  string;
+  centered?: boolean;
+  center?:   boolean;
 }
 
+/**
+ * SectionHeading — Contract §10, §12.12
+ * kicker: mono red uppercase label above the title
+ * title: display font, uppercase, tight tracking
+ * subtitle: soft color, max-width 40rem
+ */
 export function SectionHeading({
-  eyebrow,
+  kicker,
   title,
   subtitle,
   align,
+  className,
+  eyebrow,
   centered,
   center,
-  className,
 }: SectionHeadingProps) {
-  const isCentered = centered ?? center;
-  const resolvedAlign = align ?? (isCentered === false ? "left" : "center");
+  // Legacy compat
+  const resolvedKicker = kicker ?? eyebrow;
+  const isCentered     = centered ?? center;
+  const resolvedAlign  = align ?? (isCentered === false ? 'left' : 'center');
+
   return (
     <div
       className={cn(
-        "max-w-3xl",
-        resolvedAlign === "center" && "mx-auto text-center",
+        'mb-12',
+        resolvedAlign === 'center' && 'text-center',
         className
       )}
     >
-      {eyebrow && (
-        <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-dac-red">
-          {eyebrow}
+      {resolvedKicker && (
+        <p className="mb-3 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+          {resolvedKicker}
         </p>
       )}
       <h2
         className={cn(
-          "text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl",
-          "bg-gradient-to-r from-white via-white to-dac-red bg-clip-text text-transparent"
+          'font-sans font-bold uppercase tracking-[-0.01em] text-fg',
+          'text-[clamp(2rem,3.5vw,3rem)]'
         )}
       >
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-lg text-dac-muted">{subtitle}</p>
+        <p
+          className={cn(
+            'mt-4 text-md text-fg-soft leading-relaxed',
+            resolvedAlign === 'center' && 'max-w-[40rem] mx-auto'
+          )}
+        >
+          {subtitle}
+        </p>
       )}
     </div>
   );

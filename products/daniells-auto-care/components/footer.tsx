@@ -1,47 +1,120 @@
-import Link from "next/link";
-import { Phone, Clock } from "lucide-react";
-import { Container } from "@/components/ui/container";
-import { business, services, areas, logo } from "@/lib/site";
+import Link from 'next/link';
+import Image from 'next/image';
+import { Phone, Facebook, Instagram } from 'lucide-react';
+import { Container } from '@/components/ui/container';
+import { business, services, areas, logo } from '@/lib/site';
 
+function slugify(str: string) {
+  return str.toLowerCase().replace(/\s+/g, '-');
+}
+
+/**
+ * Footer — Contract §6, §10, DS-CS-011
+ * Surface-dark (#050505), brand, sitemap columns (Services, Service Areas, Company),
+ * social icons, phone, copyright current year, area pills.
+ * Company column includes Our Team, Privacy, Terms per contract §6.
+ */
 export function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-white/10 bg-dac-black">
-      <Container className="py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand */}
+    <footer className="bg-surface-dark border-t border-border">
+      <Container className="py-12">
+        {/* Grid: 1.5fr 1fr 1fr on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr] gap-12">
+
+          {/* Brand column */}
           <div className="space-y-4">
-            <img src={logo} alt="Daniells Auto Care" className="h-10 w-auto" />
-            <Link href="/" className="text-xl font-bold text-white">
-              Daniells<span className="text-dac-red"> Auto Care</span>
+            <Link
+              href="/"
+              className="inline-block"
+              data-track-category="navigation"
+              data-track-action="link_click"
+              data-track-label="logo"
+              data-track-context="internal"
+              aria-label={`${business.name} — home`}
+            >
+              <Image
+                src={logo}
+                alt={business.name}
+                width={130}
+                height={44}
+                className="h-10 w-auto object-contain"
+              />
             </Link>
-            <p className="text-dac-muted text-sm leading-relaxed">
-              Professional auto detailing across Northern New Jersey. Same-day
-              service, 100% satisfaction guaranteed.
+
+            <p className="font-sans font-bold text-[1.5rem] uppercase text-fg">
+              Daniells<span className="text-accent"> Auto Care</span>
             </p>
-            <div className="space-y-2 text-sm text-dac-muted">
+
+            <p className="text-fg-soft text-sm leading-relaxed max-w-xs">
+              Professional auto detailing across Northern New Jersey.
+              Same-day service, 100% satisfaction guaranteed.
+            </p>
+
+            {/* Phone */}
+            <a
+              href={business.phoneHref}
+              className="flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-mid transition-colors duration-fast ease-default"
+              data-track-category="conversion"
+              data-track-action="link_click"
+              data-track-label="phone_call"
+            >
+              <Phone className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+              {business.phone}
+            </a>
+
+            {/* Availability */}
+            <p className="font-mono text-xs text-fg-faint uppercase tracking-widest">
+              {business.hours}
+            </p>
+
+            {/* Social icons */}
+            <div className="flex items-center gap-3">
               <a
-                href={business.phoneHref}
-                className="flex items-center gap-2 hover:text-white transition-colors"
+                href="#"
+                className="p-2 rounded-sm border border-border text-fg-faint hover:text-accent hover:border-accent transition-colors duration-fast ease-default min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Facebook"
+                rel="noopener noreferrer"
+                target="_blank"
+                data-track-category="navigation"
+                data-track-action="link_click"
+                data-track-label="facebook"
+                data-track-context="external"
               >
-                <Phone className="h-4 w-4" />
-                {business.phone}
+                <Facebook className="h-4 w-4" aria-hidden="true" />
               </a>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                {business.hours}
-              </div>
+              <a
+                href="#"
+                className="p-2 rounded-sm border border-border text-fg-faint hover:text-accent hover:border-accent transition-colors duration-fast ease-default min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Instagram"
+                rel="noopener noreferrer"
+                target="_blank"
+                data-track-category="navigation"
+                data-track-action="link_click"
+                data-track-label="instagram"
+                data-track-context="external"
+              >
+                <Instagram className="h-4 w-4" aria-hidden="true" />
+              </a>
             </div>
           </div>
 
-          {/* Services */}
+          {/* Services column */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Services</h3>
+            <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-4">
+              Services
+            </p>
             <ul className="space-y-2">
               {services.map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={`/services/${s.slug}`}
-                    className="text-sm text-dac-muted hover:text-white transition-colors"
+                    className="text-sm text-fg-soft hover:text-accent transition-colors duration-fast ease-default"
+                    data-track-category="navigation"
+                    data-track-action="link_click"
+                    data-track-label={`service_${s.slug}`}
+                    data-track-context="internal"
                   >
                     {s.name}
                   </Link>
@@ -50,73 +123,83 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Service Areas */}
+          {/* Company column */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Service Areas</h3>
-            <ul className="space-y-2">
-              {areas.map((area) => (
-                <li key={area}>
+            <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-4">
+              Company
+            </p>
+            <ul className="space-y-2 mb-6">
+              {[
+                { label: 'Our Team',      href: '/team' },
+                { label: 'Gallery',       href: '/gallery' },
+                { label: 'Blog',          href: '/blog' },
+                { label: 'Contact',       href: '/contact' },
+                { label: 'Privacy Policy',href: '/privacy' },
+                { label: 'Terms of Use',  href: '/terms' },
+              ].map((link) => (
+                <li key={link.href}>
                   <Link
-                    href={`/service-areas/${area.toLowerCase().replace(/\s+/g, "-")}`}
-                    className="text-sm text-dac-muted hover:text-white transition-colors"
+                    href={link.href}
+                    className="text-sm text-fg-soft hover:text-accent transition-colors duration-fast ease-default"
+                    data-track-category="navigation"
+                    data-track-action="link_click"
+                    data-track-label={link.href.replace(/^\//, '')}
+                    data-track-context="internal"
                   >
-                    {area}
+                    {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
 
-          {/* Company */}
-          <div>
-            <h3 className="text-white font-semibold mb-4">Company</h3>
-            <ul className="space-y-2">
-              <li>
+            {/* Service area pills */}
+            <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-3">
+              Service Areas
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {areas.map((area) => (
                 <Link
-                  href="/team"
-                  className="text-sm text-dac-muted hover:text-white transition-colors"
+                  key={area}
+                  href={`/service-areas/${slugify(area)}`}
+                  className="font-mono text-[0.65rem] tracking-[0.05em] text-fg-soft uppercase bg-surface border border-border rounded-full px-3 py-1 hover:border-accent hover:text-accent transition-colors duration-fast ease-default"
+                  data-track-category="navigation"
+                  data-track-action="link_click"
+                  data-track-label={`area_${slugify(area)}`}
+                  data-track-context="internal"
                 >
-                  Our Team
+                  {area}
                 </Link>
-              </li>
-              <li>
-                <Link
-                  href="/gallery"
-                  className="text-sm text-dac-muted hover:text-white transition-colors"
-                >
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="text-sm text-dac-muted hover:text-white transition-colors"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-sm text-dac-muted hover:text-white transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-dac-faint">
-          <p>
-            &copy; {new Date().getFullYear()} Daniells Auto Care. All rights
-            reserved.
+        <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="font-mono text-[0.65rem] tracking-[0.05em] text-fg-faint uppercase">
+            &copy; {year} {business.name}. All rights reserved.
           </p>
-          <div className="flex flex-wrap gap-4">
-            {business.trust.slice(0, 2).map((item) => (
-              <span key={item}>{item}</span>
-            ))}
+          <div className="flex items-center gap-4">
+            <Link
+              href="/privacy"
+              className="font-mono text-[0.65rem] tracking-[0.05em] text-fg-faint uppercase hover:text-accent transition-colors duration-fast ease-default"
+              data-track-category="navigation"
+              data-track-action="link_click"
+              data-track-label="privacy"
+              data-track-context="internal"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="font-mono text-[0.65rem] tracking-[0.05em] text-fg-faint uppercase hover:text-accent transition-colors duration-fast ease-default"
+              data-track-category="navigation"
+              data-track-action="link_click"
+              data-track-label="terms"
+              data-track-context="internal"
+            >
+              Terms
+            </Link>
           </div>
         </div>
       </Container>

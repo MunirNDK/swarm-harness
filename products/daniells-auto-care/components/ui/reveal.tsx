@@ -1,52 +1,91 @@
-"use client";
+'use client';
 
-import { motion, useReducedMotion } from "framer-motion";
-import { ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  ElementType,
+  ReactNode,
+  HTMLAttributes,
+} from 'react';
+import { cn } from '@/lib/utils';
 
-interface RevealProps {
-  children: ReactNode;
+interface RevealProps extends HTMLAttributes<HTMLElement> {
+  delay?:     number;
+  as?:        ElementType;
+  children:   ReactNode;
   className?: string;
-  delay?: number;
-  index?: number;
-  direction?: "up" | "down" | "left" | "right";
+  /** Legacy compat — accepted but unused; Reveal always fades up */
+  index?:     number;
+  /** Legacy compat — accepted but unused */
+  direction?: 'up' | 'down' | 'left' | 'right';
 }
 
+/**
+ * Reveal — Contract §10, §13.3 HEADLINE_ENTRANCE / §13.4 SCROLL_RHYTHM
+ * Fade-up 14px / 350ms via IntersectionObserver at 15% threshold.
+ * Respects prefers-reduced-motion (skips animation).
+ */
 export function Reveal({
-  children,
+  delay     = 0,
+  as        = 'div',
   className,
-  delay,
-  index = 0,
-  direction = "up",
+  children,
+  style,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  index:     _index,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  direction: _direction,
+  ...props
 }: RevealProps) {
-  const resolvedDelay = delay ?? index * 0.05;
-  const prefersReducedMotion = useReducedMotion();
+  const Tag                          = as;
+  const ref                          = useRef<HTMLElement>(null);
+  const [visible, setVisible]        = useState(false);
+  const [reduced, setReduced]        = useState(false);
 
-  const directionOffset = {
-    up: { y: 20 },
-    down: { y: -20 },
-    left: { x: 20 },
-    right: { x: -20 },
-  };
+  // Detect reduced-motion preference on mount (SSR-safe)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(mq.matches);
+  }, []);
 
-  const initial = prefersReducedMotion
-    ? { opacity: 1, x: 0, y: 0 }
-    : { opacity: 0, ...directionOffset[direction] };
+  useEffect(() => {
+    if (reduced) {
+      setVisible(true);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
 
-  const animate = { opacity: 1, x: 0, y: 0 };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reduced]);
 
   return (
-    <motion.div
-      initial={initial}
-      whileInView={animate}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{
-        duration: 0.6,
-        ease: "easeOut",
-        delay: resolvedDelay,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    <Tag
+      ref={ref}
+      className={cn(className)}
+      style={{
+        opacity:   visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(14px)',
+        transition: reduced
+          ? 'none'
+          : `opacity 350ms cubic-bezier(0.2,0,0,1) ${delay}ms, transform 350ms cubic-bezier(0.2,0,0,1) ${delay}ms`,
+        ...style,
       }}
-      className={className}
+      {...props}
     >
       {children}
-    </motion.div>
+    </Tag>
   );
 }
