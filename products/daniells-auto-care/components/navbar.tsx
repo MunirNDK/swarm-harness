@@ -91,6 +91,7 @@ export function Navbar() {
         <Link
           key={s.slug}
           href={`/services/${s.slug}`}
+          onClick={(e) => e.currentTarget.blur()}
           className="block px-4 py-2 text-sm text-fg-soft hover:text-fg hover:bg-surface2 rounded-sm transition-colors duration-fast ease-default"
           data-track-category="navigation"
           data-track-action="link_click"
@@ -105,6 +106,7 @@ export function Navbar() {
       <Link
         key={area}
         href={`/service-areas/${slugify(area)}`}
+        onClick={(e) => e.currentTarget.blur()}
         className="block px-4 py-2 text-sm text-fg-soft hover:text-fg hover:bg-surface2 rounded-sm transition-colors duration-fast ease-default"
         data-track-category="navigation"
         data-track-action="link_click"
@@ -165,6 +167,7 @@ export function Navbar() {
                   <div key={item.label} className="relative group">
                     <Link
                       href={item.href}
+                      onClick={(e) => e.currentTarget.blur()}
                       className={cn(
                         'flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-sm transition-colors duration-fast ease-default',
                         isActive ? 'text-fg' : 'text-fg-soft hover:text-fg'
