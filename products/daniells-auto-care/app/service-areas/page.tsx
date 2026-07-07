@@ -195,7 +195,7 @@ export default function ServiceAreasPage() {
               },
             ].map((item, i) => (
               <Reveal key={item.heading} delay={i * 80}>
-                <GlowCard>
+                <GlowCard className="h-full flex flex-col">
                   <div className="p-8 h-full">
                     <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg mb-3">
                       {item.heading}

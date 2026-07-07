@@ -193,7 +193,7 @@ export default async function BlogPostPage({
                     href={business.phoneHref}
                     variant="outline"
                     size="md"
-                    className="border-fg/40 text-fg hover:border-fg"
+                    className="border-fg/40 text-fg hover:border-fg hover:text-fg"
                     track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
                   >
                     {business.phone}

@@ -13,13 +13,13 @@ export function FaqItem({ faq, index }: FaqItemProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="h-full flex flex-col rounded-lg border border-border bg-surface overflow-hidden">
+    <div className="rounded-lg border border-border bg-surface overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-controls={`faq-panel-${index}`}
-        className="flex items-center justify-between gap-4 w-full px-6 py-5 cursor-pointer text-left font-sans font-bold text-fg text-sm uppercase tracking-[0.02em] hover:text-accent transition-colors duration-fast ease-default min-h-[44px] flex-1"
+        className="flex items-center justify-between gap-4 w-full px-6 py-5 cursor-pointer text-left font-sans font-bold text-fg text-sm uppercase tracking-[0.02em] hover:text-accent transition-colors duration-fast ease-default min-h-[84px]"
         data-track-category="engagement"
         data-track-action="toggle"
         data-track-label={`faq_${index}`}

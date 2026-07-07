@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/ui/reveal';
 import { JsonLd } from '@/components/ui/jsonld';
 import { GlowCard } from '@/components/ui/glow-card';
+import { FaqItem } from '@/components/faq-item';
 import { ServiceCard } from '@/components/service-card';
 import { QuoteButton } from '@/components/quote-modal';
 import { business, services } from '@/lib/site';
@@ -62,7 +63,7 @@ export default function ServiceDetailPage({ params }: Props) {
             <Breadcrumbs items={breadcrumbs} className="mb-8" />
           </Reveal>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
             {/* Left — h1 + description + CTAs */}
             <div>
               <Reveal delay={60}>
@@ -113,8 +114,8 @@ export default function ServiceDetailPage({ params }: Props) {
             </div>
 
             {/* Right — service image */}
-            <Reveal delay={200}>
-              <div className="relative rounded-lg overflow-hidden border border-border lg:max-w-[400px] lg:ml-auto">
+            <Reveal delay={200} className="h-full">
+              <div className="relative rounded-lg overflow-hidden border border-border aspect-[4/3] lg:aspect-auto lg:h-full">
                 {/* Red glow behind image */}
                 <div
                   className="absolute inset-0 z-0 pointer-events-none"
@@ -127,9 +128,8 @@ export default function ServiceDetailPage({ params }: Props) {
                 <Image
                   src={service.image}
                   alt={`${service.name} — Daniells Auto Care mobile service in Northern New Jersey`}
-                  width={800}
-                  height={600}
-                  className="relative z-10 w-full h-auto object-cover"
+                  fill
+                  className="object-cover z-10"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   priority
                 />
@@ -221,20 +221,7 @@ export default function ServiceDetailPage({ params }: Props) {
             <div className="max-w-3xl mx-auto space-y-4">
               {service.faq.map((item, i) => (
                 <Reveal key={i} delay={i * 60}>
-                  <details className="rounded-lg border border-border bg-surface overflow-hidden">
-                    <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-sans font-bold text-fg text-sm uppercase tracking-[0.02em] hover:text-accent transition-colors duration-fast ease-default min-h-[44px]">
-                      <span>{item.q}</span>
-                      <span
-                        className="flex-shrink-0 text-accent text-xl leading-none"
-                        aria-hidden="true"
-                      >
-                        +
-                      </span>
-                    </summary>
-                    <div className="px-6 pb-5 text-fg-soft text-sm leading-relaxed border-t border-border pt-4">
-                      {item.a}
-                    </div>
-                  </details>
+                  <FaqItem faq={{ q: item.q, a: item.a }} index={i} />
                 </Reveal>
               ))}
             </div>

@@ -333,7 +333,7 @@ export default function HomePage() {
             title="Frequently Asked Questions"
             subtitle="Everything you need to know about mobile auto detailing in Northern NJ."
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto items-start">
             {faqs.map((faq, i) => (
               <Reveal key={faq.q} delay={i * 40}>
                 <FaqItem faq={faq} index={i} />

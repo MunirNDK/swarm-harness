@@ -13,6 +13,7 @@ import { ServiceCard } from '@/components/service-card';
 import { ReviewCard } from '@/components/review-card';
 import { QuoteButton } from '@/components/quote-modal';
 import { TrustMarquee } from '@/components/trust-marquee';
+import { FaqItem } from '@/components/faq-item';
 import { business, areas, services, reviews, faqs, areaIntro } from '@/lib/site';
 import { pageMeta, localBusinessLd, faqLd, breadcrumbLd } from '@/lib/seo';
 
@@ -245,23 +246,10 @@ export default function AreaDetailPage({ params }: Props) {
             title={`Detailing Questions for ${town}`}
             subtitle="Common questions from customers in the area."
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto items-start">
             {faqs.map((faq, i) => (
               <Reveal key={faq.q} delay={i * 40}>
-                <details className="rounded-lg border border-border bg-surface overflow-hidden">
-                  <summary className="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-sans font-bold text-fg text-sm uppercase tracking-[0.02em] hover:text-accent transition-colors duration-fast ease-default min-h-[44px]">
-                    <span>{faq.q}</span>
-                    <span
-                      className="flex-shrink-0 text-accent text-xl leading-none"
-                      aria-hidden="true"
-                    >
-                      +
-                    </span>
-                  </summary>
-                  <div className="px-6 pb-5 text-fg-soft text-sm leading-relaxed border-t border-border pt-4">
-                    {faq.a}
-                  </div>
-                </details>
+                <FaqItem faq={faq} index={i} />
               </Reveal>
             ))}
           </div>
