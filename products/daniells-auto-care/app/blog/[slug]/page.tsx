@@ -177,7 +177,7 @@ export default async function BlogPostPage({
                   Ready for a Free Quote?
                 </h2>
                 <p className="text-fg/80 text-sm mb-4 leading-relaxed">
-                  We respond within {business.responseTime} and come to your home, office, or any
+                  We respond quickly and come to your home, office, or any
                   location in {business.serviceArea}.
                 </p>
                 <div className="flex flex-wrap gap-3">

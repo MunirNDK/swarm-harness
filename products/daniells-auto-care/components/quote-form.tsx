@@ -107,7 +107,7 @@ export function QuoteForm({ prefill }: { prefill?: { service?: string; fleetSize
           Quote Request Sent!
         </p>
         <p className="text-fg-soft text-sm">
-          We&apos;ll respond within {business.responseTime}.
+          We&apos;ll respond quickly.
         </p>
       </div>
     );

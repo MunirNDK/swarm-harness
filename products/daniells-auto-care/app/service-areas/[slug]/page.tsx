@@ -318,7 +318,7 @@ export default function AreaDetailPage({ params }: Props) {
                 className="text-lg mb-8 max-w-lg mx-auto"
                 style={{ color: 'rgba(255,255,255,0.82)' }}
               >
-                Free quote in {business.responseTime}. Same-day service available.
+                Free, fast quotes. Same-day service available.
                 We come to your home or office in {town}, NJ.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">

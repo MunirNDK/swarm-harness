@@ -91,7 +91,7 @@ export function ContactForm() {
       <div className="text-center py-8">
         <p className="font-sans font-bold text-2xl uppercase text-fg mb-2">Message Sent!</p>
         <p className="text-fg-soft text-sm">
-          We&apos;ll respond within {business.responseTime}.
+          We&apos;ll respond quickly.
         </p>
       </div>
     );

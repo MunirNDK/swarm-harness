@@ -232,8 +232,7 @@ export default function ServiceAreasPage() {
                 className="text-lg mb-8 max-w-lg mx-auto"
                 style={{ color: 'rgba(255,255,255,0.82)' }}
               >
-                Just ask — we likely cover your area. Free quote in{' '}
-                {business.responseTime}, no obligation.
+                Just ask — we likely cover your area. Free, fast quotes, no obligation.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <QuoteButton

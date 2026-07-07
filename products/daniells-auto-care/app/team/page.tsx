@@ -230,8 +230,7 @@ export default function TeamPage() {
                 Experience the Difference
               </h2>
               <p className="text-fg-soft mb-8 leading-relaxed">
-                Ready to put our team to work on your vehicle? Get your free quote — we respond in{' '}
-                {business.responseTime}.
+                Ready to put our team to work on your vehicle? Get your free quote — we respond quickly.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <QuoteButton

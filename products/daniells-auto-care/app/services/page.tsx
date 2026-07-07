@@ -214,7 +214,7 @@ export default function ServicesPage() {
                 className="text-lg mb-8 max-w-lg mx-auto"
                 style={{ color: 'rgba(255,255,255,0.82)' }}
               >
-                Get a free, no-obligation quote in {business.responseTime}. We
+                Get a free, no-obligation quote — fast. We
                 come to your home or office anywhere in {business.serviceArea}.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">

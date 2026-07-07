@@ -309,7 +309,7 @@ export default function ServiceDetailPage({ params }: Props) {
                 className="text-lg mb-8 max-w-lg mx-auto"
                 style={{ color: 'rgba(255,255,255,0.82)' }}
               >
-                Free quote in {business.responseTime}. We come to you anywhere
+                Free, fast quotes. We come to you anywhere
                 in Northern NJ — no shop visit required.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">

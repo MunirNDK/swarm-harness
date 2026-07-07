@@ -153,8 +153,7 @@ export default function BlogPage() {
                 Ready to Get Started?
               </h2>
               <p className="text-fg-soft mb-6 leading-relaxed">
-                We serve {business.serviceArea}. Get a free, no-obligation quote in{' '}
-                {business.responseTime}.
+                We serve {business.serviceArea}. Get a free, no-obligation quote — fast.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <QuoteButton

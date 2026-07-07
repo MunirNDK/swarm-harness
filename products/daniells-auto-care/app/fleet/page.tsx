@@ -272,7 +272,7 @@ export default function FleetPage() {
                 Build a Fleet Program Today
               </h2>
               <p className="text-fg-soft mb-8 leading-relaxed">
-                Tell us about your fleet and we&apos;ll respond within {business.responseTime} with a
+                Tell us about your fleet and we&apos;ll respond quickly with a
                 custom proposal — no obligation.
               </p>
               <div className="flex flex-wrap justify-center gap-4">

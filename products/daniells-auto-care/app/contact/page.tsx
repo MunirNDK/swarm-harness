@@ -53,7 +53,7 @@ export default function ContactPage() {
                 Contact Daniells Auto Care
               </h1>
               <p className="mt-4 text-fg-soft leading-relaxed">
-                Fill out the form and we&apos;ll respond within {business.responseTime} — no
+                Fill out the form and we&apos;ll respond quickly — no
                 obligation. Or call us directly if you prefer to speak right away.
               </p>
               <div className="mt-6">
