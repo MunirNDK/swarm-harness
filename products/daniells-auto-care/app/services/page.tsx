@@ -139,7 +139,7 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChooseUs.map((item, i) => (
               <Reveal key={item.title} delay={i * 80}>
-                <GlowCard>
+                <GlowCard className="h-full flex flex-col">
                   <div className="p-8 h-full">
                     <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg mb-3">
                       {item.title}

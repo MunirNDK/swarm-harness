@@ -16,7 +16,7 @@ export function StickyCta() {
       <div className="grid grid-cols-2 gap-3">
         <Button
           href={business.phoneHref}
-          variant="outline"
+          variant="phone"
           size="lg"
           className="min-h-[44px]"
           track={{

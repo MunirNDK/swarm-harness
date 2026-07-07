@@ -90,7 +90,7 @@ export default function HomePage() {
                 <h1
                   className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
                   style={{
-                    fontSize: 'clamp(2.2rem, 5vw, 3.8rem)',
+                    fontSize: 'clamp(2.2rem, 5vw, 3.5rem)',
                     lineHeight: 1.07,
                   }}
                 >
@@ -289,7 +289,7 @@ export default function HomePage() {
         <Container>
           <SectionHeading
             kicker="Where We Serve"
-            title="Northern New Jersey's Mobile Detail Team"
+            title="Northern NJ's Mobile Detail Team"
             subtitle="We come to your doorstep. Select your area for local service details and availability."
           />
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-8">
@@ -367,7 +367,7 @@ export default function HomePage() {
                 className="text-lg mb-8 max-w-xl mx-auto"
                 style={{ color: 'rgba(255,255,255,0.82)' }}
               >
-                Free quote in {business.responseTime}. We come to you anywhere
+                Free, no-obligation quotes — fast. We come to you anywhere
                 in Northern NJ — home, office, or anywhere convenient.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">

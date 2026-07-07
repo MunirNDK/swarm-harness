@@ -15,10 +15,16 @@ import { Button, type TrackProps } from '@/components/ui/button';
 /* ═══════════════════════════════════════════════════════════════
    Context — Contract §10
    ═══════════════════════════════════════════════════════════════ */
+export interface QuotePrefill {
+  service?:   string;
+  fleetSize?: string;
+}
+
 interface QuoteModalContextType {
-  isOpen: boolean;
-  open:   () => void;
-  close:  () => void;
+  isOpen:  boolean;
+  prefill: QuotePrefill | undefined;
+  open:    (prefill?: QuotePrefill) => void;
+  close:   () => void;
 }
 
 const QuoteModalContext = createContext<QuoteModalContextType | undefined>(undefined);
@@ -34,12 +40,13 @@ export function useQuoteModal(): QuoteModalContextType {
  * Layout renders <QuoteModal /> explicitly so it sits at the root z-index.
  */
 export function QuoteModalProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const open                = useCallback(() => setIsOpen(true), []);
-  const close               = useCallback(() => setIsOpen(false), []);
+  const [isOpen, setIsOpen]   = useState(false);
+  const [prefill, setPrefill] = useState<QuotePrefill | undefined>(undefined);
+  const open  = useCallback((p?: QuotePrefill) => { setPrefill(p); setIsOpen(true); }, []);
+  const close = useCallback(() => setIsOpen(false), []);
 
   return (
-    <QuoteModalContext.Provider value={{ isOpen, open, close }}>
+    <QuoteModalContext.Provider value={{ isOpen, prefill, open, close }}>
       {children}
     </QuoteModalContext.Provider>
   );
@@ -49,7 +56,7 @@ export function QuoteModalProvider({ children }: { children: React.ReactNode }) 
    Modal — DS-CS-017: center, backdrop, close btn, Escape, focus trap
    ═══════════════════════════════════════════════════════════════ */
 export function QuoteModal() {
-  const { isOpen, close } = useQuoteModal();
+  const { isOpen, close, prefill } = useQuoteModal();
   const overlayRef        = useRef<HTMLDivElement>(null);
   const closeButtonRef    = useRef<HTMLButtonElement>(null);
 
@@ -109,7 +116,7 @@ export function QuoteModal() {
           >
             Get Your Free Quote
           </h2>
-          <QuoteForm />
+          <QuoteForm prefill={prefill} />
         </div>
       </div>
     </div>
@@ -125,6 +132,7 @@ interface QuoteButtonProps {
   className?: string;
   variant?:   'primary' | 'outline' | 'ghost' | 'secondary';
   size?:      'sm' | 'md' | 'lg' | 'xl';
+  prefill?:   { service?: string; fleetSize?: string };
   track?:     TrackProps;
 }
 
@@ -133,6 +141,7 @@ export function QuoteButton({
   className,
   variant   = 'primary',
   size      = 'md',
+  prefill,
   track,
 }: QuoteButtonProps) {
   const { open } = useQuoteModal();
@@ -142,7 +151,7 @@ export function QuoteButton({
 
   return (
     <Button
-      onClick={open}
+      onClick={() => open(prefill)}
       variant={resolvedVariant}
       size={size}
       className={className}

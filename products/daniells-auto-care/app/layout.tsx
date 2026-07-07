@@ -90,7 +90,7 @@ export default function RootLayout({
               Available 24/7
             </span>
             <span className="hidden sm:block text-muted">·</span>
-            <span className="hidden sm:block">15-min quote response</span>
+            <span className="hidden sm:block">Quick quote response</span>
             <span className="hidden md:block text-muted">·</span>
             <span className="hidden md:block">Northern New Jersey</span>
           </div>

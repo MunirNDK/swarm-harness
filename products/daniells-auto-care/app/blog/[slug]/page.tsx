@@ -119,8 +119,8 @@ export default async function BlogPostPage({
 
           {/* h1, date, category */}
           <Reveal delay={80}>
-            <div className="max-w-3xl">
-              <div className="flex flex-wrap items-center gap-3 mb-4">
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
                 <span className="flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent bg-accent-soft border border-[rgba(232,5,5,0.2)] rounded-full px-2 py-0.5">
                   <Tag className="w-3 h-3" aria-hidden="true" />
                   {post.category}
@@ -220,7 +220,7 @@ export default async function BlogPostPage({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-bay">
               {related.map((r, i) => (
                 <Reveal key={r.slug} delay={i * 60}>
-                  <GlowCard className="flex gap-4 p-4 min-h-[44px]">
+                  <GlowCard className="relative flex gap-4 p-4 min-h-[44px]">
                     <div className="relative w-24 h-20 rounded overflow-hidden flex-shrink-0">
                       <Image
                         src={r.image}
@@ -234,21 +234,23 @@ export default async function BlogPostPage({
                       <span className="font-mono text-[0.6rem] tracking-[0.08em] uppercase text-accent">
                         {r.category}
                       </span>
-                      <Link
-                        href={`/blog/${r.slug}`}
-                        className="font-sans font-bold text-sm uppercase tracking-tight text-fg hover:text-accent transition-colors duration-fast leading-snug"
-                        data-track-category="navigation"
-                        data-track-action="link_click"
-                        data-track-label={`blog_related_${r.slug}`}
-                        data-track-context="internal"
-                      >
+                      <div className="font-sans font-bold text-sm uppercase tracking-tight text-fg leading-snug">
                         {r.title}
-                      </Link>
+                      </div>
                       <span className="flex items-center gap-1 font-mono text-[0.6rem] tracking-[0.08em] uppercase text-fg-faint mt-auto">
                         Read more{' '}
                         <ArrowRight className="w-2.5 h-2.5" aria-hidden="true" />
                       </span>
                     </div>
+                    <Link
+                      href={`/blog/${r.slug}`}
+                      className="absolute inset-0"
+                      aria-label={`Read: ${r.title}`}
+                      data-track-category="navigation"
+                      data-track-action="link_click"
+                      data-track-label={`blog_related_${r.slug}`}
+                      data-track-context="internal"
+                    />
                   </GlowCard>
                 </Reveal>
               ))}

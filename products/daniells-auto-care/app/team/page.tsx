@@ -90,12 +90,11 @@ export default function TeamPage() {
       {/* ── Company Story ── */}
       <Section surface="surface" id="story">
         <Container>
-          <div className="max-w-3xl">
+          <div className="max-w-3xl mx-auto">
             <Reveal>
               <SectionHeading
                 kicker="About Us"
                 title="Precision. Mobile. Professional."
-                align="left"
               />
             </Reveal>
             <Reveal delay={60}>

@@ -1,5 +1,6 @@
 import { GlowCard } from '@/components/ui/glow-card';
 import { StarRating } from '@/components/ui/star-rating';
+import { cn } from '@/lib/utils';
 
 interface ReviewLike {
   name:  string;
@@ -44,7 +45,7 @@ export function ReviewCard({
   return (
     <GlowCard
       as="article"
-      className={className}
+      className={cn('h-full', className)}
       style={{ '--glow-alpha': '0.08' } as React.CSSProperties}
     >
       <div className="p-8 flex flex-col h-full gap-4">

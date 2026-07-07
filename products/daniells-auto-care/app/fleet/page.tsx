@@ -20,7 +20,7 @@ const fleet = services.find((s) => s.slug === 'fleet-detailing')!;
 export const metadata: Metadata = pageMeta({
   title: 'Fleet Detailing for NJ Businesses',
   description:
-    'Mobile fleet detailing with on-site service, volume pricing, and dedicated account management for businesses in Northern New Jersey. Free fleet assessment in 15 min.',
+    'Mobile fleet detailing with on-site service, volume pricing, and dedicated account management for businesses in Northern New Jersey. Free fleet assessment quickly.',
   path: '/fleet',
 });
 
@@ -220,6 +220,7 @@ export default function FleetPage() {
                       <QuoteButton
                         variant="outline"
                         size="md"
+                        prefill={{ service: 'fleet-detailing', fleetSize: tier.label }}
                         track={{
                           category: 'conversion',
                           action:   'button_click',

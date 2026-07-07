@@ -18,9 +18,9 @@ const BREADCRUMBS = [
 ];
 
 export const metadata: Metadata = pageMeta({
-  title:       'Contact Us — Free Quote in 15 Min',
+  title:       'Contact Us — Free Quote Quickly',
   description:
-    'Contact Daniells Auto Care for mobile auto detailing in Northern NJ. Get a free quote within 15 minutes. Call (973) 916-7868 or fill out our contact form.',
+    'Contact Daniells Auto Care for mobile auto detailing in Northern NJ. Get a free quote quickly. Call (973) 916-7868 or fill out our contact form.',
   path: '/contact',
 });
 

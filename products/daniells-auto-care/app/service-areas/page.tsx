@@ -183,7 +183,7 @@ export default function ServiceAreasPage() {
               },
               {
                 heading: 'Same-Day Availability',
-                body: 'Call (973) 916-7868 or fill out our form and we respond within 15 minutes to confirm your appointment.',
+                body: 'Call (973) 916-7868 or fill out our form and we respond quickly to confirm your appointment.',
               },
               {
                 heading: '5+ Years Combined Experience',

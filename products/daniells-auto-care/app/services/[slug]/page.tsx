@@ -114,7 +114,7 @@ export default function ServiceDetailPage({ params }: Props) {
 
             {/* Right — service image */}
             <Reveal delay={200}>
-              <div className="relative rounded-lg overflow-hidden border border-border">
+              <div className="relative rounded-lg overflow-hidden border border-border lg:max-w-[400px] lg:ml-auto">
                 {/* Red glow behind image */}
                 <div
                   className="absolute inset-0 z-0 pointer-events-none"
@@ -147,12 +147,11 @@ export default function ServiceDetailPage({ params }: Props) {
               kicker="What's Included"
               title={`${service.name} Package`}
               subtitle="Every service includes our commitment to quality, meticulous attention to detail, and 100% satisfaction guarantee."
-              align="left"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {service.benefits.map((benefit, i) => (
                 <Reveal key={i} delay={i * 50}>
-                  <GlowCard>
+                  <GlowCard className="h-full">
                     <div className="p-6 flex items-start gap-4">
                       {/* Red bullet */}
                       <span
@@ -180,9 +179,8 @@ export default function ServiceDetailPage({ params }: Props) {
               kicker="Our Process"
               title={`How We Deliver ${service.name}`}
               subtitle="A proven, step-by-step approach for consistent, showroom-quality results every time."
-              align="left"
             />
-            <div className="max-w-4xl space-y-6">
+            <div className="max-w-4xl mx-auto space-y-6">
               {service.process.map((step, i) => (
                 <Reveal key={i} delay={i * 80}>
                   <GlowCard>
@@ -260,7 +258,7 @@ export default function ServiceDetailPage({ params }: Props) {
                 </Reveal>
               ))}
             </div>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 justify-center">
               <Button
                 variant="outline"
                 href="/services"

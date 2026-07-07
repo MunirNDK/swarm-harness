@@ -6,34 +6,42 @@ import { services, business } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 interface FormData {
-  name:     string;
-  phone:    string;
-  zip:      string;
-  vehicle:  string;
-  service:  string;
-  _honey:   string; // honeypot
+  name:      string;
+  phone:     string;
+  zip:       string;
+  vehicle:   string;
+  service:   string;
+  fleetSize: string;
+  notes:     string;
+  _honey:    string; // honeypot
 }
 
 const INITIAL: FormData = {
-  name:    '',
-  phone:   '',
-  zip:     '',
-  vehicle: '',
-  service: '',
-  _honey:  '',
+  name:      '',
+  phone:     '',
+  zip:       '',
+  vehicle:   '',
+  service:   '',
+  fleetSize: '',
+  notes:     '',
+  _honey:    '',
 };
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 /**
  * QuoteForm — Contract §10, §6, §12.8
- * Fields: name, phone, zip, vehicle, service
+ * Fields: name, phone, zip, vehicle, service, fleetSize, notes
  * Honeypot: _honey (hidden field)
  * POST → /api/quote
  * data-track on form: category=form, action=form_submit, label=quote_request
  */
-export function QuoteForm() {
-  const [data, setData]   = useState<FormData>(INITIAL);
+export function QuoteForm({ prefill }: { prefill?: { service?: string; fleetSize?: string } } = {}) {
+  const [data, setData] = useState<FormData>({
+    ...INITIAL,
+    service:   prefill?.service   ?? '',
+    fleetSize: prefill?.fleetSize ?? '',
+  });
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [status, setStatus] = useState<Status>('idle');
 
@@ -61,11 +69,13 @@ export function QuoteForm() {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({
-          name:    data.name,
-          phone:   data.phone,
-          zip:     data.zip,
-          vehicle: data.vehicle,
-          service: data.service,
+          name:      data.name,
+          phone:     data.phone,
+          zip:       data.zip,
+          vehicle:   data.vehicle,
+          service:   data.service,
+          fleetSize: data.fleetSize,
+          notes:     data.notes,
         }),
       });
       if (!res.ok) throw new Error('Failed');
@@ -77,7 +87,7 @@ export function QuoteForm() {
   }
 
   function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -201,6 +211,35 @@ export function QuoteForm() {
               </option>
             ))}
           </select>
+        </FieldGroup>
+
+        {data.service === 'fleet-detailing' && (
+          <FieldGroup label="Fleet Size" htmlFor="q-fleet-size" error={errors.fleetSize}>
+            <select
+              id="q-fleet-size"
+              name="fleetSize"
+              value={data.fleetSize}
+              onChange={handleChange}
+              className="field-select"
+            >
+              <option value="">Select fleet size</option>
+              <option value="Small Fleet">Small Fleet (3–10 vehicles)</option>
+              <option value="Mid-Size Fleet">Mid-Size Fleet (11–30 vehicles)</option>
+              <option value="Large Fleet">Large Fleet (31+ vehicles)</option>
+            </select>
+          </FieldGroup>
+        )}
+
+        <FieldGroup label="Additional Details" htmlFor="q-notes">
+          <textarea
+            id="q-notes"
+            name="notes"
+            value={data.notes}
+            onChange={handleChange}
+            className="field-input"
+            rows={3}
+            placeholder="Anything else we should know? (optional)"
+          />
         </FieldGroup>
 
         {/* Submit */}

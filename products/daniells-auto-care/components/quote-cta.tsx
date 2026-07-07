@@ -29,7 +29,7 @@ export function QuoteCTA({ className, headline, subheadline }: QuoteCTAProps) {
             {headline ?? 'Ready for a showroom finish?'}
           </h2>
           <p className="mt-2 text-white/80">
-            {subheadline ?? 'Get your free quote in under 15 minutes.'}
+            {subheadline ?? 'Get your free quote quickly.'}
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">

@@ -113,7 +113,7 @@ export default function GalleryPage() {
                   href={business.phoneHref}
                   variant="outline"
                   size="lg"
-                  className="border-fg/30 text-fg hover:border-fg"
+                  className="border-fg/30 text-fg hover:border-fg hover:text-fg"
                   track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
                 >
                   {business.phone}

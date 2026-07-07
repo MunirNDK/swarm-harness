@@ -118,9 +118,9 @@ export default function AreaDetailPage({ params }: Props) {
                   { value: business.reviewsCount, label: 'Five-Star Reviews' },
                   { value: business.experienceYears, label: 'Years Combined Experience' },
                   { value: business.vehiclesDetailed, label: 'Vehicles Detailed' },
-                  { value: '15 min', label: 'Quote Response' },
+                  { value: 'Quick', label: 'Quote Response' },
                 ].map((stat) => (
-                  <GlowCard key={stat.label}>
+                  <GlowCard key={stat.label} className="h-full">
                     <div className="p-6 text-center">
                       <p
                         className="font-sans font-extrabold text-accent leading-none mb-1"
@@ -203,7 +203,7 @@ export default function AreaDetailPage({ params }: Props) {
               },
             ].map((item, i) => (
               <Reveal key={item.heading} delay={i * 80}>
-                <GlowCard>
+                <GlowCard className="h-full">
                   <div className="p-8 h-full">
                     <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg mb-3">
                       {item.heading}

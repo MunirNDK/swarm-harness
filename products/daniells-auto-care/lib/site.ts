@@ -6,7 +6,7 @@ export const business = {
   hours: "Available 24/7",
   serviceArea: "Northern New Jersey",
   mobile: true,
-  responseTime: "15-minute quote response",
+  responseTime: "quick quote response",
   experienceYears: "5+",
   vehiclesDetailed: "2,000+",
   reviewsCount: "140+",
@@ -42,7 +42,7 @@ export const services = [
     process: [
       {
         title: "Free Quote & Inspection",
-        desc: "We assess your vehicle's condition and provide a transparent, no-obligation quote within 15 minutes.",
+        desc: "We assess your vehicle's condition and provide a transparent, no-obligation quote quickly.",
       },
       {
         title: "Interior Deep Clean",
@@ -427,7 +427,7 @@ export const stats = [
   { value: "140+", label: "Five-Star Reviews" },
   { value: "5+", label: "Years Combined Experience" },
   { value: "2,000+", label: "Vehicles Detailed" },
-  { value: "15 min", label: "Quote Response" },
+  { value: "Quick", label: "Quote Response" },
 ];
 
 export const reviews = [
@@ -475,7 +475,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "How much does mobile detailing cost?",
-    a: "Pricing depends on your vehicle's size, condition, and the services you choose. We provide free, no-obligation quotes within 15 minutes—just call (973) 916-7868 or fill out our online form. We offer competitive rates with no hidden fees.",
+    a: "Pricing depends on your vehicle's size, condition, and the services you choose. We provide free, no-obligation quotes quickly—just call (973) 916-7868 or fill out our online form. We offer competitive rates with no hidden fees.",
   },
   {
     q: "How long does a full detail take?",
@@ -491,7 +491,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Can I book a same-day appointment?",
-    a: "Yes, we offer same-day service whenever our schedule allows. Call (973) 916-7868 for immediate availability, or request a quote online and we'll respond within 15 minutes to confirm a time that works for you.",
+    a: "Yes, we offer same-day service whenever our schedule allows. Call (973) 916-7868 for immediate availability, or request a quote online and we'll respond quickly to confirm a time that works for you.",
   },
   {
     q: "What areas do you serve?",
@@ -533,7 +533,7 @@ export const whyChooseUs: { title: string; desc: string }[] = [
 export const processSteps: { title: string; desc: string }[] = [
   {
     title: "Request Your Free Quote",
-    desc: "Call (973) 916-7868 or fill out our online form. We'll respond within 15 minutes with a transparent, no-obligation quote tailored to your vehicle.",
+    desc: "Call (973) 916-7868 or fill out our online form. We'll respond quickly with a transparent, no-obligation quote tailored to your vehicle.",
   },
   {
     title: "We Come to You",
@@ -550,7 +550,7 @@ export const processSteps: { title: string; desc: string }[] = [
 ];
 
 export function areaIntro(town: string): string {
-  return `Looking for premium mobile auto detailing in ${town}, NJ? Daniells Auto Care brings factory-trained detailing — from ceramic coating to interior deep cleans — directly to your doorstep in ${town}, with same-day availability and free quotes.`;
+  return `Premium mobile auto detailing in ${town}, NJ — ceramic coating to interior deep-cleans, delivered to your doorstep with same-day availability.`;
 }
 
 export const siteUrl = "https://daniellsautocare.com";
