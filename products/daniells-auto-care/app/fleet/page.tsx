@@ -218,7 +218,7 @@ export default function FleetPage() {
                     <p className="text-fg-soft text-sm leading-relaxed flex-1">{tier.desc}</p>
                     <div className="mt-auto">
                       <QuoteButton
-                        variant="outline"
+                        variant="primary"
                         size="md"
                         prefill={{ service: 'fleet-detailing', fleetSize: tier.label }}
                         track={{

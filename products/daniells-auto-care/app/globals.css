@@ -197,7 +197,7 @@
   }
 
   /* Phone links — red, bold */
-  a[href^="tel:"] {
+  :where(a[href^="tel:"]) {
     color: var(--phone-fg);
     font-weight: 700;
     text-decoration: none;
