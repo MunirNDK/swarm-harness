@@ -77,7 +77,7 @@ export default function TeamPage() {
               >
                 Our Team
               </h1>
-              <p className="mt-6 text-fg-soft text-lg leading-relaxed max-w-xl mx-auto">
+              <p className="mt-6 text-fg-soft text-lg leading-relaxed max-w-[850px] mx-auto">
                 {business.experienceYears} years of combined team experience. {business.vehiclesDetailed} vehicles
                 detailed. {business.reviewsCount} five-star reviews. A professional mobile detailing
                 operation built on craft, reliability, and genuine care for your vehicle.

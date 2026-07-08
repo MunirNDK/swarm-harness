@@ -122,7 +122,8 @@ export function Navbar() {
     <header
       ref={mobileMenuRef}
       className={cn(
-        'sticky top-0 left-0 right-0 z-50 border-b transition-all duration-base ease-default',
+        'sticky top-0 left-0 right-0 border-b transition-all duration-base ease-default',
+        mobileOpen ? 'z-[60]' : 'z-50',
         scrolled
           ? 'bg-surface-dark/90 backdrop-blur-xl border-border shadow-md'
           : 'bg-surface-dark border-transparent'
@@ -251,7 +252,7 @@ export function Navbar() {
       {mobileOpen && (
         <div
           id="mobile-menu"
-          className="lg:hidden bg-surface-dark/95 backdrop-blur-xl border-t border-border"
+          className="lg:hidden bg-surface-dark/95 backdrop-blur-xl border-t border-border max-h-[calc(100vh-var(--nav-h))] overflow-y-auto"
         >
           <Container className="py-4 space-y-1">
             {NAV_ITEMS.map((item) => {

@@ -21,10 +21,10 @@ export function Footer() {
     <footer className="bg-surface-dark border-t border-border">
       <Container className="py-12">
         {/* Grid: Brand | Services | Company | Service Areas on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-12">
+        <div className="grid grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-12">
 
           {/* Brand column */}
-          <div className="space-y-4">
+          <div className="space-y-4 col-span-2 lg:col-span-1">
             <Link
               href="/"
               className="inline-block"
@@ -155,7 +155,7 @@ export function Footer() {
           </div>
 
           {/* Service Areas column — own column on desktop */}
-          <div>
+          <div className="col-span-2 lg:col-span-1">
             <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-4">
               Service Areas
             </p>
