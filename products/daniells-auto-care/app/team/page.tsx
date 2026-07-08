@@ -67,16 +67,18 @@ export default function TeamPage() {
       <Section surface="surface-dark" id="team-hero">
         <Container>
           <Reveal>
-            <div className="max-w-2xl mx-auto text-center">
-              <p className="mb-4 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
-                Daniells Auto Care
-              </p>
-              <h1
-                className="font-sans font-bold uppercase tracking-[-0.02em] text-fg"
-                style={{ fontSize: 'clamp(2.25rem,5vw,3.75rem)', lineHeight: '1.05' }}
-              >
-                Our Team
-              </h1>
+            <div className="mx-auto text-center">
+              <div className="max-w-2xl mx-auto">
+                <p className="mb-4 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+                  Daniells Auto Care
+                </p>
+                <h1
+                  className="font-sans font-bold uppercase tracking-[-0.02em] text-fg"
+                  style={{ fontSize: 'clamp(2.25rem,5vw,3.75rem)', lineHeight: '1.05' }}
+                >
+                  Our Team
+                </h1>
+              </div>
               <p className="mt-6 text-fg-soft text-lg leading-relaxed max-w-[850px] mx-auto">
                 {business.experienceYears} years of combined team experience. {business.vehiclesDetailed} vehicles
                 detailed. {business.reviewsCount} five-star reviews. A professional mobile detailing
