@@ -1,10 +1,11 @@
-import type { z } from 'zod';
+import { z } from 'zod';
 import type { BlogPost, LegalPage, Media, Service, ServiceArea } from './types';
-import type {
-  wpPageSchema,
-  wpPostSchema,
-  wpServiceAreaSchema,
-  wpServiceSchema,
+import {
+  wpMediaSchema,
+  type wpPageSchema,
+  type wpPostSchema,
+  type wpServiceAreaSchema,
+  type wpServiceSchema,
 } from './schemas';
 
 function decodeEntities(html: string): string {
@@ -18,16 +19,18 @@ function decodeEntities(html: string): string {
     .replace(/&#8212;/g, '—');
 }
 
-function toMedia(embedded?: {
-  'wp:featuredmedia'?: Array<{
-    id: number;
-    source_url: string;
-    alt_text: string;
-    media_details?: { width?: number; height?: number };
-  }>;
-}): Media | null {
-  const m = embedded?.['wp:featuredmedia']?.[0];
-  if (!m) return null;
+/**
+ * The embedded featured-media slot is `z.unknown()` at the schema level —
+ * WordPress can put a `{code: "rest_forbidden", ...}` error object there
+ * instead of real media (seen for real in production: an attachment
+ * cross-linked to a deleted post came back 401 on an unauthenticated
+ * request). Re-validate here and treat a mismatch as "no image" rather
+ * than letting one bad embed take down the whole page.
+ */
+function toMedia(embedded?: { 'wp:featuredmedia'?: unknown[] }): Media | null {
+  const parsed = wpMediaSchema.safeParse(embedded?.['wp:featuredmedia']?.[0]);
+  if (!parsed.success) return null;
+  const m = parsed.data;
   return {
     id: m.id,
     url: m.source_url,

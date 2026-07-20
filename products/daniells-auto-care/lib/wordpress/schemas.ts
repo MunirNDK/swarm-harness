@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 const renderedField = z.object({ rendered: z.string() });
 
-const wpMediaSchema = z.object({
+export const wpMediaSchema = z.object({
   id: z.number(),
   source_url: z.string(),
   alt_text: z.string().default(''),
@@ -22,9 +22,19 @@ const wpMediaSchema = z.object({
  * (see client.ts). WP nests it as a one-element array; absent entirely if
  * featured_media is 0. Never trust `featured_media_resolved`-style flattened
  * fields — that's not a real WP REST shape.
+ *
+ * The array element is deliberately `z.unknown()`, not `wpMediaSchema` —
+ * WordPress can return a `{code: "rest_forbidden", ...}` error object in
+ * that slot instead of real media (observed for real: an attachment
+ * cross-linked to a since-deleted post came back 401/forbidden on an
+ * unauthenticated request, even though `featured_media` was a valid ID).
+ * transforms.ts's toMedia() re-validates each element against
+ * `wpMediaSchema` itself and treats a mismatch as "no image" rather than
+ * failing the entire page/post — one bad embed must never take down page
+ * generation for everything else.
  */
 const embeddedFeaturedMedia = z
-  .object({ 'wp:featuredmedia': z.array(wpMediaSchema).optional() })
+  .object({ 'wp:featuredmedia': z.array(z.unknown()).optional() })
   .optional();
 
 export const wpServiceSchema = z.object({
@@ -76,7 +86,7 @@ export const wpPostSchema = z.object({
   modified: z.string(),
   _embedded: z
     .object({
-      'wp:featuredmedia': z.array(wpMediaSchema).optional(),
+      'wp:featuredmedia': z.array(z.unknown()).optional(), // see embeddedFeaturedMedia comment above
       'wp:term': z
         .array(z.array(z.object({ name: z.string(), taxonomy: z.string() })))
         .optional(),

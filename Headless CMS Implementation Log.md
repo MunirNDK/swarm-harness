@@ -1477,6 +1477,58 @@ not fixed this round.
 - Confirmed `car-detailing` and `window-tinting` detail pages now render
   visibly different fallback images.
 
+## 2026-07-21 — Session 1 continued (production build failure: real robustness bug)
+
+Owner reported a new Vercel build failure after the previous push — a zod
+validation error failing `generateStaticParams` for `/blog/[slug]`, with
+two "Required" issues (expected `number`/`string`, received `undefined`).
+
+### Root cause, found via direct diagnosis, not guessing
+Wrote a small script using the actual `wpPostSchema` against the real API
+response to get the *exact* validation error with full field path (the
+Vercel log truncated it to `path: [Array]`, unhelpful on its own). Found:
+`_embedded['wp:featuredmedia'][0]` was missing `id`/`source_url` for post
+`ceramic-coating-vs-wax`. Compared authenticated vs. unauthenticated
+requests for the same post and found the actual cause: WordPress returns
+`{"code":"rest_forbidden","message":"...","data":{"status":401}}` in that
+slot for an **unauthenticated** request (which is what Next.js's public
+page rendering always uses), instead of the real media object an
+authenticated admin request sees. The attachment in question (id 46) is
+cross-linked (`wp:attached-to`) to a `service` post id that no longer
+exists — the deleted `budget-wash` test service from earlier — which
+appears to be why WordPress now restricts embedding it publicly. Almost
+certainly the owner exploring the new featured-image / admin-fields UI and
+attaching an existing media item to this blog post.
+
+**This is a real robustness bug in the Zod schema, independent of that one
+data quirk.** `wpMediaSchema` assumed every element of the embedded
+`wp:featuredmedia` array is always a well-formed media object — but
+WordPress can legitimately put an error object there for any number of
+permission/visibility reasons, and the schema had no tolerance for that at
+all. One bad embed was taking down static generation for the *entire*
+`/blog/[slug]` route (and would have done the same for `/services/[slug]`
+had any service hit the same condition — checked directly, none currently
+do, but the schema was equally fragile there).
+
+**Fix:** `_embedded['wp:featuredmedia']` is now `z.array(z.unknown())` at
+the outer schema level (services and posts both) instead of assuming
+`wpMediaSchema` shape up front. `transforms.ts`'s `toMedia()` now
+re-validates the single embedded item against `wpMediaSchema` itself via
+`safeParse` and treats any mismatch — forbidden-error object, missing
+fields, anything — as "no image," falling back to the per-item local
+fallback image from the previous fix. A malformed embed can now never take
+down page generation; worst case, that one item just shows its fallback
+image instead of a real one.
+
+**Verified with the actual failing data, not just re-running tests that
+already passed:** re-ran the same direct-schema diagnostic against the
+real API response — all 3 posts (including the previously-failing one) and
+all 8 services now parse successfully. Started the dev server and
+confirmed `/blog/ceramic-coating-vs-wax` (the specific post that broke the
+build) renders correctly with its fallback image, and the blog listing
+shows all 3 posts. Deleted the temporary diagnostic scripts afterward —
+they were throwaway debugging tools, not part of the permanent codebase.
+
 ### Phase 3 — fully complete
 All items done: plugin deployed + activated, scoped roles created and
 verified, search-engine indexing disabled and verified, `service`/
