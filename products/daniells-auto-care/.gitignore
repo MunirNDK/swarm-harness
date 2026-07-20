@@ -1,3 +1,9 @@
 node_modules/
 .next/
 out/
+
+# Secrets — never commit WordPress/Vercel/API credentials (see CLAUDE.md and
+# "Headless CMS Implementation Log.md" §13.4 of the orchestrator spec)
+.env
+.env.local
+.env.*.local

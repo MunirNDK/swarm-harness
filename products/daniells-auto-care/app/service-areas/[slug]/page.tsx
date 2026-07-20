@@ -14,33 +14,47 @@ import { ReviewCard } from '@/components/review-card';
 import { QuoteButton } from '@/components/quote-modal';
 import { TrustMarquee } from '@/components/trust-marquee';
 import { FaqItem } from '@/components/faq-item';
-import { business, areas, services, reviews, faqs, areaIntro } from '@/lib/site';
+import { business, reviews, faqs, areaIntro } from '@/lib/site';
 import { pageMeta, localBusinessLd, faqLd, breadcrumbLd } from '@/lib/seo';
+import { getServiceArea, getServiceAreas } from '@/lib/wordpress/service-areas';
+import { getServices } from '@/lib/wordpress/services';
 
 type Props = { params: { slug: string } };
 
-const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
-
-export function generateStaticParams() {
-  return areas.map((area) => ({ slug: slugify(area) }));
+export async function generateStaticParams() {
+  const areas = await getServiceAreas();
+  return areas.map((area) => ({ slug: area.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const area = areas.find((a) => slugify(a) === params.slug);
+  const area = await getServiceArea(params.slug);
   if (!area) return {};
   return pageMeta({
-    title: `Auto Detailing in ${area}, NJ | Daniells Auto Care`,
-    description: `Professional mobile auto detailing in ${area}, NJ. Same-day service, free quotes, 140+ 5-star reviews. Ceramic coating, paint correction & more.`,
+    title: `Auto Detailing in ${area.name}, NJ | Daniells Auto Care`,
+    description:
+      area.seoDescription ||
+      `Professional mobile auto detailing in ${area.name}, NJ. Same-day service, free quotes, 140+ 5-star reviews. Ceramic coating, paint correction & more.`,
     path: `/service-areas/${params.slug}`,
   });
 }
 
-export default function AreaDetailPage({ params }: Props) {
-  const area = areas.find((a) => slugify(a) === params.slug);
+export default async function AreaDetailPage({ params }: Props) {
+  const area = await getServiceArea(params.slug);
   if (!area) notFound();
 
-  const town = area;
-  const intro = areaIntro(town);
+  const [allServices, allAreas] = await Promise.all([getServices(), getServiceAreas()]);
+
+  const town = area.name;
+  // null/empty => fall back to the existing generic template — schema contract §3
+  const intro = area.localIntroduction || areaIntro(town);
+
+  // Empty relation => fall back to "all services" (matches pre-CMS behavior) — schema contract §5.3
+  const availableServices =
+    area.relatedServiceSlugs.length > 0
+      ? allServices.filter((s) => area.relatedServiceSlugs.includes(s.slug))
+      : allServices;
+
+  const nearbyAreas = allAreas.filter((a) => a.slug !== area.slug);
 
   const breadcrumbs = [
     { label: 'Home', href: '/' },
@@ -153,9 +167,16 @@ export default function AreaDetailPage({ params }: Props) {
             subtitle={`Complete auto detailing, ceramic coating, paint correction, window tinting, and more — all available as mobile service in ${town}.`}
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {services.map((service, i) => (
+            {availableServices.map((service, i) => (
               <Reveal key={service.slug} delay={i * 60}>
-                <ServiceCard service={service} />
+                <ServiceCard
+                  service={{
+                    slug: service.slug,
+                    name: service.name,
+                    icon: service.icon,
+                    short: service.shortDescription,
+                  }}
+                />
               </Reveal>
             ))}
           </div>
@@ -263,24 +284,19 @@ export default function AreaDetailPage({ params }: Props) {
             Other Areas We Serve
           </p>
           <div className="flex flex-wrap gap-3">
-            {areas
-              .filter((a) => slugify(a) !== params.slug)
-              .map((a) => {
-                const aSlug = slugify(a);
-                return (
-                  <Link
-                    key={a}
-                    href={`/service-areas/${aSlug}`}
-                    className="rounded-full border border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.06em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-[44px] flex items-center"
-                    data-track-category="navigation"
-                    data-track-action="link_click"
-                    data-track-label={`area_${aSlug}`}
-                    data-track-context="internal"
-                  >
-                    {a}
-                  </Link>
-                );
-              })}
+            {nearbyAreas.map((a) => (
+              <Link
+                key={a.slug}
+                href={`/service-areas/${a.slug}`}
+                className="rounded-full border border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.06em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-[44px] flex items-center"
+                data-track-category="navigation"
+                data-track-action="link_click"
+                data-track-label={`area_${a.slug}`}
+                data-track-context="internal"
+              >
+                {a.name}
+              </Link>
+            ))}
           </div>
         </Container>
       </Section>

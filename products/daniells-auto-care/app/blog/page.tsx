@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Calendar, Tag } from 'lucide-react';
 import { pageMeta, breadcrumbLd } from '@/lib/seo';
-import { business } from '@/lib/site';
-import { blogPosts } from '@/lib/blog';
+import { business, images } from '@/lib/site';
+import { getBlogPosts } from '@/lib/wordpress/posts';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
@@ -26,7 +26,9 @@ export const metadata: Metadata = pageMeta({
   path: '/blog',
 });
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const blogPosts = await getBlogPosts();
+
   return (
     <>
       <JsonLd data={breadcrumbLd(BREADCRUMBS)} />
@@ -65,6 +67,11 @@ export default function BlogPage() {
       {/* ── Blog Cards (DEV-CR-008) ── */}
       <Section surface="surface" id="blog-grid">
         <Container>
+          {blogPosts.length === 0 ? (
+            <p className="text-fg-soft text-center py-12">
+              New articles are coming soon — check back shortly.
+            </p>
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-bay">
             {blogPosts.map((post, i) => (
               <Reveal key={post.slug} delay={i * 60} className="h-full">
@@ -82,8 +89,8 @@ export default function BlogPage() {
                     {/* Featured Image */}
                     <div className="relative aspect-[16/9] overflow-hidden">
                       <Image
-                        src={post.image}
-                        alt={post.imageAlt}
+                        src={post.featuredImage?.url ?? images.hero}
+                        alt={post.featuredImage?.alt || post.title}
                         fill
                         sizes="(max-width:768px) 100vw,(max-width:1024px) 50vw,33vw"
                         className="object-cover transition-transform duration-base ease-default group-hover:scale-105"
@@ -138,6 +145,7 @@ export default function BlogPage() {
               </Reveal>
             ))}
           </div>
+          )}
         </Container>
       </Section>
 

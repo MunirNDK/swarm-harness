@@ -1,5 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+/* ── WordPress/Formidable submission ────────────────────────────── */
+async function submitToWordPress(
+  formType: 'contact' | 'quote',
+  fields: Record<string, string>
+): Promise<boolean> {
+  const baseUrl = process.env.WORDPRESS_API_URL;
+  const user = process.env.WP_FORMS_AGENT_USERNAME;
+  const pass = process.env.WP_FORMS_AGENT_APP_PASSWORD;
+  if (!baseUrl || !user || !pass) {
+    console.error('[quote] WordPress forms credentials not configured — submission not sent');
+    return false;
+  }
+
+  try {
+    const auth = Buffer.from(`${user}:${pass}`).toString('base64');
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch(`${baseUrl}/wp-json/site-headless/v1/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Basic ${auth}` },
+      body: JSON.stringify({ formType, fields }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    return res.ok;
+  } catch (err) {
+    console.error('[quote] WordPress submission failed:', err instanceof Error ? err.message : err);
+    return false;
+  }
+}
+
 /**
  * POST /api/quote
  * Handles two payload modes without external dependencies:
@@ -67,6 +98,20 @@ export async function POST(request: NextRequest) {
     return err('Invalid request body', 400);
   }
 
+  /* ── Reject unexpected fields outright — don't just silently drop them ── */
+  const unexpected = Object.keys(raw).filter((key) => !(key in LIMITS));
+  if (unexpected.length > 0) {
+    return err(`Unexpected field(s): ${unexpected.join(', ')}`, 400);
+  }
+
+  /* ── Honeypot check FIRST, before length-capping — bots fill hidden
+     fields, humans don't. Must run before the generic cap loop below,
+     since _honey's cap is intentionally 0 and would otherwise always
+     trip that check first with a 400 instead of this silent 200. ── */
+  if (typeof raw._honey === 'string' && raw._honey.trim() !== '') {
+    return NextResponse.json({ ok: true });
+  }
+
   /* ── Coerce all known fields to trimmed strings + enforce caps ── */
   const fields: Record<string, string> = {};
   for (const [key, maxLen] of Object.entries(LIMITS)) {
@@ -76,12 +121,6 @@ export async function POST(request: NextRequest) {
       return err(`${key} exceeds the maximum allowed length.`, 400);
     }
     fields[key] = value;
-  }
-
-  /* ── Honeypot check: bots fill hidden fields, humans don't ──── */
-  if (fields._honey) {
-    // Silent reject — return 200 to not signal to bots
-    return NextResponse.json({ ok: true });
   }
 
   /* ── Detect payload mode ─────────────────────────────────────── */
@@ -99,13 +138,15 @@ export async function POST(request: NextRequest) {
     if (fields.phone && !isValidPhone(fields.phone))
       return err('Phone number must have at least 10 digits.', 400);
 
-    // Stub: forward to email/CRM here. Inputs are validated and length-capped.
-    console.log('[contact]', {
-      name:    fields.name,
-      email:   '[REDACTED]',
-      phone:   fields.phone ? '[REDACTED]' : undefined,
-      message: fields.message.slice(0, 40) + (fields.message.length > 40 ? '…' : ''),
+    const sent = await submitToWordPress('contact', {
+      name: fields.name,
+      email: fields.email,
+      phone: fields.phone,
+      message: fields.message,
     });
+    if (!sent) {
+      return err('Something went wrong submitting your message. Please call us instead.', 502);
+    }
 
     return NextResponse.json({ ok: true });
   }
@@ -118,14 +159,16 @@ export async function POST(request: NextRequest) {
   if (!fields.vehicle) return err('Vehicle is required.', 400);
   if (!fields.service) return err('Service is required.', 400);
 
-  // Stub: forward to scheduling system/CRM here.
-  console.log('[quote]', {
-    name:    fields.name,
-    phone:   '[REDACTED]',
-    zip:     fields.zip || undefined,
+  const sent = await submitToWordPress('quote', {
+    name: fields.name,
+    phone: fields.phone,
+    zip: fields.zip,
     vehicle: fields.vehicle,
     service: fields.service,
   });
+  if (!sent) {
+    return err('Something went wrong submitting your request. Please call us instead.', 502);
+  }
 
   return NextResponse.json({ ok: true });
 }

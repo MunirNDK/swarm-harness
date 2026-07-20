@@ -13,28 +13,33 @@ import { GlowCard } from '@/components/ui/glow-card';
 import { FaqItem } from '@/components/faq-item';
 import { ServiceCard } from '@/components/service-card';
 import { QuoteButton } from '@/components/quote-modal';
-import { business, services } from '@/lib/site';
+import { business, images } from '@/lib/site';
 import { pageMeta, serviceLd, faqLd, breadcrumbLd } from '@/lib/seo';
+import { getService, getServices } from '@/lib/wordpress/services';
+import { getServiceAreas } from '@/lib/wordpress/service-areas';
 
 type Props = { params: { slug: string } };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const services = await getServices();
   return services.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const service = services.find((s) => s.slug === params.slug);
+  const service = await getService(params.slug);
   if (!service) return {};
   return pageMeta({
     title: `${service.name} in Northern NJ | Daniells Auto Care`,
-    description: service.metaDescription,
+    description: service.seoDescription,
     path: `/services/${service.slug}`,
   });
 }
 
-export default function ServiceDetailPage({ params }: Props) {
-  const service = services.find((s) => s.slug === params.slug);
+export default async function ServiceDetailPage({ params }: Props) {
+  const service = await getService(params.slug);
   if (!service) notFound();
+
+  const [allServices, allAreas] = await Promise.all([getServices(), getServiceAreas()]);
 
   const breadcrumbs = [
     { label: 'Home', href: '/' },
@@ -42,14 +47,22 @@ export default function ServiceDetailPage({ params }: Props) {
     { label: service.name, href: `/services/${service.slug}` },
   ];
 
-  const relatedServices = services
+  const relatedServices = allServices
     .filter((s) => s.slug !== service.slug)
     .slice(0, 3);
 
+  // Empty relation => fall back to "all areas" (matches pre-CMS behavior) — schema contract §5.2
+  const availableAreas =
+    service.relatedServiceAreaSlugs.length > 0
+      ? allAreas.filter((a) => service.relatedServiceAreaSlugs.includes(a.slug))
+      : allAreas;
+
+  const heroImage = service.featuredImage?.url ?? images.hero;
+
   const sdLd = serviceLd(
-    { name: service.name, description: service.long, slug: service.slug },
+    { name: service.name, description: service.longDescription, slug: service.slug },
   );
-  const sdFaqLd = faqLd(service.faq);
+  const sdFaqLd = faqLd(service.faqItems);
   const sdBcLd = breadcrumbLd(breadcrumbs);
 
   return (
@@ -81,7 +94,7 @@ export default function ServiceDetailPage({ params }: Props) {
               </Reveal>
               <Reveal delay={180}>
                 <p className="text-fg-soft text-lg leading-relaxed mb-6">
-                  {service.long}
+                  {service.longDescription}
                 </p>
               </Reveal>
 
@@ -126,8 +139,8 @@ export default function ServiceDetailPage({ params }: Props) {
                   aria-hidden="true"
                 />
                 <Image
-                  src={service.image}
-                  alt={`${service.name} — Daniells Auto Care mobile service in Northern New Jersey`}
+                  src={heroImage}
+                  alt={service.featuredImage?.alt || `${service.name} — Daniells Auto Care mobile service in Northern New Jersey`}
                   fill
                   className="object-cover z-10"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -145,8 +158,11 @@ export default function ServiceDetailPage({ params }: Props) {
           <Container>
             <SectionHeading
               kicker="What's Included"
-              title={`${service.name} Package`}
-              subtitle="Every service includes our commitment to quality, meticulous attention to detail, and 100% satisfaction guarantee."
+              title={service.benefitsTitle || `${service.name} Package`}
+              subtitle={
+                service.benefitsSubtitle ||
+                'Every service includes our commitment to quality, meticulous attention to detail, and 100% satisfaction guarantee.'
+              }
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {service.benefits.map((benefit, i) => (
@@ -172,16 +188,19 @@ export default function ServiceDetailPage({ params }: Props) {
       )}
 
       {/* ── PROCESS ── surface */}
-      {service.process.length > 0 && (
+      {service.processSteps.length > 0 && (
         <Section surface="surface" id="service-process">
           <Container>
             <SectionHeading
               kicker="Our Process"
-              title={`How We Deliver ${service.name}`}
-              subtitle="A proven, step-by-step approach for consistent, showroom-quality results every time."
+              title={service.processTitle || `How We Deliver ${service.name}`}
+              subtitle={
+                service.processSubtitle ||
+                'A proven, step-by-step approach for consistent, showroom-quality results every time.'
+              }
             />
             <div className="max-w-4xl mx-auto space-y-6">
-              {service.process.map((step, i) => (
+              {service.processSteps.map((step, i) => (
                 <Reveal key={i} delay={i * 80}>
                   <GlowCard>
                     <div className="p-6 md:p-8 flex gap-6">
@@ -210,16 +229,16 @@ export default function ServiceDetailPage({ params }: Props) {
       )}
 
       {/* ── FAQ ── surface-dark + FAQPage JSON-LD (emitted above) */}
-      {service.faq.length > 0 && (
+      {service.faqItems.length > 0 && (
         <Section surface="surface-dark" id="service-faq">
           <Container>
             <SectionHeading
               kicker="FAQ"
-              title={`${service.name} Questions`}
-              subtitle="Answers to common questions about this service."
+              title={service.faqTitle || `${service.name} Questions`}
+              subtitle={service.faqSubtitle || 'Answers to common questions about this service.'}
             />
             <div className="max-w-3xl mx-auto space-y-4">
-              {service.faq.map((item, i) => (
+              {service.faqItems.map((item, i) => (
                 <Reveal key={i} delay={i * 60}>
                   <FaqItem faq={{ q: item.q, a: item.a }} index={i} />
                 </Reveal>
@@ -241,7 +260,9 @@ export default function ServiceDetailPage({ params }: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {relatedServices.map((rs, i) => (
                 <Reveal key={rs.slug} delay={i * 80}>
-                  <ServiceCard service={rs} />
+                  <ServiceCard
+                    service={{ slug: rs.slug, name: rs.name, icon: rs.icon, short: rs.shortDescription }}
+                  />
                 </Reveal>
               ))}
             </div>
@@ -337,33 +358,19 @@ export default function ServiceDetailPage({ params }: Props) {
             Available In
           </p>
           <div className="flex flex-wrap gap-3">
-            {[
-              'Franklin Lakes',
-              'Ridgewood',
-              'Tenafly',
-              'Englewood Cliffs',
-              'Chatham',
-              'Madison',
-              'Mountain Lakes',
-              'Basking Ridge',
-              'Bernardsville',
-              'Florham Park',
-            ].map((area) => {
-              const aSlug = area.toLowerCase().replace(/\s+/g, '-');
-              return (
-                <Link
-                  key={area}
-                  href={`/service-areas/${aSlug}`}
-                  className="rounded-full border border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.06em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-[44px] flex items-center"
-                  data-track-category="navigation"
-                  data-track-action="link_click"
-                  data-track-label={`area_${aSlug}`}
-                  data-track-context="internal"
-                >
-                  {area}
-                </Link>
-              );
-            })}
+            {availableAreas.map((area) => (
+              <Link
+                key={area.slug}
+                href={`/service-areas/${area.slug}`}
+                className="rounded-full border border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.06em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-[44px] flex items-center"
+                data-track-category="navigation"
+                data-track-action="link_click"
+                data-track-label={`area_${area.slug}`}
+                data-track-context="internal"
+              >
+                {area.name}
+              </Link>
+            ))}
           </div>
         </Container>
       </Section>

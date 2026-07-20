@@ -13,11 +13,11 @@ import { QuoteButton } from '@/components/quote-modal';
 import { TrustMarquee } from '@/components/trust-marquee';
 import {
   business,
-  services,
   whyChooseUs,
   processSteps,
 } from '@/lib/site';
 import { pageMeta, breadcrumbLd } from '@/lib/seo';
+import { getServices } from '@/lib/wordpress/services';
 
 export const metadata: Metadata = pageMeta({
   title: 'Auto Detailing Services | Daniells Auto Care',
@@ -31,7 +31,9 @@ const breadcrumbs = [
   { label: 'Services', href: '/services' },
 ];
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const services = await getServices();
+
   return (
     <>
       <JsonLd data={breadcrumbLd(breadcrumbs)} />
@@ -118,13 +120,30 @@ export default function ServicesPage() {
             title="Complete Detailing, Protection & Restoration"
             subtitle="Every service is performed with professional-grade products and meticulous attention to detail — from a quick interior refresh to full ceramic packages."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, i) => (
-              <Reveal key={service.slug} delay={i * 60}>
-                <ServiceCard service={service} />
-              </Reveal>
-            ))}
-          </div>
+          {services.length === 0 ? (
+            <p className="text-fg-soft text-center py-12">
+              Services are being updated — check back shortly, or{' '}
+              <Link href="/contact" className="text-accent hover:text-accent-mid">
+                contact us
+              </Link>{' '}
+              for current offerings.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {services.map((service, i) => (
+                <Reveal key={service.slug} delay={i * 60}>
+                  <ServiceCard
+                    service={{
+                      slug: service.slug,
+                      name: service.name,
+                      icon: service.icon,
+                      short: service.shortDescription,
+                    }}
+                  />
+                </Reveal>
+              ))}
+            </div>
+          )}
         </Container>
       </Section>
 

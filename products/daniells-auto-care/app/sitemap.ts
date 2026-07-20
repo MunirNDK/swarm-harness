@@ -1,12 +1,17 @@
 import type { MetadataRoute } from 'next';
-import { siteUrl, services, areas } from '@/lib/site';
-import { blogPosts } from '@/lib/blog';
+import { siteUrl } from '@/lib/site';
+import { getServices } from '@/lib/wordpress/services';
+import { getServiceAreas } from '@/lib/wordpress/service-areas';
+import { getBlogPosts } from '@/lib/wordpress/posts';
 
 /**
  * app/sitemap.ts — Contract §7 / SEO rules
- * Covers: all static pages + dynamic service / area / blog routes.
+ * Covers: all static pages + dynamic service / area / blog routes, sourced
+ * from WordPress so published/unpublished state is always current — spec
+ * §1: "Removing or unpublishing an item must remove it from relevant
+ * listings after cache invalidation."
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   /* ── Static pages ─────────────────────────────────────── */
@@ -73,6 +78,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
+  const [services, areas, blogPosts] = await Promise.all([
+    getServices(),
+    getServiceAreas(),
+    getBlogPosts(),
+  ]);
+
   /* ── Service detail pages ─────────────────────────────── */
   const serviceEntries: MetadataRoute.Sitemap = services.map((s) => ({
     url:             `${siteUrl}/services/${s.slug}`,
@@ -83,7 +94,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   /* ── Service-area detail pages ───────────────────────── */
   const areaEntries: MetadataRoute.Sitemap = areas.map((area) => ({
-    url:             `${siteUrl}/service-areas/${area.toLowerCase().replace(/\s+/g, '-')}`,
+    url:             `${siteUrl}/service-areas/${area.slug}`,
     lastModified:    now,
     changeFrequency: 'monthly' as const,
     priority:        0.8,
@@ -92,7 +103,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   /* ── Blog post pages ─────────────────────────────────── */
   const blogEntries: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url:             `${siteUrl}/blog/${post.slug}`,
-    lastModified:    new Date(post.date),
+    lastModified:    new Date(post.modifiedDate || post.date),
     changeFrequency: 'yearly' as const,
     priority:        0.6,
   }));

@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Calendar, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
 import { pageMeta, articleLd, breadcrumbLd } from '@/lib/seo';
-import { business } from '@/lib/site';
-import { blogPosts, getBlogPost } from '@/lib/blog';
+import { business, images } from '@/lib/site';
+import { getBlogPost, getBlogPosts } from '@/lib/wordpress/posts';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
@@ -17,7 +17,8 @@ import { QuoteButton } from '@/components/quote-modal';
 import { TrustMarquee } from '@/components/trust-marquee';
 
 /** SSG: generate all blog routes at build time */
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const blogPosts = await getBlogPosts();
   return blogPosts.map((p) => ({ slug: p.slug }));
 }
 
@@ -28,13 +29,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPost(slug);
+  const post = await getBlogPost(slug);
   if (!post) return { title: 'Post Not Found' };
   return pageMeta({
     title:       post.title,
     description: post.excerpt,
     path:        `/blog/${post.slug}`,
-    image:       post.image,
+    image:       post.featuredImage?.url,
   });
 }
 
@@ -44,10 +45,11 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post     = getBlogPost(slug);
+  const post     = await getBlogPost(slug);
   if (!post) notFound();
 
-  const related = blogPosts.filter((p) => p.slug !== post.slug).slice(0, 2);
+  const allPosts = await getBlogPosts();
+  const related = allPosts.filter((p) => p.slug !== post.slug).slice(0, 2);
 
   const BREADCRUMBS = [
     { label: 'Home',    href: '/' },
@@ -99,8 +101,8 @@ export default async function BlogPostPage({
           <Reveal delay={40}>
             <div className="relative aspect-[3/1] min-h-[200px] overflow-hidden rounded-lg mb-8">
               <Image
-                src={post.image}
-                alt={post.imageAlt}
+                src={post.featuredImage?.url ?? images.hero}
+                alt={post.featuredImage?.alt || post.title}
                 fill
                 sizes="(max-width:768px) 100vw,1200px"
                 className="object-cover"
@@ -223,8 +225,8 @@ export default async function BlogPostPage({
                   <GlowCard className="relative flex gap-4 p-4 min-h-[44px]">
                     <div className="relative w-24 h-20 rounded overflow-hidden flex-shrink-0">
                       <Image
-                        src={r.image}
-                        alt={r.imageAlt}
+                        src={r.featuredImage?.url ?? images.hero}
+                        alt={r.featuredImage?.alt || r.title}
                         fill
                         sizes="96px"
                         className="object-cover"

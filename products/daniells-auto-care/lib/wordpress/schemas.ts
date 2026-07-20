@@ -1,0 +1,94 @@
+import { z } from 'zod';
+
+/**
+ * Raw WordPress REST response shapes — validated before anything touches
+ * transforms.ts. Shapes confirmed empirically against the live staging
+ * instance (see Implementation Log), not just assumed from docs.
+ */
+
+const renderedField = z.object({ rendered: z.string() });
+
+const wpMediaSchema = z.object({
+  id: z.number(),
+  source_url: z.string(),
+  alt_text: z.string().default(''),
+  media_details: z
+    .object({ width: z.number().optional(), height: z.number().optional() })
+    .optional(),
+});
+
+/**
+ * Featured media only appears when the request includes `_embed=wp:featuredmedia`
+ * (see client.ts). WP nests it as a one-element array; absent entirely if
+ * featured_media is 0. Never trust `featured_media_resolved`-style flattened
+ * fields — that's not a real WP REST shape.
+ */
+const embeddedFeaturedMedia = z
+  .object({ 'wp:featuredmedia': z.array(wpMediaSchema).optional() })
+  .optional();
+
+export const wpServiceSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
+  status: z.string(),
+  title: renderedField,
+  meta: z.object({
+    short_description: z.string().default(''),
+    long_description: z.string().default(''),
+    icon: z.string().default(''),
+    seo_description: z.string().default(''),
+    benefits_title: z.string().default(''),
+    benefits_subtitle: z.string().default(''),
+    benefits: z.array(z.string()).default([]),
+    process_title: z.string().default(''),
+    process_subtitle: z.string().default(''),
+    process_steps: z
+      .array(z.object({ title: z.string(), desc: z.string() }))
+      .default([]),
+    faq_title: z.string().default(''),
+    faq_subtitle: z.string().default(''),
+    faq_items: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+  }),
+  related_service_area_slugs: z.array(z.string()).default([]),
+  _embedded: embeddedFeaturedMedia,
+});
+
+export const wpServiceAreaSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
+  status: z.string(),
+  title: renderedField,
+  meta: z.object({
+    local_introduction: z.string().default(''),
+    seo_description: z.string().default(''),
+  }),
+  related_service_slugs: z.array(z.string()).default([]),
+});
+
+export const wpPostSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
+  status: z.string(),
+  title: renderedField,
+  excerpt: renderedField,
+  content: renderedField,
+  date: z.string(),
+  modified: z.string(),
+  _embedded: z
+    .object({
+      'wp:featuredmedia': z.array(wpMediaSchema).optional(),
+      'wp:term': z
+        .array(z.array(z.object({ name: z.string(), taxonomy: z.string() })))
+        .optional(),
+    })
+    .optional(),
+});
+
+export const wpPageSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
+  status: z.string(),
+  title: renderedField,
+  content: renderedField,
+  modified: z.string(),
+});

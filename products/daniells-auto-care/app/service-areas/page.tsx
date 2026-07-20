@@ -10,8 +10,10 @@ import { JsonLd } from '@/components/ui/jsonld';
 import { GlowCard } from '@/components/ui/glow-card';
 import { QuoteButton } from '@/components/quote-modal';
 import { TrustMarquee } from '@/components/trust-marquee';
-import { business, areas, services } from '@/lib/site';
+import { business } from '@/lib/site';
 import { pageMeta, breadcrumbLd } from '@/lib/seo';
+import { getServiceAreas } from '@/lib/wordpress/service-areas';
+import { getServices } from '@/lib/wordpress/services';
 
 export const metadata: Metadata = pageMeta({
   title: 'Service Areas — Northern NJ | Daniells Auto Care',
@@ -20,14 +22,14 @@ export const metadata: Metadata = pageMeta({
   path: '/service-areas',
 });
 
-const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
-
 const breadcrumbs = [
   { label: 'Home', href: '/' },
   { label: 'Service Areas', href: '/service-areas' },
 ];
 
-export default function ServiceAreasPage() {
+export default async function ServiceAreasPage() {
+  const [areas, services] = await Promise.all([getServiceAreas(), getServices()]);
+
   return (
     <>
       <JsonLd data={breadcrumbLd(breadcrumbs)} />
@@ -92,34 +94,41 @@ export default function ServiceAreasPage() {
             title="10 Northern NJ Communities"
             subtitle="Click your town to see local service details, area-specific info, and how to book your mobile detail."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {areas.map((area, i) => {
-              const aSlug = slugify(area);
-              return (
-                <Reveal key={area} delay={i * 60}>
+          {areas.length === 0 ? (
+            <p className="text-fg-soft text-center py-12 mb-8">
+              Service areas are being updated — check back shortly, or{' '}
+              <Link href="/contact" className="text-accent hover:text-accent-mid">
+                contact us
+              </Link>{' '}
+              to confirm coverage in your town.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {areas.map((area, i) => (
+                <Reveal key={area.slug} delay={i * 60}>
                   <GlowCard>
                     <Link
-                      href={`/service-areas/${aSlug}`}
+                      href={`/service-areas/${area.slug}`}
                       className="block p-8 group min-h-[44px]"
                       data-track-category="navigation"
                       data-track-action="link_click"
-                      data-track-label={`area_${aSlug}`}
+                      data-track-label={`area_${area.slug}`}
                       data-track-context="internal"
                     >
                       {/* Red area code indicator */}
                       <p className="font-mono text-[0.65rem] tracking-[0.12em] uppercase text-accent mb-2">
-                        NJ · {aSlug}
+                        NJ · {area.slug}
                       </p>
                       <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3 group-hover:text-accent transition-colors duration-fast ease-default">
-                        {area}
+                        {area.name}
                       </h3>
                       <p className="text-fg-soft text-sm leading-relaxed mb-4">
-                        Professional mobile auto detailing in {area}, NJ.
+                        Professional mobile auto detailing in {area.name}, NJ.
                         Same-day service, factory-trained technicians, free
                         quotes.
                       </p>
                       <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.05em] text-accent group-hover:text-accent-mid transition-colors duration-fast ease-default">
-                        View {area} services
+                        View {area.name} services
                         <svg
                           width="12"
                           height="12"
@@ -139,9 +148,9 @@ export default function ServiceAreasPage() {
                     </Link>
                   </GlowCard>
                 </Reveal>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Service cross-links */}
           <div className="pt-8 border-t border-border">
