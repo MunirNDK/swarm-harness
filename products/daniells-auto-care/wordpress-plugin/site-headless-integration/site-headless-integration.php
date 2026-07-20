@@ -47,6 +47,7 @@ function shi_on_activation() {
 	shi_revalidate_secret();
 	shi_preview_secret();
 	shi_bootstrap_formidable_forms();
+	shi_add_missing_quote_fields();
 	shi_create_relation_tables();
 	flush_rewrite_rules();
 }

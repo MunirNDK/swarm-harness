@@ -44,14 +44,16 @@ async function submitToWordPress(
 
 /* ── Field length caps ──────────────────────────────────────────── */
 const LIMITS: Record<string, number> = {
-  name:    100,
-  phone:   30,
-  email:   254,
-  zip:     10,
-  vehicle: 100,
-  service: 60,
-  message: 2000,
-  _honey:  0,   // honeypot must be empty
+  name:      100,
+  phone:     30,
+  email:     254,
+  zip:       10,
+  vehicle:   100,
+  service:   60,
+  fleetSize: 40,   // QuoteForm — only shown/filled when service === 'fleet-detailing'
+  notes:     1000, // QuoteForm — optional "Additional Details"
+  message:   2000,
+  _honey:    0,    // honeypot must be empty
 };
 
 /* ── Rate limiting (in-memory, per-instance) ────────────────────── */
@@ -165,6 +167,8 @@ export async function POST(request: NextRequest) {
     zip: fields.zip,
     vehicle: fields.vehicle,
     service: fields.service,
+    fleetSize: fields.fleetSize,
+    notes: fields.notes,
   });
   if (!sent) {
     return err('Something went wrong submitting your request. Please call us instead.', 502);

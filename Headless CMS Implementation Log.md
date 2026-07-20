@@ -1226,6 +1226,144 @@ Directory setting both unconfirmed), and the local `next build` failure
 (unrelated font-fetch issue) means Vercel's build is the real first test of
 a clean production build, not a known-safe rerun.
 
+## 2026-07-20 — Session 1 continued (Gate 1 cleared: committed and pushed)
+
+Owner approved Gate 1 from the release plan. Staged explicitly by path
+(never `git add -A`) to keep the pre-existing untracked repo-root files
+out of the commit — in particular `Auto Care AI Orchestrator Access.txt`,
+which contains real credentials and must never be committed; confirmed it
+stayed untracked afterward. Ran a final `git diff --cached` grep for
+password/secret-shaped strings before committing — only descriptive prose
+matched, no actual values.
+
+Committed as `59ead89` on `redesign/showroom-precision` (44 files,
++3825/-160) — author correctly `MunirNDK <ndayakomunir@gmail.com>` per this
+repo's local git config.
+
+**Push was denied once by Claude Code's own auto-mode safety classifier**
+(a guardrail independent of the owner's in-conversation approval) — did not
+attempt to route around it via another tool, per the standing instruction
+not to circumvent a classifier decision. Reported this to the owner
+plainly and asked how they'd like to proceed rather than forcing it.
+Owner asked to retry; the retry succeeded
+(`248673e..59ead89 redesign/showroom-precision -> redesign/showroom-precision`).
+Confirmed afterward: branch up to date with origin, working tree otherwise
+clean (only the same pre-existing unrelated untracked files remain).
+
+**Gate 1 is cleared. Gate 2 (Vercel production deploy) is still fully
+open** — none of the pre-release checklist items (Vercel env vars, Root
+Directory confirmation, Cloudways backup) have been done, and this
+orchestrator still has no Vercel access to do them even if approved.
+
+## 2026-07-20 — Session 1 continued (Gate 2: production deploy, verified for real)
+
+### Mistake avoided — a false positive that would have shipped silently wrong
+Owner reported "pushed to production." First verification pass looked
+fine: `/services`, `/service-areas`, sitemap counts, etc. all returned 200
+with what looked like correct content. **This was a false positive** — the
+production deployment was actually running the *old* pre-integration code
+(Vercel kept serving the last successful build after the new one failed on
+a missing env var, which is normal/safe Vercel behavior, but silent). The
+old hardcoded `lib/site.ts` data happens to be byte-identical to what got
+migrated into WordPress, so pages *looked* right regardless of which code
+path was actually serving them — content-based checks alone couldn't tell
+the difference.
+
+**Caught by testing a behavior that only exists in the new code**, not by
+inspecting content: POSTed a payload with an unexpected extra field to
+`/api/quote`. New code (this session's hardening fix) rejects it with 400;
+old code silently accepts it with 200. Got 200 — proof the real commit
+wasn't deployed, contradicting the "done" claim. Also confirmed via
+`/api/revalidate` returning 404 (route didn't exist pre-this-session) vs.
+the 401 a real deployment should give for a missing signature.
+**Lesson reinforced (already learned twice this session with the WP relation
+bugs): a response that merely looks successful is not verification — the
+verification has to specifically exercise something the new code
+introduced that the old code couldn't produce.**
+
+Explained this to the owner plainly, including *why* the false positive
+happened, rather than just saying "try again." Owner redeployed the
+correct commit (`59ead89`) and promoted it.
+
+### Re-verified after the redeploy — genuinely confirmed this time
+Ran the same fingerprint tests first, both now correct:
+`/api/quote` with an unexpected field → `400`; `/api/revalidate` with no
+signature → `401` (route exists, auth-gated). This is real proof the
+correct commit is live, not inferred from page content.
+
+Then ran the full smoke-test checklist from the release plan against the
+now-confirmed-correct URL (`https://swarm-daniells-auto-care.vercel.app` —
+`daniellsautocare.com` isn't DNS-connected yet, owner confirmed): all
+listing/detail pages 200, sitemap correct (32 URLs — see below), draft
+preview correctly 401s on a bad secret.
+
+**Found one real discrepancy while checking the sitemap count:** 9 services
+in WordPress, not the expected 8 — an extra `budget-wash` post (id 44) that
+wasn't created by anything in this session. Flagged to the owner rather
+than assuming and deleting it — likely their own test while exploring the
+new admin fields UI. Awaiting their confirmation before touching it either way.
+
+**Form submission — the owner's top priority — tested against the
+confirmed-correct deployment and verified with real matching data, not
+just a 200 response:** submitted a uniquely-timestamped contact and quote
+payload through the live `/api/quote` route, then independently queried
+WordPress and confirmed both entries exist with the exact name/email/
+vehicle/service values submitted (contact id 11, quote id 12). This is the
+first fully end-to-end-verified production form submission this session —
+browser → Vercel → WordPress → Formidable, confirmed at every hop.
+
+### Status
+Gate 2 is substantively cleared — the correct commit is live in
+production and independently verified working (pages, forms). Two small
+loose ends before calling Phase 10 fully closed: confirm what `budget-wash`
+is, and activate the revalidate/preview WordPress config to point at this
+now-known-real production URL (still pointing at nothing — see Phase 3/4
+notes; this is the one release-plan step not yet done).
+
+## 2026-07-20 — Session 1 continued (production bug: quote form broken)
+
+Owner reported the live form returning "Something went wrong" and not
+submitting. Real production bug, caused by this session's own Phase 8
+hardening fix.
+
+### Bug found and fixed #6 — the "reject unexpected fields" hardening broke the real Quote form
+Root cause: `app/api/quote/route.ts`'s `LIMITS` whitelist was built by
+looking at what the route *itself* already handled, never cross-checked
+against what the actual browser form components send. `components/quote-form.tsx`
+sends `fleetSize` and `notes` (visible in the real UI — fleet size only
+shown when "Fleet Detailing" is selected, notes is the "Additional
+Details" textarea) — neither field existed in `LIMITS`. Every real quote
+submission was getting rejected by the new unexpected-field check with a
+400, which the form's generic error handling displays as
+"Something went wrong." **The Contact form was unaffected** — its fields
+(`name`/`email`/`phone`/`message`) were already all accounted for.
+
+This is the same lesson as the WP relation bugs, from the opposite
+direction: last time, an empty-looking response hid a real failure; this
+time, a *security* hardening change silently broke real functionality
+because it was written against the route's own prior behavior instead of
+against what the actual UI sends. Should have grepped `components/*-form.tsx`
+for their exact field lists before adding a strict whitelist — didn't, and
+it shipped to production before being caught by an actual user (well
+technically, in this case, the owner) trying the real form.
+
+**Fix:** added `fleetSize`/`notes` to `LIMITS`, forwarded them to
+`submitToWordPress()`. Also had to add matching Formidable fields to the
+already-bootstrapped WordPress "Quote (headless)" form — added
+`shi_add_missing_quote_fields()` (idempotent, checks the existing field-map
+option before creating anything) to `forms.php`, wired into the activation
+hook. Deployed, cycled plugin activation, verified via a direct WP submit
+call that both new fields are captured correctly
+(`fleetSize: "Small Fleet"`, `notes: "..."` — entry 13). Then verified
+locally against the exact payload shape `QuoteForm` actually sends
+(including empty-string `fleetSize`/`notes`, which is what most real
+submissions will have) — succeeds.
+
+**Not yet re-verified on production** — the Next.js fix needs a new commit
++ deploy before it's live; the WordPress-side field fix is already live
+(WordPress isn't deploy-gated the way Next.js is — it's a direct server
+change like everything else this session).
+
 ### Phase 3 — fully complete
 All items done: plugin deployed + activated, scoped roles created and
 verified, search-engine indexing disabled and verified, `service`/

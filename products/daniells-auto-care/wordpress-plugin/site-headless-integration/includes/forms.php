@@ -53,6 +53,40 @@ function shi_bootstrap_formidable_forms() {
 	update_option( 'shi_forms_bootstrapped', true );
 }
 
+/**
+ * Adds fields to an already-bootstrapped form that weren't part of the
+ * original set — idempotent, safe to call on every activation. Needed once
+ * already: QuoteForm (components/quote-form.tsx) sends `fleetSize` and
+ * `notes`, which the original bootstrap didn't create fields for — those
+ * submissions were being rejected outright once app/api/quote/route.ts
+ * started strictly validating known fields (Phase 8 hardening), a real
+ * production bug caught by the owner. See Implementation Log.
+ */
+function shi_add_missing_quote_fields() {
+	$quote_form_id = get_option( 'shi_quote_form_id' );
+	$quote_fields  = get_option( 'shi_quote_form_fields' );
+	if ( ! $quote_form_id || ! is_array( $quote_fields ) ) {
+		return; // quote form not bootstrapped yet — nothing to add to
+	}
+
+	$missing = array(
+		'fleetSize' => array( 'Fleet Size', 'text', false ),
+		'notes'     => array( 'Additional Details', 'textarea', false ),
+	);
+
+	$changed = false;
+	foreach ( $missing as $key => list( $label, $type, $required ) ) {
+		if ( ! isset( $quote_fields[ $key ] ) ) {
+			$quote_fields[ $key ] = shi_create_field( $quote_form_id, $label, $type, $required );
+			$changed              = true;
+		}
+	}
+
+	if ( $changed ) {
+		update_option( 'shi_quote_form_fields', $quote_fields );
+	}
+}
+
 function shi_create_field( $form_id, $label, $type, $required ) {
 	return FrmField::create( array(
 		'form_id'       => $form_id,
