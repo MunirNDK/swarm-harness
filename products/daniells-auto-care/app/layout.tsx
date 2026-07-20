@@ -61,13 +61,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${montserrat.variable} ${jetbrainsMono.variable}`}
+      className={`${montserrat.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-bg text-fg font-sans antialiased">
         {/* Skip to main content — accessibility */}
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-accent focus:text-fg focus:rounded-sm focus:font-sans focus:text-sm"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-accent focus:text-cta-fg focus:rounded-sm focus:font-sans focus:text-sm"
         >
           Skip to main content
         </a>

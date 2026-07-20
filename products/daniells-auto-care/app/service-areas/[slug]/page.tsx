@@ -297,7 +297,7 @@ export default function AreaDetailPage({ params }: Props) {
           >
             <Reveal>
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4"
+                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-4"
                 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)' }}
               >
                 Book Your {town} Detail Today
@@ -312,7 +312,7 @@ export default function AreaDetailPage({ params }: Props) {
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <QuoteButton
                   size="xl"
-                  className="bg-fg text-accent hover:bg-fg/90 border-transparent"
+                  className="bg-white text-accent hover:bg-white/90 border-transparent"
                   track={{
                     category: 'conversion',
                     action: 'button_click',

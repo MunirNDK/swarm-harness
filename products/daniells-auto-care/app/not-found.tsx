@@ -88,7 +88,7 @@ export default function NotFound() {
             />
             <button
               type="submit"
-              className="min-w-[44px] min-h-[44px] px-4 py-2 bg-accent text-fg font-mono text-xs uppercase tracking-[0.08em] rounded-sm hover:bg-accent-mid transition-colors duration-fast flex items-center justify-center"
+              className="min-w-[44px] min-h-[44px] px-4 py-2 bg-accent text-cta-fg font-mono text-xs uppercase tracking-[0.08em] rounded-sm hover:bg-accent-mid transition-colors duration-fast flex items-center justify-center"
               aria-label="Search"
             >
               <Search className="w-4 h-4" aria-hidden="true" />

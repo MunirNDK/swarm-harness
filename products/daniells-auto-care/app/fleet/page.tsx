@@ -100,7 +100,7 @@ export default function FleetPage() {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(to bottom,rgba(5,5,5,0.75) 0%,rgba(10,10,10,1) 100%)',
+              'linear-gradient(to bottom,rgba(255,255,255,0.75) 0%,rgba(250,250,248,1) 100%)',
           }}
           aria-hidden="true"
         />
@@ -183,7 +183,7 @@ export default function FleetPage() {
               <Reveal key={step.title} delay={i * 80}>
                 <div className="flex flex-col gap-4">
                   <div
-                    className="w-10 h-10 rounded-full bg-accent flex items-center justify-center font-mono font-bold text-fg text-sm flex-shrink-0"
+                    className="w-10 h-10 rounded-full bg-accent flex items-center justify-center font-mono font-bold text-cta-fg text-sm flex-shrink-0"
                     aria-hidden="true"
                   >
                     {i + 1}

@@ -7,26 +7,26 @@
    Source: daniells-auto-care-consolidated-design-spec.md §2
    ═══════════════════════════════════════════════════════════════ */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* BAY FLOOR — Dark Surface Layer */
-  --bg:           #0A0A0A;
-  --surface:      #141414;
-  --surface-2:    #1C1C1C;
-  --overlay:      rgba(5, 5, 5, 0.82);
+  /* SHOWROOM FLOOR — Light Surface Layer */
+  --bg:           #F5F4F2;
+  --surface:      #FFFFFF;
+  --surface-2:    #ECEAE6;
+  --overlay:      rgba(0, 0, 0, 0.75);
 
-  /* UNDER-BAY — Deep Dark Surfaces */
-  --surface-dark:   #050505;
-  --surface-dark-2: #080808;
+  /* ANCHOR — Bright Surfaces (hero / footer / CTA-adjacent bands) */
+  --surface-dark:   #FFFFFF;
+  --surface-dark-2: #FAFAF8;
 
-  /* INK LAYER — White-on-Dark Text */
-  --ink:        #FFFFFF;
-  --ink-soft:   #B0B0B0;
-  --ink-faint:  #6E6E6E;
-  --muted:      #484848;
-  --rule:       #2A2A2A;
+  /* INK LAYER — Dark-on-Light Text */
+  --ink:        #171513;
+  --ink-soft:   #55504A;
+  --ink-faint:  #8C867E;
+  --muted:      #B8B2AA;
+  --rule:       #E4E1DB;
 
-  /* DETAILER'S RED — Primary Accent */
+  /* DETAILER'S RED — Primary Accent (unchanged — already AA on white, ~4.71:1) */
   --accent:       #E80505;
   --accent-deep:  #740404;
   --accent-mid:   #980404;
@@ -34,15 +34,15 @@
   --accent-soft:  rgba(232, 5, 5, 0.15);
   --accent-mist:  rgba(232, 5, 5, 0.06);
 
-  /* SEMANTIC */
-  --success:      #4ADE80;
-  --success-soft: rgba(74, 222, 128, 0.12);
-  --warning:      #FBBF24;
-  --warning-soft: rgba(251, 191, 36, 0.12);
+  /* SEMANTIC — deepened for AA text-on-white (were tuned for dark bg only) */
+  --success:      #15803D;
+  --success-soft: rgba(21, 128, 61, 0.12);
+  --warning:      #B45309;
+  --warning-soft: rgba(180, 83, 9, 0.12);
   --danger:       #E80505;
   --danger-soft:  rgba(232, 5, 5, 0.15);
-  --info:         #60A5FA;
-  --info-soft:    rgba(96, 165, 250, 0.12);
+  --info:         #1D4ED8;
+  --info-soft:    rgba(29, 78, 216, 0.12);
 
   /* TYPOGRAPHY — set by next/font in layout.tsx */
   --font-body:    'Montserrat', system-ui, sans-serif;
@@ -79,8 +79,8 @@
   /* LAYOUT */
   --container-max-w: 80rem;
   --nav-h:  80px;
-  --nav-bg: #050505;
-  --nav-fg: #FFFFFF;
+  --nav-bg: #FFFFFF;
+  --nav-fg: #171513;
 
   /* BORDER RADIUS */
   --r-none: 0px;
@@ -96,27 +96,30 @@
   --d-base:  200ms;
   --d-slow:  350ms;
 
-  /* SHADOWS */
-  --shadow-sm:  0 1px 2px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
-  --shadow-md:  0 4px 12px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.4);
-  --shadow-lg:  0 12px 32px rgba(0,0,0,0.6), 0 6px 14px rgba(0,0,0,0.4);
-  --shadow-red: 0 4px 20px rgba(232, 5, 5, 0.25);
+  /* SHADOWS — softened alpha for light bg (dark theme values were tuned
+     against near-black surfaces; the same alpha on white reads as heavy) */
+  --shadow-sm:  0 1px 2px rgba(23,21,19,0.06), 0 1px 4px rgba(23,21,19,0.04);
+  --shadow-md:  0 4px 12px rgba(23,21,19,0.10), 0 2px 6px rgba(23,21,19,0.06);
+  --shadow-lg:  0 12px 32px rgba(23,21,19,0.14), 0 6px 14px rgba(23,21,19,0.08);
+  --shadow-red: 0 4px 20px rgba(232, 5, 5, 0.22);
 
-  /* CONVERSION LAYER */
+  /* CONVERSION LAYER — cta-fg stays hardcoded white: it is the fixed text
+     color for anything sitting on the red accent/gradient, independent of
+     the site's light/dark theme. Never derive it from --ink. */
   --cta-bg:         #E80505;
   --cta-fg:         #FFFFFF;
   --cta-bg-hover:   #980404;
   --cta-bg-active:  #740404;
   --cta-gradient:   linear-gradient(135deg, #E80505, #980404);
-  --trust-bg:       #141414;
-  --trust-border:   #2A2A2A;
-  --trust-star:     #FBBF24;
-  --input-bg:          #141414;
-  --input-border:      #2A2A2A;
+  --trust-bg:       #FFFFFF;
+  --trust-border:   #E4E1DB;
+  --trust-star:     #EAB308;
+  --input-bg:          #FFFFFF;
+  --input-border:      #D8D4CC;
   --input-focus:       #E80505;
   --input-error:       #E80505;
-  --input-success:     #4ADE80;
-  --input-placeholder: #484848;
+  --input-success:     #15803D;
+  --input-placeholder: #B8B2AA;
   --urgency:      #E80505;
   --urgency-soft: rgba(232, 5, 5, 0.12);
   --phone-fg:     #E80505;
@@ -134,8 +137,8 @@
 
 /* Pulse Dot — green version */
 @keyframes pulse-dot-green {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74,222,128,0.5); }
-  50%      { opacity: 0.7; box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(21,128,61,0.5); }
+  50%      { opacity: 0.7; box-shadow: 0 0 0 6px rgba(21,128,61,0); }
 }
 
 /* CTA Bar opacity pulse */

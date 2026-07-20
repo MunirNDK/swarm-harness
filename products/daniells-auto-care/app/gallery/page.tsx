@@ -91,12 +91,12 @@ export default function GalleryPage() {
               style={{ background: 'linear-gradient(135deg,#E80505,#980404)' }}
             >
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-3"
+                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-3"
                 style={{ fontSize: 'clamp(1.5rem,2.5vw,2rem)' }}
               >
                 Ready for Your Own Transformation?
               </h2>
-              <p className="text-fg/80 mb-6 max-w-xl mx-auto leading-relaxed">
+              <p className="text-white/80 mb-6 max-w-xl mx-auto leading-relaxed">
                 Every result above started with a free quote. We come to you, anywhere in{' '}
                 {business.serviceArea}.
               </p>
@@ -113,7 +113,7 @@ export default function GalleryPage() {
                   href={business.phoneHref}
                   variant="outline"
                   size="lg"
-                  className="border-fg/30 text-fg hover:border-fg hover:text-fg"
+                  className="border-white/30 text-white hover:border-white hover:text-white"
                   track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
                 >
                   {business.phone}

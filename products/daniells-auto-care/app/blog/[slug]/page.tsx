@@ -168,15 +168,15 @@ export default async function BlogPostPage({
                 className="mt-12 rounded-lg p-6 md:p-8"
                 style={{ background: 'linear-gradient(135deg,#E80505,#980404)' }}
               >
-                <p className="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-fg/60 mb-2">
+                <p className="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-white/60 mb-2">
                   Northern NJ Mobile Detailing
                 </p>
                 <h2
-                  className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-2 text-xl"
+                  className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-2 text-xl"
                 >
                   Ready for a Free Quote?
                 </h2>
-                <p className="text-fg/80 text-sm mb-4 leading-relaxed">
+                <p className="text-white/80 text-sm mb-4 leading-relaxed">
                   We respond quickly and come to your home, office, or any
                   location in {business.serviceArea}.
                 </p>
@@ -193,7 +193,7 @@ export default async function BlogPostPage({
                     href={business.phoneHref}
                     variant="outline"
                     size="md"
-                    className="border-fg/40 text-fg hover:border-fg hover:text-fg"
+                    className="border-white/40 text-white hover:border-white hover:text-white"
                     track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
                   >
                     {business.phone}

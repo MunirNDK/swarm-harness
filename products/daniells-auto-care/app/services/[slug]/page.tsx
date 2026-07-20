@@ -186,7 +186,7 @@ export default function ServiceDetailPage({ params }: Props) {
                   <GlowCard>
                     <div className="p-6 md:p-8 flex gap-6">
                       <div
-                        className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-fg text-sm"
+                        className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-cta-fg text-sm"
                         style={{ background: 'var(--accent)' }}
                         aria-hidden="true"
                       >
@@ -287,7 +287,7 @@ export default function ServiceDetailPage({ params }: Props) {
           >
             <Reveal>
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4"
+                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-4"
                 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)' }}
               >
                 Ready to Book {service.name}?
@@ -302,7 +302,7 @@ export default function ServiceDetailPage({ params }: Props) {
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <QuoteButton
                   size="xl"
-                  className="bg-fg text-accent hover:bg-fg/90 border-transparent"
+                  className="bg-white text-accent hover:bg-white/90 border-transparent"
                   track={{
                     category: 'conversion',
                     action: 'button_click',

@@ -168,7 +168,7 @@ export default function ServicesPage() {
               <Reveal key={step.title} delay={i * 100}>
                 <div>
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-fg text-sm mb-4 flex-shrink-0"
+                    className="w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-cta-fg text-sm mb-4 flex-shrink-0"
                     style={{ background: 'var(--accent)' }}
                     aria-hidden="true"
                   >
@@ -205,7 +205,7 @@ export default function ServicesPage() {
                 {business.hours} · {business.responseTime}
               </p>
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4"
+                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-4"
                 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)' }}
               >
                 Schedule Your Detail Today
@@ -220,7 +220,7 @@ export default function ServicesPage() {
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <QuoteButton
                   size="xl"
-                  className="bg-fg text-accent hover:bg-fg/90 border-transparent"
+                  className="bg-white text-accent hover:bg-white/90 border-transparent"
                   track={{
                     category: 'conversion',
                     action: 'button_click',

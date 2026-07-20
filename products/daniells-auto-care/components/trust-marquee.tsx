@@ -35,12 +35,12 @@ export function TrustMarquee() {
         {items.map((item, idx) => (
           <span
             key={idx}
-            className="flex items-center gap-stall font-sans font-semibold uppercase text-[1.3rem] tracking-[0.05em] text-fg-soft whitespace-nowrap px-stall"
+            className="flex items-center gap-stall font-sans font-semibold uppercase text-[1.3rem] tracking-[0.05em] text-white/90 whitespace-nowrap px-stall"
             style={{ letterSpacing: '0.05em' }}
           >
             {/* Red dot separator */}
             <span
-              className="inline-block w-2 h-2 rounded-full bg-fg-soft opacity-60 mr-4 flex-shrink-0"
+              className="inline-block w-2 h-2 rounded-full bg-white opacity-60 mr-4 flex-shrink-0"
               aria-hidden="true"
             />
             {item}

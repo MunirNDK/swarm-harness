@@ -23,7 +23,7 @@ export interface TrackProps {
    ═══════════════════════════════════════════════════════════════ */
 const variantClasses: Record<string, string> = {
   primary:
-    'bg-cta text-fg font-sans font-bold uppercase tracking-[0.05em] text-[0.95rem] ' +
+    'bg-cta text-cta-fg font-sans font-bold uppercase tracking-[0.05em] text-[0.95rem] ' +
     'rounded-sm border-none cursor-pointer inline-flex items-center justify-center gap-2 ' +
     'transition-all duration-base ease-default ' +
     'hover:bg-accent-mid hover:-translate-y-px hover:shadow-red ' +
@@ -41,7 +41,7 @@ const variantClasses: Record<string, string> = {
     'bg-transparent text-accent font-sans font-bold uppercase tracking-[0.05em] text-[0.95rem] ' +
     'rounded-sm border border-accent cursor-pointer inline-flex items-center justify-center gap-rivet ' +
     'transition-all duration-base ease-default ' +
-    'hover:bg-accent hover:text-fg ' +
+    'hover:bg-accent hover:text-cta-fg ' +
     'active:scale-[0.98] ' +
     'focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 ' +
     'disabled:opacity-50 disabled:pointer-events-none',
