@@ -135,21 +135,21 @@ export function BeforeAfter({
           style={{ left: `${position}%`, top: '50%', transform: 'translate(-50%, -50%)' }}
           onPointerDown={onPointerDown}
         >
-          <div className="w-10 h-10 rounded-full bg-surface-dark/90 border border-accent flex items-center justify-center shadow-[0_0_8px_rgba(232,5,5,0.35)]">
+          <div className="w-10 h-10 rounded-full bg-black/80 border border-accent flex items-center justify-center shadow-[0_0_8px_rgba(232,5,5,0.35)]">
             <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
               {/* Left chevron */}
-              <path d="M8 1L2 7L8 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-fg" />
+              <path d="M8 1L2 7L8 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white" />
               {/* Right chevron */}
-              <path d="M12 1L18 7L12 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-fg" />
+              <path d="M12 1L18 7L12 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white" />
             </svg>
           </div>
         </div>
 
         {/* Labels */}
-        <span className="absolute bottom-3 left-3 z-[4] rounded-full bg-surface-dark/70 px-3 py-1 font-mono text-xs uppercase tracking-widest text-fg-soft">
+        <span className="absolute bottom-3 left-3 z-[4] rounded-full bg-black/70 px-3 py-1 font-mono text-xs uppercase tracking-widest text-white/80">
           Before
         </span>
-        <span className="absolute bottom-3 right-3 z-[4] rounded-full bg-surface-dark/70 px-3 py-1 font-mono text-xs uppercase tracking-widest text-fg-soft">
+        <span className="absolute bottom-3 right-3 z-[4] rounded-full bg-black/70 px-3 py-1 font-mono text-xs uppercase tracking-widest text-white/80">
           After
         </span>
 
