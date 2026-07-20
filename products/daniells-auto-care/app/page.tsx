@@ -18,8 +18,6 @@ import { QuoteButton } from '@/components/quote-modal';
 import { FaqItem } from '@/components/faq-item';
 import {
   business,
-  services,
-  areas,
   stats,
   reviews,
   faqs,
@@ -29,6 +27,8 @@ import {
   images,
 } from '@/lib/site';
 import { pageMeta, localBusinessLd, organizationLd, faqLd } from '@/lib/seo';
+import { getServices } from '@/lib/wordpress/services';
+import { getServiceAreas } from '@/lib/wordpress/service-areas';
 
 export const metadata: Metadata = pageMeta({
   title: 'Mobile Auto Detailing Northern NJ | Daniells Auto Care',
@@ -37,9 +37,9 @@ export const metadata: Metadata = pageMeta({
   path: '/',
 });
 
-const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
+export default async function HomePage() {
+  const [services, areas] = await Promise.all([getServices(), getServiceAreas()]);
 
-export default function HomePage() {
   return (
     <>
       <JsonLd data={[localBusinessLd(), organizationLd(), faqLd(faqs)]} />
@@ -145,7 +145,7 @@ export default function HomePage() {
                 >
                   Get Your Free Quote
                 </h2>
-                <QuoteForm />
+                <QuoteForm services={services} />
               </div>
             </Reveal>
           </div>
@@ -166,12 +166,19 @@ export default function HomePage() {
           <SectionHeading
             kicker="Our Services"
             title="Full-Spectrum Auto Detailing"
-            subtitle="Every service performed with professional-grade products and meticulous precision. All 8 services, front and center — nothing hidden."
+            subtitle={`Every service performed with professional-grade products and meticulous precision. All ${services.length} services, front and center — nothing hidden.`}
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, i) => (
               <Reveal key={service.slug} delay={i * 60}>
-                <ServiceCard service={service} />
+                <ServiceCard
+                  service={{
+                    slug: service.slug,
+                    name: service.name,
+                    icon: service.icon,
+                    short: service.shortDescription,
+                  }}
+                />
               </Reveal>
             ))}
           </div>
@@ -294,16 +301,16 @@ export default function HomePage() {
           />
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-8">
             {areas.map((area) => (
-              <Reveal key={area}>
+              <Reveal key={area.slug}>
                 <Link
-                  href={`/service-areas/${slugify(area)}`}
+                  href={`/service-areas/${area.slug}`}
                   className="flex items-center justify-center rounded-lg border border-border bg-surface px-3 py-4 text-center font-mono text-xs uppercase tracking-[0.08em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-base ease-default min-h-[44px]"
                   data-track-category="navigation"
                   data-track-action="link_click"
-                  data-track-label={`area_${slugify(area)}`}
+                  data-track-label={`area_${area.slug}`}
                   data-track-context="internal"
                 >
-                  {area}
+                  {area.name}
                 </Link>
               </Reveal>
             ))}

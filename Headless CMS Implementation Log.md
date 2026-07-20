@@ -1364,6 +1364,119 @@ submissions will have) — succeeds.
 (WordPress isn't deploy-gated the way Next.js is — it's a direct server
 change like everything else this session).
 
+## 2026-07-20 — Session 1 continued (stale cache reported, revalidation activated)
+
+Owner deleted the stray `budget-wash` service in wp-admin and reported it
+still showing on the live site. Expected, given `shi_revalidate_url` had
+never been set (see Phase 3/4 notes) — WordPress had no way to tell
+Next.js anything changed, so the 1-hour fallback cache was the only thing
+serving. Confirmed the delete genuinely worked WordPress-side first (REST
+list back to the correct 8 services) before doing anything else — same
+discipline as always this session, verify before acting.
+
+**Immediate fix:** manually POSTed the same signed payload
+`revalidation.php` would have sent, clearing the stale `services` cache
+tag. Confirmed `budget-wash` gone from both the listing and its own now-404
+detail page on the live production URL.
+
+**Root-cause fix:** called the plugin's `/config` endpoint to set
+`shi_revalidate_url` to `https://swarm-daniells-auto-care.vercel.app/api/revalidate`
+— this is the one release-plan step that had been sitting undone. Then
+**proved** the automatic webhook actually works, not just the manual
+fallback: edited a service directly in WordPress via REST (no revalidate
+call from this session), waited 3 seconds, confirmed the live site
+reflected the edit on its own. Reverted the test edit afterward.
+
+**Known follow-up:** `revalidate_url` (and `preview_base_url`, still unset)
+point at the current `swarm-daniells-auto-care.vercel.app` URL, since
+`daniellsautocare.com` isn't DNS-connected yet (owner confirmed earlier).
+Both will need updating via the same `/config` endpoint once the real
+domain is live — trivial one-call change, not forgotten, just sequenced
+correctly (can't point at a domain that doesn't resolve yet).
+
+## 2026-07-20 — Session 1 continued (owner found real gaps: images + un-wired pages)
+
+Owner reported three things after using the live site: service detail
+images all identical and not responding to WordPress featured-image
+changes, blog images likewise not updating, and the homepage services grid
+capped/static (adding a 9th service didn't show it). Asked to check
+service areas too. All investigated properly before touching code.
+
+### Investigated first: was the image issue a code bug or the same cache issue as before?
+Uploaded a real image to WordPress media, set it as a service's featured
+image, and checked the raw `_embed=wp:featuredmedia` REST response —
+correct. Revalidated and checked the live rendered page — the real image
+rendered correctly. **Conclusion: the featured-image wiring code was
+already correct; the owner's earlier test just predated `shi_revalidate_url`
+being activated.** Reverted the test image/media afterward. Worth stating
+plainly: not every "it's broken" report is a new bug — this one was already
+fixed by the revalidation work, verified rather than assumed.
+
+### Real bug #1 — no per-item fallback image once WP has none set
+`service.featuredImage?.url ?? images.hero` meant *every* service/post
+with no featured image (all of them, since none have been uploaded yet)
+fell back to the exact same generic homepage hero image — a real
+regression from the pre-CMS site, where each service/post had its own
+distinct local image. Added `lib/wordpress/fallback-images.ts` — a
+slug-keyed map back to the original per-item local assets, used only when
+WordPress has no featured image; a real WP featured image still always
+wins. Verified: `car-detailing` and `window-tinting` now render visibly
+different fallback images again.
+
+### Real bug #2 — homepage, navbar, footer, quote form, fleet, and contact page were never wired to WordPress at all
+Phase 4 only rewired the three *listing* pages (`/services`,
+`/service-areas`, `/blog`) and their detail pages — never audited every
+*other* place across the site that references services/areas. Grepped for
+every remaining `import { services, areas } from '@/lib/site'` and found
+six more files still on the old hardcoded arrays:
+- `app/page.tsx` (homepage) — services grid, areas grid, and the "All 8
+  services" copy, all static
+- `components/navbar.tsx` — Services/Service Areas dropdown menus
+- `components/footer.tsx` — Services column + Service Areas pills
+- `components/quote-form.tsx` — the quote form's Service `<select>`
+- `app/fleet/page.tsx` — pulled the fleet-detailing service from the
+  static array (also still used the *old* `Service` type's field names —
+  `.long`/`.process` instead of `.longDescription`/`.processSteps`, which
+  would have been a second latent bug the moment this page got touched)
+- `app/contact/page.tsx` — "Areas We Serve" pills
+
+This is exactly what the owner's 9th-service test caught: the homepage
+grid is fully static, so nothing published in WordPress beyond the
+originally-migrated 8 could ever appear there.
+
+**Fix, architecturally:** `navbar.tsx` and `quote-form.tsx` are client
+components (`'use client'`) and can't fetch data themselves — threaded
+`services`/`areas` down as props from `app/layout.tsx` (made `async`,
+fetches both once via `Promise.all`, passes to `<Navbar>`, `<Footer>`, and
+`<QuoteModal>` → `<QuoteForm>`). `footer.tsx` similarly converted to accept
+props instead of importing directly. `app/page.tsx`, `app/fleet/page.tsx`,
+and `app/contact/page.tsx` converted to `async` Server Components fetching
+directly. `fleet/page.tsx`'s stale field names fixed to match the real
+`Service` type.
+
+**Deliberately not fixed, disclosed rather than silently skipped:**
+`lib/seo.ts`'s `localBusinessLd()` still uses the static `areas`/`services`
+arrays for JSON-LD `areaServed` structured data. Fixing it properly means
+threading live data through every `pageMeta()`/`localBusinessLd()` call
+site across the whole app — a much larger refactor for something that
+only affects search-engine structured data, not visible content. Flagged,
+not fixed this round.
+
+### Verified for real — including the owner's exact scenario
+`npx tsc --noEmit`: clean. Started the dev server and:
+- Confirmed homepage, nav dropdowns, footer, fleet page, and contact page
+  all render live WordPress content (spot-checked specific real values —
+  "Ceramic Coating", "Ridgewood", "Franklin Lakes", "Fleet Detailing" — not
+  just "the page loaded").
+- **Reproduced the owner's exact bug report as a real test**: created a 9th
+  test service (`odor-removal-test`) in WordPress, manually revalidated
+  the local dev server (production's webhook can't reach localhost — this
+  is expected, not a new bug), and confirmed it appeared on the homepage
+  grid, the "All 9 services" count updated correctly, and it showed up in
+  the quote form's service dropdown. Deleted the test service afterward.
+- Confirmed `car-detailing` and `window-tinting` detail pages now render
+  visibly different fallback images.
+
 ### Phase 3 — fully complete
 All items done: plugin deployed + activated, scoped roles created and
 verified, search-engine indexing disabled and verified, `service`/

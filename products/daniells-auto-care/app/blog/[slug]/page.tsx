@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Calendar, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
 import { pageMeta, articleLd, breadcrumbLd } from '@/lib/seo';
-import { business, images } from '@/lib/site';
+import { business } from '@/lib/site';
 import { getBlogPost, getBlogPosts } from '@/lib/wordpress/posts';
+import { blogImageUrl } from '@/lib/wordpress/fallback-images';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
@@ -101,7 +102,7 @@ export default async function BlogPostPage({
           <Reveal delay={40}>
             <div className="relative aspect-[3/1] min-h-[200px] overflow-hidden rounded-lg mb-8">
               <Image
-                src={post.featuredImage?.url ?? images.hero}
+                src={blogImageUrl(post.slug, post.featuredImage?.url)}
                 alt={post.featuredImage?.alt || post.title}
                 fill
                 sizes="(max-width:768px) 100vw,1200px"
@@ -225,7 +226,7 @@ export default async function BlogPostPage({
                   <GlowCard className="relative flex gap-4 p-4 min-h-[44px]">
                     <div className="relative w-24 h-20 rounded overflow-hidden flex-shrink-0">
                       <Image
-                        src={r.featuredImage?.url ?? images.hero}
+                        src={blogImageUrl(r.slug, r.featuredImage?.url)}
                         alt={r.featuredImage?.alt || r.title}
                         fill
                         sizes="96px"

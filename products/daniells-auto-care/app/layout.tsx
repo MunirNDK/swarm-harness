@@ -7,6 +7,8 @@ import { Footer } from '@/components/footer';
 import { StickyCta } from '@/components/sticky-cta';
 import { QuoteModalProvider, QuoteModal } from '@/components/quote-modal';
 import { Analytics } from '@/lib/analytics/analytics';
+import { getServices } from '@/lib/wordpress/services';
+import { getServiceAreas } from '@/lib/wordpress/service-areas';
 
 const montserrat = Montserrat({
   subsets:  ['latin'],
@@ -53,11 +55,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [services, areas] = await Promise.all([getServices(), getServiceAreas()]);
+
   return (
     <html
       lang="en"
@@ -93,13 +97,13 @@ export default function RootLayout({
         </div>
 
         <QuoteModalProvider>
-          <Navbar />
+          <Navbar services={services} areas={areas} />
           <main id="main" className="flex-1">
             {children}
           </main>
           <StickyCta />
-          <Footer />
-          <QuoteModal />
+          <Footer services={services} areas={areas} />
+          <QuoteModal services={services} />
         </QuoteModalProvider>
 
         <Analytics />

@@ -3,8 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Calendar, Tag } from 'lucide-react';
 import { pageMeta, breadcrumbLd } from '@/lib/seo';
-import { business, images } from '@/lib/site';
+import { business } from '@/lib/site';
 import { getBlogPosts } from '@/lib/wordpress/posts';
+import { blogImageUrl } from '@/lib/wordpress/fallback-images';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
@@ -89,7 +90,7 @@ export default async function BlogPage() {
                     {/* Featured Image */}
                     <div className="relative aspect-[16/9] overflow-hidden">
                       <Image
-                        src={post.featuredImage?.url ?? images.hero}
+                        src={blogImageUrl(post.slug, post.featuredImage?.url)}
                         alt={post.featuredImage?.alt || post.title}
                         fill
                         sizes="(max-width:768px) 100vw,(max-width:1024px) 50vw,33vw"

@@ -2,8 +2,9 @@
 
 import { useState, FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
-import { services, business } from '@/lib/site';
+import { business } from '@/lib/site';
 import { cn } from '@/lib/utils';
+import type { Service } from '@/lib/wordpress/types';
 
 interface FormData {
   name:      string;
@@ -36,7 +37,12 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
  * POST → /api/quote
  * data-track on form: category=form, action=form_submit, label=quote_request
  */
-export function QuoteForm({ prefill }: { prefill?: { service?: string; fleetSize?: string } } = {}) {
+interface QuoteFormProps {
+  prefill?: { service?: string; fleetSize?: string };
+  services: Service[];
+}
+
+export function QuoteForm({ prefill, services }: QuoteFormProps) {
   const [data, setData] = useState<FormData>({
     ...INITIAL,
     service:   prefill?.service   ?? '',

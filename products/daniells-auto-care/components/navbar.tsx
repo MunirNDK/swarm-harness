@@ -6,9 +6,10 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { services, areas, business, logo } from '@/lib/site';
+import { business, logo } from '@/lib/site';
 import { QuoteButton } from '@/components/quote-modal';
 import { Container } from '@/components/ui/container';
+import type { Service, ServiceArea } from '@/lib/wordpress/types';
 
 /**
  * Navbar — Contract §6, §10, DS-CS-009
@@ -29,11 +30,12 @@ const NAV_ITEMS = [
 
 type DropdownType = 'services' | 'areas';
 
-function slugify(str: string) {
-  return str.toLowerCase().replace(/\s+/g, '-');
+interface NavbarProps {
+  services: Service[];
+  areas:    ServiceArea[];
 }
 
-export function Navbar() {
+export function Navbar({ services, areas }: NavbarProps) {
   const pathname                                       = usePathname();
   const [scrolled, setScrolled]                        = useState(false);
   const [mobileOpen, setMobileOpen]                    = useState(false);
@@ -104,16 +106,16 @@ export function Navbar() {
     }
     return areas.map((area) => (
       <Link
-        key={area}
-        href={`/service-areas/${slugify(area)}`}
+        key={area.slug}
+        href={`/service-areas/${area.slug}`}
         onClick={(e) => e.currentTarget.blur()}
         className="block px-4 py-2 text-sm text-fg-soft hover:text-fg hover:bg-surface2 rounded-sm transition-colors duration-fast ease-default"
         data-track-category="navigation"
         data-track-action="link_click"
-        data-track-label={`area_${slugify(area)}`}
+        data-track-label={`area_${area.slug}`}
         data-track-context="internal"
       >
-        {area}
+        {area.name}
       </Link>
     ));
   }

@@ -2,10 +2,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Phone, Instagram, Youtube } from 'lucide-react';
 import { Container } from '@/components/ui/container';
-import { business, services, areas, logo, social } from '@/lib/site';
+import { business, logo, social } from '@/lib/site';
+import type { Service, ServiceArea } from '@/lib/wordpress/types';
 
-function slugify(str: string) {
-  return str.toLowerCase().replace(/\s+/g, '-');
+interface FooterProps {
+  services: Service[];
+  areas:    ServiceArea[];
 }
 
 /**
@@ -14,7 +16,7 @@ function slugify(str: string) {
  * social icons, phone, copyright current year, area pills.
  * Company column includes Our Team, Privacy, Terms per contract §6.
  */
-export function Footer() {
+export function Footer({ services, areas }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
@@ -162,15 +164,15 @@ export function Footer() {
             <div className="flex flex-wrap gap-1.5">
               {areas.map((area) => (
                 <Link
-                  key={area}
-                  href={`/service-areas/${slugify(area)}`}
+                  key={area.slug}
+                  href={`/service-areas/${area.slug}`}
                   className="font-mono text-[0.65rem] tracking-[0.05em] text-fg-soft uppercase bg-surface border border-border rounded-full px-3 py-1 hover:border-accent hover:text-accent transition-colors duration-fast ease-default"
                   data-track-category="navigation"
                   data-track-action="link_click"
-                  data-track-label={`area_${slugify(area)}`}
+                  data-track-label={`area_${area.slug}`}
                   data-track-context="internal"
                 >
-                  {area}
+                  {area.name}
                 </Link>
               ))}
             </div>

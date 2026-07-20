@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Phone, Clock, MapPin, Timer } from 'lucide-react';
 import { pageMeta, localBusinessLd, breadcrumbLd } from '@/lib/seo';
-import { business, areas } from '@/lib/site';
+import { business } from '@/lib/site';
+import { getServiceAreas } from '@/lib/wordpress/service-areas';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
@@ -24,7 +25,9 @@ export const metadata: Metadata = pageMeta({
   path: '/contact',
 });
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const areas = await getServiceAreas();
+
   return (
     <>
       <JsonLd data={[localBusinessLd(), breadcrumbLd(BREADCRUMBS)]} />
@@ -170,22 +173,19 @@ export default function ContactPage() {
                     Areas We Serve
                   </h2>
                   <div className="flex flex-wrap gap-2">
-                    {areas.map((area) => {
-                      const slug = area.toLowerCase().replace(/\s+/g, '-');
-                      return (
-                        <Link
-                          key={area}
-                          href={`/service-areas/${slug}`}
-                          className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-soft bg-surface2 border border-border rounded-full px-3 py-1 hover:border-accent hover:text-accent transition-colors duration-fast min-h-[44px] flex items-center"
-                          data-track-category="navigation"
-                          data-track-action="link_click"
-                          data-track-label={slug}
-                          data-track-context="internal"
-                        >
-                          {area}
-                        </Link>
-                      );
-                    })}
+                    {areas.map((area) => (
+                      <Link
+                        key={area.slug}
+                        href={`/service-areas/${area.slug}`}
+                        className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-soft bg-surface2 border border-border rounded-full px-3 py-1 hover:border-accent hover:text-accent transition-colors duration-fast min-h-[44px] flex items-center"
+                        data-track-category="navigation"
+                        data-track-action="link_click"
+                        data-track-label={area.slug}
+                        data-track-context="internal"
+                      >
+                        {area.name}
+                      </Link>
+                    ))}
                   </div>
                 </GlowCard>
               </Reveal>

@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Truck, Calendar, UserCheck, ClipboardList } from 'lucide-react';
 import { pageMeta, serviceLd, breadcrumbLd } from '@/lib/seo';
-import { services, reviews, images, business } from '@/lib/site';
+import { reviews, images, business } from '@/lib/site';
+import { getService } from '@/lib/wordpress/services';
+import { notFound } from 'next/navigation';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Container } from '@/components/ui/container';
 import { Section } from '@/components/ui/section';
@@ -14,8 +16,6 @@ import { Button } from '@/components/ui/button';
 import { TrustMarquee } from '@/components/trust-marquee';
 import { ReviewCard } from '@/components/review-card';
 import { QuoteButton } from '@/components/quote-modal';
-
-const fleet = services.find((s) => s.slug === 'fleet-detailing')!;
 
 export const metadata: Metadata = pageMeta({
   title: 'Fleet Detailing for NJ Businesses',
@@ -67,12 +67,15 @@ const TIERS = [
   },
 ];
 
-export default function FleetPage() {
+export default async function FleetPage() {
+  const fleet = await getService('fleet-detailing');
+  if (!fleet) notFound();
+
   return (
     <>
       <JsonLd
         data={[
-          serviceLd({ name: fleet.name, description: fleet.long, slug: fleet.slug }),
+          serviceLd({ name: fleet.name, description: fleet.longDescription, slug: fleet.slug }),
           breadcrumbLd(BREADCRUMBS),
         ]}
       />
@@ -118,7 +121,7 @@ export default function FleetPage() {
               <span className="text-accent">Built for Business</span>
             </h1>
             <p className="mt-6 max-w-xl text-fg-soft text-lg leading-relaxed">
-              {fleet.long}
+              {fleet.longDescription}
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <QuoteButton
@@ -179,7 +182,7 @@ export default function FleetPage() {
             subtitle="Three steps from first contact to a consistently clean, professional fleet."
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-bay">
-            {fleet.process.map((step, i) => (
+            {fleet.processSteps.map((step, i) => (
               <Reveal key={step.title} delay={i * 80}>
                 <div className="flex flex-col gap-4">
                   <div

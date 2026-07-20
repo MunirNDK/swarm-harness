@@ -11,6 +11,7 @@ import {
 import { X } from 'lucide-react';
 import { QuoteForm } from '@/components/quote-form';
 import { Button, type TrackProps } from '@/components/ui/button';
+import type { Service } from '@/lib/wordpress/types';
 
 /* ═══════════════════════════════════════════════════════════════
    Context — Contract §10
@@ -55,7 +56,7 @@ export function QuoteModalProvider({ children }: { children: React.ReactNode }) 
 /* ═══════════════════════════════════════════════════════════════
    Modal — DS-CS-017: center, backdrop, close btn, Escape, focus trap
    ═══════════════════════════════════════════════════════════════ */
-export function QuoteModal() {
+export function QuoteModal({ services }: { services: Service[] }) {
   const { isOpen, close, prefill } = useQuoteModal();
   const overlayRef        = useRef<HTMLDivElement>(null);
   const closeButtonRef    = useRef<HTMLButtonElement>(null);
@@ -116,7 +117,7 @@ export function QuoteModal() {
           >
             Get Your Free Quote
           </h2>
-          <QuoteForm prefill={prefill} />
+          <QuoteForm prefill={prefill} services={services} />
         </div>
       </div>
     </div>

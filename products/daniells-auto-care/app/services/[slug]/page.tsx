@@ -13,7 +13,8 @@ import { GlowCard } from '@/components/ui/glow-card';
 import { FaqItem } from '@/components/faq-item';
 import { ServiceCard } from '@/components/service-card';
 import { QuoteButton } from '@/components/quote-modal';
-import { business, images } from '@/lib/site';
+import { business } from '@/lib/site';
+import { serviceImageUrl } from '@/lib/wordpress/fallback-images';
 import { pageMeta, serviceLd, faqLd, breadcrumbLd } from '@/lib/seo';
 import { getService, getServices } from '@/lib/wordpress/services';
 import { getServiceAreas } from '@/lib/wordpress/service-areas';
@@ -57,7 +58,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       ? allAreas.filter((a) => service.relatedServiceAreaSlugs.includes(a.slug))
       : allAreas;
 
-  const heroImage = service.featuredImage?.url ?? images.hero;
+  const heroImage = serviceImageUrl(service.slug, service.featuredImage?.url);
 
   const sdLd = serviceLd(
     { name: service.name, description: service.longDescription, slug: service.slug },
