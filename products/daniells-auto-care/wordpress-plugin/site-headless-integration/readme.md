@@ -31,7 +31,27 @@ for the field spec this implements.
   revalidate/preview secrets and set the two base URLs once the Next.js
   routes exist.
 
+## Forms (`includes/forms.php`)
+- Bootstraps two Formidable forms ("Contact", "Quote") on activation and
+  exposes the server-to-server `POST /wp-json/site-headless/v1/submit`
+  endpoint the Next.js `/api/quote` route calls.
+- The Quote form's fields include the fleet-specific `fleetSize`,
+  `vehicleType`, and `serviceFrequency` inputs, added idempotently via
+  `shi_add_missing_quote_fields()`.
+
+## Service pricing fields
+- The `service` post type carries CMS pricing fields (`pricing_tiers`,
+  `pricing_note`, `addons`, etc. — see `includes/field-schema.php`). These
+  register on `init`, so they take effect as soon as the files are deployed,
+  no reactivation required.
+
+## Upgrading (redeploy without reactivating)
+Bump `Version:` + `SHI_PLUGIN_VERSION` when you add fields, then SFTP the
+files up. On the next request, `shi_maybe_upgrade()` detects the version
+change and re-runs the idempotent Formidable setup — so new form fields
+install automatically, without a manual deactivate/reactivate. (A
+reactivate still works too and does the same thing.)
+
 ## Not yet included (future phases)
-- Formidable entry-creation REST endpoint (Phase 5).
 - Actually setting `shi_revalidate_url` / `shi_preview_base_url` (Phase 4,
   once `/api/revalidate` and `/api/draft` exist in Next.js).
