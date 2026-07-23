@@ -22,6 +22,23 @@ export interface ProcessStep {
   desc: string;
 }
 
+export interface PricingTier {
+  name: string;
+  price: string;
+  /** null => no small descriptor line under the name */
+  meta: string | null;
+  /** null => no accent badge pill (e.g. "Most Popular") */
+  badge: string | null;
+  includes: string[];
+}
+
+export interface Addon {
+  name: string;
+  price: string;
+  priceType: string;
+  details: string;
+}
+
 export interface Service {
   slug: string;
   name: string;
@@ -41,6 +58,17 @@ export interface Service {
   faqTitle: string | null;
   faqSubtitle: string | null;
   faqItems: FaqItem[];
+  /** null => caller falls back to the "Packages & Pricing" template */
+  pricingTitle: string | null;
+  pricingSubtitle: string | null;
+  /** Empty => pricing section is not rendered at all */
+  pricingTiers: PricingTier[];
+  /** null => no fine-print line under the pricing tiers */
+  pricingNote: string | null;
+  /** null => caller falls back to the "Popular Add-Ons" template */
+  addonsTitle: string | null;
+  /** Empty => add-ons section is not rendered at all */
+  addons: Addon[];
   seoDescription: string;
   /** Empty => caller falls back to "all areas" (matches pre-CMS behavior) */
   relatedServiceAreaSlugs: string[];

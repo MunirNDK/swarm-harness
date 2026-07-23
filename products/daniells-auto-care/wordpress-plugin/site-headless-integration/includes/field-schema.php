@@ -54,6 +54,33 @@ function shi_field_schema( $post_type ) {
 					array( 'key' => 'a', 'label' => 'Answer', 'type' => 'textarea' ),
 				),
 			),
+			array( 'key' => 'pricing_title', 'label' => 'Pricing Section — Title', 'type' => 'text', 'help' => 'Leave blank to use the default: "Packages & Pricing".' ),
+			array( 'key' => 'pricing_subtitle', 'label' => 'Pricing Section — Subtitle', 'type' => 'textarea', 'help' => 'Leave blank to use the default subtitle.' ),
+			array(
+				'key'       => 'pricing_tiers',
+				'label'     => 'Pricing Tiers',
+				'type'      => 'repeater_object',
+				'subfields' => array(
+					array( 'key' => 'name', 'label' => 'Package Name', 'type' => 'text' ),
+					array( 'key' => 'price', 'label' => 'Price', 'type' => 'text' ),
+					array( 'key' => 'meta', 'label' => 'Price Note', 'type' => 'text' ),
+					array( 'key' => 'badge', 'label' => 'Badge', 'type' => 'text' ),
+					array( 'key' => 'includes', 'label' => 'Includes (one item per line)', 'type' => 'textarea' ),
+				),
+			),
+			array( 'key' => 'pricing_note', 'label' => 'Pricing Section — Fine Print', 'type' => 'textarea', 'help' => 'Optional disclaimer shown under the pricing tiers.' ),
+			array( 'key' => 'addons_title', 'label' => 'Add-Ons Section — Title', 'type' => 'text', 'help' => 'Leave blank to use the default: "Popular Add-Ons". Section is hidden entirely when no add-ons are entered.' ),
+			array(
+				'key'       => 'addons',
+				'label'     => 'Popular Add-Ons',
+				'type'      => 'repeater_object',
+				'subfields' => array(
+					array( 'key' => 'name', 'label' => 'Add-On', 'type' => 'text' ),
+					array( 'key' => 'price', 'label' => 'Price', 'type' => 'text' ),
+					array( 'key' => 'price_type', 'label' => 'Pricing Type', 'type' => 'text' ),
+					array( 'key' => 'details', 'label' => 'Details', 'type' => 'textarea' ),
+				),
+			),
 		),
 		'service_area' => array(
 			array( 'key' => 'local_introduction', 'label' => 'Local Introduction', 'type' => 'textarea', 'help' => 'Leave blank to use the generic template sentence instead (spec §5.3 — do not invent local facts).' ),

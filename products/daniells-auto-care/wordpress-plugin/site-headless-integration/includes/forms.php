@@ -70,8 +70,10 @@ function shi_add_missing_quote_fields() {
 	}
 
 	$missing = array(
-		'fleetSize' => array( 'Fleet Size', 'text', false ),
-		'notes'     => array( 'Additional Details', 'textarea', false ),
+		'fleetSize'        => array( 'Fleet Size', 'text', false ),
+		'notes'            => array( 'Additional Details', 'textarea', false ),
+		'vehicleType'      => array( 'Vehicle Type', 'text', false ),
+		'serviceFrequency' => array( 'Service Frequency', 'text', false ),
 	);
 
 	$changed = false;

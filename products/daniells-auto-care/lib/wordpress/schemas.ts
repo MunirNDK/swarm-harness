@@ -58,6 +58,34 @@ export const wpServiceSchema = z.object({
     faq_title: z.string().default(''),
     faq_subtitle: z.string().default(''),
     faq_items: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+    pricing_title: z.string().default(''),
+    pricing_subtitle: z.string().default(''),
+    // `includes` is a single newline-delimited textarea in wp-admin (the
+    // repeater_object model only supports flat string subfields); transforms.ts
+    // splits it into a string[] on the way out.
+    pricing_tiers: z
+      .array(
+        z.object({
+          name: z.string().default(''),
+          price: z.string().default(''),
+          meta: z.string().default(''),
+          badge: z.string().default(''),
+          includes: z.string().default(''),
+        })
+      )
+      .default([]),
+    pricing_note: z.string().default(''),
+    addons_title: z.string().default(''),
+    addons: z
+      .array(
+        z.object({
+          name: z.string().default(''),
+          price: z.string().default(''),
+          price_type: z.string().default(''),
+          details: z.string().default(''),
+        })
+      )
+      .default([]),
   }),
   related_service_area_slugs: z.array(z.string()).default([]),
   _embedded: embeddedFeaturedMedia,

@@ -7,25 +7,29 @@ import { cn } from '@/lib/utils';
 import type { Service } from '@/lib/wordpress/types';
 
 interface FormData {
-  name:      string;
-  phone:     string;
-  zip:       string;
-  vehicle:   string;
-  service:   string;
-  fleetSize: string;
-  notes:     string;
-  _honey:    string; // honeypot
+  name:             string;
+  phone:            string;
+  zip:              string;
+  vehicle:          string;
+  service:          string;
+  fleetSize:        string;
+  vehicleType:      string;
+  serviceFrequency: string;
+  notes:            string;
+  _honey:           string; // honeypot
 }
 
 const INITIAL: FormData = {
-  name:      '',
-  phone:     '',
-  zip:       '',
-  vehicle:   '',
-  service:   '',
-  fleetSize: '',
-  notes:     '',
-  _honey:    '',
+  name:             '',
+  phone:            '',
+  zip:              '',
+  vehicle:          '',
+  service:          '',
+  fleetSize:        '',
+  vehicleType:      '',
+  serviceFrequency: '',
+  notes:            '',
+  _honey:           '',
 };
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
@@ -38,15 +42,17 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
  * data-track on form: category=form, action=form_submit, label=quote_request
  */
 interface QuoteFormProps {
-  prefill?: { service?: string; fleetSize?: string };
+  prefill?: { service?: string; fleetSize?: string; vehicleType?: string; serviceFrequency?: string };
   services: Service[];
 }
 
 export function QuoteForm({ prefill, services }: QuoteFormProps) {
   const [data, setData] = useState<FormData>({
     ...INITIAL,
-    service:   prefill?.service   ?? '',
-    fleetSize: prefill?.fleetSize ?? '',
+    service:          prefill?.service          ?? '',
+    fleetSize:        prefill?.fleetSize        ?? '',
+    vehicleType:      prefill?.vehicleType      ?? '',
+    serviceFrequency: prefill?.serviceFrequency ?? '',
   });
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [status, setStatus] = useState<Status>('idle');
@@ -60,6 +66,15 @@ export function QuoteForm({ prefill, services }: QuoteFormProps) {
     else if (!/^\d{5}(-\d{4})?$/.test(data.zip.trim())) e.zip = 'Invalid ZIP code';
     if (!data.vehicle.trim()) e.vehicle = 'Vehicle is required';
     if (!data.service)        e.service = 'Please select a service';
+    if (data.service === 'fleet-detailing') {
+      if (!data.fleetSize.trim()) {
+        e.fleetSize = 'Number of vehicles is required';
+      } else if (!/^\d+$/.test(data.fleetSize.trim()) || Number(data.fleetSize) < 1) {
+        e.fleetSize = 'Enter a valid number of vehicles';
+      }
+      if (!data.vehicleType)      e.vehicleType      = 'Please select a vehicle type';
+      if (!data.serviceFrequency) e.serviceFrequency = 'Please select a frequency';
+    }
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -81,6 +96,8 @@ export function QuoteForm({ prefill, services }: QuoteFormProps) {
           vehicle:   data.vehicle,
           service:   data.service,
           fleetSize: data.fleetSize,
+          vehicleType: data.vehicleType,
+          serviceFrequency: data.serviceFrequency,
           notes:     data.notes,
         }),
       });
@@ -220,20 +237,57 @@ export function QuoteForm({ prefill, services }: QuoteFormProps) {
         </FieldGroup>
 
         {data.service === 'fleet-detailing' && (
-          <FieldGroup label="Fleet Size" htmlFor="q-fleet-size" error={errors.fleetSize}>
-            <select
-              id="q-fleet-size"
-              name="fleetSize"
-              value={data.fleetSize}
-              onChange={handleChange}
-              className="field-select"
-            >
-              <option value="">Select fleet size</option>
-              <option value="Small Fleet">Small Fleet (3–10 vehicles)</option>
-              <option value="Mid-Size Fleet">Mid-Size Fleet (11–30 vehicles)</option>
-              <option value="Large Fleet">Large Fleet (31+ vehicles)</option>
-            </select>
-          </FieldGroup>
+          <>
+            <FieldGroup label="Number of Vehicles" htmlFor="q-fleet-size" required error={errors.fleetSize}>
+              <input
+                type="number"
+                id="q-fleet-size"
+                name="fleetSize"
+                value={data.fleetSize}
+                onChange={handleChange}
+                min="1"
+                inputMode="numeric"
+                className={cn('field-input', errors.fleetSize && 'error')}
+                placeholder="e.g. 12"
+                required
+              />
+            </FieldGroup>
+            <FieldGroup label="Vehicle Type" htmlFor="q-vehicle-type" required error={errors.vehicleType}>
+              <select
+                id="q-vehicle-type"
+                name="vehicleType"
+                value={data.vehicleType}
+                onChange={handleChange}
+                className={cn('field-select', errors.vehicleType && 'error')}
+                required
+              >
+                <option value="" disabled>Select vehicle type</option>
+                <option value="Cars / Sedans" style={{ background: 'var(--bg)' }}>Cars / Sedans</option>
+                <option value="SUVs / Crossovers" style={{ background: 'var(--bg)' }}>SUVs / Crossovers</option>
+                <option value="Vans / Sprinters" style={{ background: 'var(--bg)' }}>Vans / Sprinters</option>
+                <option value="Trucks" style={{ background: 'var(--bg)' }}>Trucks</option>
+                <option value="Mixed Fleet" style={{ background: 'var(--bg)' }}>Mixed Fleet</option>
+              </select>
+            </FieldGroup>
+            <FieldGroup label="Service Frequency" htmlFor="q-service-frequency" required error={errors.serviceFrequency}>
+              <select
+                id="q-service-frequency"
+                name="serviceFrequency"
+                value={data.serviceFrequency}
+                onChange={handleChange}
+                className={cn('field-select', errors.serviceFrequency && 'error')}
+                required
+              >
+                <option value="" disabled>Select frequency</option>
+                <option value="Weekly" style={{ background: 'var(--bg)' }}>Weekly</option>
+                <option value="Bi-Weekly" style={{ background: 'var(--bg)' }}>Bi-Weekly</option>
+                <option value="Monthly" style={{ background: 'var(--bg)' }}>Monthly</option>
+                <option value="Quarterly" style={{ background: 'var(--bg)' }}>Quarterly</option>
+                <option value="Annually" style={{ background: 'var(--bg)' }}>Annually</option>
+                <option value="One-Time Service" style={{ background: 'var(--bg)' }}>One-Time Service</option>
+              </select>
+            </FieldGroup>
+          </>
         )}
 
         <FieldGroup label="Additional Details" htmlFor="q-notes">

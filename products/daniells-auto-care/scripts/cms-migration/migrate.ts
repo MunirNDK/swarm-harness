@@ -19,7 +19,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { services, areas } from '../../lib/site.ts';
+import { services, areas, servicePricing } from '../../lib/site.ts';
 import { blogPosts } from '../../lib/blog.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -76,6 +76,7 @@ async function upsert(restBase: string, slug: string, body: Record<string, unkno
 async function migrateServices() {
   console.log(`\n— Services (${services.length}) —`);
   for (const s of services) {
+    const pricing = servicePricing[s.slug];
     const result = await upsert('services', s.slug, {
       title: s.name,
       meta: {
@@ -86,6 +87,23 @@ async function migrateServices() {
         benefits: s.benefits,
         process_steps: s.process,
         faq_items: s.faq,
+        // Pricing (§ pricing seed). `includes` is joined to one newline
+        // string — the wp-admin repeater stores it as a single textarea and
+        // transforms.ts splits it back into a list on read.
+        pricing_note: pricing?.note ?? '',
+        pricing_tiers: (pricing?.tiers ?? []).map((t) => ({
+          name: t.name,
+          price: t.price,
+          meta: t.meta,
+          badge: t.badge,
+          includes: t.includes.join('\n'),
+        })),
+        addons: (pricing?.addons ?? []).map((a) => ({
+          name: a.name,
+          price: a.price,
+          price_type: a.priceType,
+          details: a.details,
+        })),
       },
     });
     console.log(`  ${result.padEnd(8)} service/${s.slug}`);

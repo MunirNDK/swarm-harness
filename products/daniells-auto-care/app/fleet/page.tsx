@@ -126,6 +126,7 @@ export default async function FleetPage() {
             <div className="mt-8 flex flex-wrap gap-4">
               <QuoteButton
                 size="lg"
+                prefill={{ service: 'fleet-detailing' }}
                 track={{
                   category: 'conversion',
                   action:   'button_click',
@@ -223,7 +224,7 @@ export default async function FleetPage() {
                       <QuoteButton
                         variant="primary"
                         size="md"
-                        prefill={{ service: 'fleet-detailing', fleetSize: tier.label }}
+                        prefill={{ service: 'fleet-detailing' }}
                         track={{
                           category: 'conversion',
                           action:   'button_click',
@@ -281,6 +282,7 @@ export default async function FleetPage() {
               <div className="flex flex-wrap justify-center gap-4">
                 <QuoteButton
                   size="lg"
+                  prefill={{ service: 'fleet-detailing' }}
                   track={{
                     category: 'conversion',
                     action:   'button_click',

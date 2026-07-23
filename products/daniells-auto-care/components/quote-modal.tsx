@@ -17,8 +17,10 @@ import type { Service } from '@/lib/wordpress/types';
    Context — Contract §10
    ═══════════════════════════════════════════════════════════════ */
 export interface QuotePrefill {
-  service?:   string;
-  fleetSize?: string;
+  service?:          string;
+  fleetSize?:        string;
+  vehicleType?:      string;
+  serviceFrequency?: string;
 }
 
 interface QuoteModalContextType {
@@ -133,7 +135,7 @@ interface QuoteButtonProps {
   className?: string;
   variant?:   'primary' | 'outline' | 'ghost' | 'secondary';
   size?:      'sm' | 'md' | 'lg' | 'xl';
-  prefill?:   { service?: string; fleetSize?: string };
+  prefill?:   { service?: string; fleetSize?: string; vehicleType?: string; serviceFrequency?: string };
   track?:     TrackProps;
 }
 

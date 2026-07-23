@@ -410,6 +410,454 @@ export const services = [
   },
 ];
 
+/* ────────────────────────────────────────────────────────────────
+   Pricing seed — source of truth for the CMS `pricing_*` / `addons`
+   meta fields, keyed by service slug. Pushed into WordPress by
+   scripts/cms-migration/migrate.ts (which joins on slug); the live site
+   reads pricing from WordPress, not from here. `includes` is an array
+   here and joined to a newline string on the way into WP (the wp-admin
+   repeater stores it as one textarea; transforms.ts splits it back).
+   Transcribed from daniells_auto_care_complete_pricing.md.
+   ──────────────────────────────────────────────────────────────── */
+export interface PricingTierSeed {
+  name: string;
+  price: string;
+  meta: string;   // small descriptor line (e.g. "Per vehicle", "3-year protection"); '' = none
+  badge: string;  // accent pill (e.g. "Most Popular"); '' = none
+  includes: string[];
+}
+export interface AddonSeed {
+  name: string;
+  price: string;
+  priceType: string;
+  details: string;
+}
+export interface ServicePricingSeed {
+  note: string;
+  tiers: PricingTierSeed[];
+  addons: AddonSeed[];
+}
+
+const PRICING_NOTE =
+  "All prices are starting estimates in USD. A price shown with a “+” is a starting point and may increase based on vehicle size, condition, and any requested add-ons. We confirm your exact quote before any work begins.";
+
+const FLEET_PRICING_NOTE =
+  "Fleet pricing varies with vehicle count, vehicle size, condition, and service frequency, and is negotiable based on your business needs. Discounts are available for fleets of 5 or more vehicles, with custom pricing for larger fleets. All fleet prices are starting estimates — contact us for an accurate quote or a custom maintenance plan.";
+
+const ADDON_ENGINE_BAY: AddonSeed = {
+  name: "Engine Bay Detail",
+  price: "$80",
+  priceType: "Fixed base price",
+  details: "Cleaning and detailing of the visible engine bay area.",
+};
+const ADDON_HEADLIGHT: AddonSeed = {
+  name: "Headlight Restoration",
+  price: "$120",
+  priceType: "Fixed base price",
+  details: "Restores clarity and appearance to oxidized or cloudy headlights.",
+};
+const ADDON_PET_HAIR: AddonSeed = {
+  name: "Pet Hair Removal",
+  price: "$75+",
+  priceType: "Starting price",
+  details:
+    "Removes embedded pet hair from carpets, seats, upholstery, and interior surfaces. Final price may depend on severity.",
+};
+const ADDON_OZONE: AddonSeed = {
+  name: "Ozone Odor Removal",
+  price: "$120",
+  priceType: "Fixed base price",
+  details: "Ozone treatment intended to neutralize persistent odors inside the vehicle.",
+};
+const ADDON_FABRIC_SEAT: AddonSeed = {
+  name: "Fabric Seat Shampoo",
+  price: "$50 per seat",
+  priceType: "Per-seat price",
+  details: "Deep shampoo cleaning for individual fabric seats.",
+};
+const ADDON_LEATHER: AddonSeed = {
+  name: "Leather Protection",
+  price: "$100",
+  priceType: "Fixed base price",
+  details: "Protective treatment applied to leather seating and interior leather surfaces.",
+};
+
+export const servicePricing: Record<string, ServicePricingSeed> = {
+  "interior-detailing": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Interior Refresh Detail",
+        price: "$150+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Full interior vacuum",
+          "Wipe down of dashboard, panels, and center console",
+          "Interior window cleaning",
+          "Light stain spot cleaning",
+          "Trash removal",
+        ],
+      },
+      {
+        name: "Interior Deep Cleaning Detail",
+        price: "$250+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Everything in the Interior Refresh Detail",
+          "Steam cleaning of interior surfaces",
+          "Carpet shampoo extraction",
+          "Seat shampoo extraction",
+          "Deep cleaning of vents and crevices",
+          "Leather conditioning",
+        ],
+      },
+      {
+        name: "Interior Restoration Detail",
+        price: "$350+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Everything in the Interior Deep Cleaning Detail",
+          "Heavy stain removal treatment",
+          "Pet hair removal",
+          "Odor-neutralizing treatment",
+          "Interior protection application",
+        ],
+      },
+    ],
+    addons: [ADDON_PET_HAIR, ADDON_OZONE, ADDON_FABRIC_SEAT, ADDON_LEATHER],
+  },
+
+  "exterior-detailing": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Exterior Refresh Detail",
+        price: "$150+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Foam hand wash",
+          "Wheel cleaning",
+          "Tire cleaning",
+          "Tire dressing",
+          "Bug removal",
+          "Microfiber hand drying",
+        ],
+      },
+      {
+        name: "Exterior Decontamination Detail",
+        price: "$275+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Everything in the Exterior Refresh Detail",
+          "Iron-remover treatment",
+          "Clay bar paint decontamination",
+          "Exterior trim dressing",
+          "Paint sealant protection",
+        ],
+      },
+      {
+        name: "Paint Enhancement Detail",
+        price: "$450+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Everything in the Exterior Decontamination Detail",
+          "Single-stage paint polish",
+          "Paint gloss enhancement",
+          "Extended paint protection",
+        ],
+      },
+    ],
+    addons: [ADDON_ENGINE_BAY, ADDON_HEADLIGHT],
+  },
+
+  "car-detailing": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Essential Full Detail",
+        price: "$275+",
+        meta: "",
+        badge: "",
+        includes: ["Exterior Refresh Detail", "Interior Refresh Detail"],
+      },
+      {
+        name: "Complete Full Detail",
+        price: "$425+",
+        meta: "",
+        badge: "Most Popular",
+        includes: ["Exterior Decontamination Detail", "Interior Deep Cleaning Detail"],
+      },
+      {
+        name: "Signature Full Detail",
+        price: "$650+",
+        meta: "",
+        badge: "",
+        includes: ["Paint Enhancement Detail", "Interior Restoration Detail"],
+      },
+    ],
+    addons: [
+      ADDON_ENGINE_BAY,
+      ADDON_HEADLIGHT,
+      ADDON_PET_HAIR,
+      ADDON_OZONE,
+      ADDON_FABRIC_SEAT,
+      ADDON_LEATHER,
+    ],
+  },
+
+  "paint-correction": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Gloss Enhancement Polish",
+        price: "$600+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Removes light swirl marks",
+          "Improves paint gloss",
+          "Enhances the overall appearance of the vehicle finish",
+        ],
+      },
+      {
+        name: "Precision Paint Correction",
+        price: "$900+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Removes moderate scratches",
+          "Corrects moderate paint defects",
+          "Improves paint clarity and finish",
+        ],
+      },
+      {
+        name: "Multi-Stage Paint Correction",
+        price: "$1,400+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Deep, multi-stage paint correction",
+          "Targets more significant paint defects",
+          "Restores paint close to showroom condition",
+        ],
+      },
+    ],
+    addons: [],
+  },
+
+  "ceramic-coating": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "One-Year Ceramic Protection",
+        price: "$900+",
+        meta: "1-year protection",
+        badge: "",
+        includes: [
+          "Entry-level ceramic paint protection",
+          "Approximately one year of protection",
+        ],
+      },
+      {
+        name: "Three-Year Advanced Ceramic Coating",
+        price: "$1,300+",
+        meta: "3-year protection",
+        badge: "Most Popular",
+        includes: [
+          "Advanced ceramic coating protection",
+          "Approximately three years of protection",
+        ],
+      },
+      {
+        name: "Five-Year Professional Ceramic Coating",
+        price: "$1,800+",
+        meta: "5-year protection",
+        badge: "",
+        includes: [
+          "Professional-grade ceramic coating",
+          "Approximately five years of protection",
+        ],
+      },
+    ],
+    addons: [],
+  },
+
+  "paint-protection-film": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Partial Front PPF Protection",
+        price: "$1,200+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Front bumper protection",
+          "Partial hood protection",
+          "Partial front-fender protection",
+          "Protection against rock chips",
+          "Protection against road debris",
+        ],
+      },
+      {
+        name: "Full Front PPF Protection",
+        price: "$2,000+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Full hood protection",
+          "Full front-bumper protection",
+          "Full front-fender protection",
+          "Side-mirror protection",
+        ],
+      },
+      {
+        name: "Full Vehicle PPF Protection",
+        price: "$5,000+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Complete vehicle paint protection",
+          "Maximum protection against chips and scratches",
+          "Self-healing film technology",
+        ],
+      },
+    ],
+    addons: [],
+  },
+
+  "window-tinting": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Standard Window Tint",
+        price: "$250+",
+        meta: "",
+        badge: "",
+        includes: [
+          "High-quality automotive window tint",
+          "Improves privacy",
+          "Reduces glare",
+        ],
+      },
+      {
+        name: "Premium Heat Rejection Tint",
+        price: "$350+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Enhanced ultraviolet protection",
+          "Improved heat rejection",
+          "Improved cabin comfort and privacy",
+        ],
+      },
+      {
+        name: "Ceramic Window Tint",
+        price: "$500+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Premium ceramic window film",
+          "Maximum heat rejection",
+          "Maximum ultraviolet protection",
+        ],
+      },
+    ],
+    addons: [],
+  },
+
+  "fleet-detailing": {
+    note: FLEET_PRICING_NOTE,
+    tiers: [
+      {
+        name: "Fleet Maintenance Detail",
+        price: "$80–$100",
+        meta: "Per vehicle",
+        badge: "",
+        includes: [
+          "Exterior wash",
+          "Interior vacuum",
+          "Interior and exterior window cleaning",
+        ],
+      },
+      {
+        name: "Fleet Professional Detail",
+        price: "$150–$180",
+        meta: "Per vehicle",
+        badge: "",
+        includes: [
+          "Exterior wash",
+          "Exterior protection",
+          "Interior cleaning",
+          "Tire shine",
+          "Interior surface wipe down",
+        ],
+      },
+      {
+        name: "Fleet Complete Detail",
+        price: "$220–$260",
+        meta: "Per vehicle",
+        badge: "",
+        includes: [
+          "Full interior detail",
+          "Full exterior detail",
+          "Stain removal",
+          "Paint protection",
+        ],
+      },
+      {
+        name: "Monthly Fleet Maintenance",
+        price: "$70–$90",
+        meta: "Per vehicle · monthly",
+        badge: "",
+        includes: [
+          "Exterior hand wash",
+          "Wheel cleaning, tire cleaning, and tire dressing",
+          "Interior vacuum",
+          "Dashboard and interior surface wipe down",
+          "Interior window cleaning",
+        ],
+      },
+      {
+        name: "Quarterly Fleet Maintenance",
+        price: "$160–$200",
+        meta: "Per vehicle · every 3 months",
+        badge: "",
+        includes: [
+          "Deep exterior wash",
+          "Iron-remover treatment",
+          "Light paint protection",
+          "Full interior vacuum",
+          "Deep wipe down of interior surfaces",
+          "Interior window cleaning",
+          "Light stain spot cleaning",
+        ],
+      },
+      {
+        name: "Annual Fleet Restoration Detail",
+        price: "$350–$450",
+        meta: "Per vehicle · yearly",
+        badge: "",
+        includes: [
+          "Full exterior decontamination wash",
+          "Clay bar treatment",
+          "Paint sealant protection",
+          "Full interior deep cleaning",
+          "Carpet shampoo and seat shampoo",
+          "Stain-removal treatment",
+          "Interior protection application",
+        ],
+      },
+    ],
+    addons: [],
+  },
+};
+
 export const areas = [
   "Franklin Lakes",
   "Ridgewood",

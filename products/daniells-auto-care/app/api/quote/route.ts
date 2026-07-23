@@ -51,6 +51,8 @@ const LIMITS: Record<string, number> = {
   vehicle:   100,
   service:   60,
   fleetSize: 40,   // QuoteForm — only shown/filled when service === 'fleet-detailing'
+  vehicleType:      40, // QuoteForm — fleet only (vehicle category)
+  serviceFrequency: 40, // QuoteForm — fleet only (service cadence)
   notes:     1000, // QuoteForm — optional "Additional Details"
   message:   2000,
   _honey:    0,    // honeypot must be empty
@@ -168,6 +170,8 @@ export async function POST(request: NextRequest) {
     vehicle: fields.vehicle,
     service: fields.service,
     fleetSize: fields.fleetSize,
+    vehicleType: fields.vehicleType,
+    serviceFrequency: fields.serviceFrequency,
     notes: fields.notes,
   });
   if (!sent) {

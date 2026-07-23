@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { servicePricing } from '../site';
 import type { BlogPost, LegalPage, Media, Service, ServiceArea } from './types';
 import {
   wpMediaSchema,
@@ -57,8 +58,74 @@ export function transformService(raw: z.infer<typeof wpServiceSchema>): Service 
     faqTitle: raw.meta.faq_title || null,
     faqSubtitle: raw.meta.faq_subtitle || null,
     faqItems: raw.meta.faq_items,
+    ...transformPricing(raw),
     seoDescription: raw.meta.seo_description,
     relatedServiceAreaSlugs: raw.related_service_area_slugs,
+  };
+}
+
+/**
+ * Pricing/add-ons mapping with a code-owned fallback. WordPress is the source
+ * of truth once its `pricing_*` meta is populated (via the migration), but
+ * until then we fall back to the `servicePricing` seed keyed by slug — the
+ * same "WP wins, else fall back to code" pattern already used for featured
+ * images (see toMedia / fallback-images.ts). `includes` is stored in wp-admin
+ * as one newline-delimited textarea and split back into a list here.
+ */
+function transformPricing(
+  raw: z.infer<typeof wpServiceSchema>
+): Pick<
+  Service,
+  'pricingTitle' | 'pricingSubtitle' | 'pricingTiers' | 'pricingNote' | 'addonsTitle' | 'addons'
+> {
+  const wpTiers = raw.meta.pricing_tiers.map((t) => ({
+    name: t.name,
+    price: t.price,
+    meta: t.meta || null,
+    badge: t.badge || null,
+    includes: t.includes
+      .split('\n')
+      .map((s) => s.trim())
+      .filter(Boolean),
+  }));
+
+  const seed = servicePricing[raw.slug];
+  const useSeed = wpTiers.length === 0 && Boolean(seed);
+
+  if (useSeed && seed) {
+    return {
+      pricingTitle: raw.meta.pricing_title || null,
+      pricingSubtitle: raw.meta.pricing_subtitle || null,
+      pricingTiers: seed.tiers.map((t) => ({
+        name: t.name,
+        price: t.price,
+        meta: t.meta || null,
+        badge: t.badge || null,
+        includes: t.includes,
+      })),
+      pricingNote: raw.meta.pricing_note || seed.note || null,
+      addonsTitle: raw.meta.addons_title || null,
+      addons: seed.addons.map((a) => ({
+        name: a.name,
+        price: a.price,
+        priceType: a.priceType,
+        details: a.details,
+      })),
+    };
+  }
+
+  return {
+    pricingTitle: raw.meta.pricing_title || null,
+    pricingSubtitle: raw.meta.pricing_subtitle || null,
+    pricingTiers: wpTiers,
+    pricingNote: raw.meta.pricing_note || null,
+    addonsTitle: raw.meta.addons_title || null,
+    addons: raw.meta.addons.map((a) => ({
+      name: a.name,
+      price: a.price,
+      priceType: a.price_type,
+      details: a.details,
+    })),
   };
 }
 

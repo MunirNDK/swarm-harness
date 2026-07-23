@@ -12,6 +12,7 @@ import { JsonLd } from '@/components/ui/jsonld';
 import { GlowCard } from '@/components/ui/glow-card';
 import { FaqItem } from '@/components/faq-item';
 import { ServiceCard } from '@/components/service-card';
+import { ServicePricing } from '@/components/service-pricing';
 import { QuoteButton } from '@/components/quote-modal';
 import { business } from '@/lib/site';
 import { serviceImageUrl } from '@/lib/wordpress/fallback-images';
@@ -188,9 +189,12 @@ export default async function ServiceDetailPage({ params }: Props) {
         </Section>
       )}
 
-      {/* ── PROCESS ── surface */}
+      {/* ── PRICING ── surface (tiers + optional add-ons); hidden when no CMS tiers */}
+      <ServicePricing service={service} surface="surface" />
+
+      {/* ── PROCESS ── bg (kept bg so surfaces alternate around the pricing block) */}
       {service.processSteps.length > 0 && (
-        <Section surface="surface" id="service-process">
+        <Section surface="bg" id="service-process">
           <Container>
             <SectionHeading
               kicker="Our Process"
