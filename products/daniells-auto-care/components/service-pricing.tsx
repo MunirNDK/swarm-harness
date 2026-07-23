@@ -13,6 +13,10 @@ interface ServicePricingProps {
   service: Service;
   /** Surface for the pricing Section — pass to keep page-level alternation clean. */
   surface?: SurfaceVariant;
+  /** Override the section heading (else CMS pricingTitle, else default). */
+  title?: string;
+  /** Override the section subtitle (else CMS pricingSubtitle, else default). */
+  subtitle?: string;
 }
 
 /**
@@ -27,7 +31,7 @@ interface ServicePricingProps {
  * a `badge` (e.g. "Most Popular") lifts a tier with an accent ring — matching
  * the site's Showroom Precision design language.
  */
-export function ServicePricing({ service, surface = 'surface' }: ServicePricingProps) {
+export function ServicePricing({ service, surface = 'surface', title, subtitle }: ServicePricingProps) {
   const {
     slug,
     pricingTitle,
@@ -45,8 +49,9 @@ export function ServicePricing({ service, surface = 'surface' }: ServicePricingP
       <Container>
         <SectionHeading
           kicker="Packages & Pricing"
-          title={pricingTitle || 'Packages & Pricing'}
+          title={title || pricingTitle || 'Packages & Pricing'}
           subtitle={
+            subtitle ||
             pricingSubtitle ||
             'Transparent starting prices. Final quotes depend on vehicle size, condition, and any add-ons — we confirm everything before we start.'
           }

@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { TrustMarquee } from '@/components/trust-marquee';
 import { ReviewCard } from '@/components/review-card';
 import { QuoteButton } from '@/components/quote-modal';
+import type { PricingTier } from '@/lib/wordpress/types';
 
 export const metadata: Metadata = pageMeta({
   title: 'Fleet Detailing for NJ Businesses',
@@ -52,24 +53,137 @@ const BENEFITS = [
   },
 ];
 
-const TIERS = [
-  {
-    label: 'Small Fleet',
-    desc: 'Suitable for businesses running 3–10 vehicles. Monthly or bi-monthly scheduling keeps a compact fleet presentation-ready without disrupting daily operations.',
+/**
+ * Fleet-page-only augmentation of the CMS fleet pricing tiers. Prices,
+ * names and inclusions come from the shared service object (fleet.pricingTiers);
+ * this layers on the richer, marketing-page context (grouping into one-time vs
+ * recurring, a service-frequency badge, a "best for" blurb, and a frequency to
+ * prefill into the quote form) that the plainer /services/fleet-detailing grid
+ * intentionally omits. Keyed by tier name.
+ */
+interface FleetTierDetail {
+  group: 'one-time' | 'recurring';
+  blurb: string;
+  frequency?: string;
+  prefillFrequency: string;
+}
+
+const FLEET_TIER_DETAIL: Record<string, FleetTierDetail> = {
+  'Fleet Maintenance Detail': {
+    group: 'one-time',
+    blurb: 'Fast, essential upkeep for vehicles that just need to look clean and professional.',
+    prefillFrequency: 'One-Time Service',
   },
-  {
-    label: 'Mid-Size Fleet',
-    desc: 'Designed for companies operating 11–30 vehicles. Bi-weekly or monthly rotations with scheduled on-site visits and a dedicated account contact.',
+  'Fleet Professional Detail': {
+    group: 'one-time',
+    blurb: 'A more thorough clean with added protection and a sharper finish for customer-facing vehicles.',
+    prefillFrequency: 'One-Time Service',
   },
-  {
-    label: 'Large Fleet',
-    desc: 'For businesses managing 31 or more vehicles. Weekly rolling schedules, priority dispatch, volume pricing, and full service reporting.',
+  'Fleet Complete Detail': {
+    group: 'one-time',
+    blurb: 'A full, top-to-bottom detail for vehicles that need a complete reset.',
+    prefillFrequency: 'One-Time Service',
   },
-];
+  'Monthly Fleet Maintenance': {
+    group: 'recurring',
+    frequency: 'Monthly',
+    blurb: 'Recommended for high-use service vans, company cars, and rideshare fleets that must stay clean year-round.',
+    prefillFrequency: 'Monthly',
+  },
+  'Quarterly Fleet Maintenance': {
+    group: 'recurring',
+    frequency: 'Every 3 months',
+    blurb: 'For businesses that want their vehicles professionally refreshed several times per year.',
+    prefillFrequency: 'Quarterly',
+  },
+  'Annual Fleet Restoration Detail': {
+    group: 'recurring',
+    frequency: 'Once per year',
+    blurb: 'A yearly restoration that keeps a company fleet looking consistently professional.',
+    prefillFrequency: 'Annually',
+  },
+};
+
+function FleetTierCard({ tier }: { tier: PricingTier }) {
+  const detail = FLEET_TIER_DETAIL[tier.name];
+  return (
+    <GlowCard className="h-full flex flex-col">
+      <div className="p-6 flex flex-col flex-1 gap-4">
+        <div className="flex items-start justify-between gap-3">
+          <h4 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base leading-snug">
+            {tier.name}
+          </h4>
+          {detail?.frequency && (
+            <span className="flex-shrink-0 rounded-full border border-accent/40 px-2.5 py-1 font-mono text-[0.55rem] tracking-[0.08em] uppercase text-accent whitespace-nowrap">
+              {detail.frequency}
+            </span>
+          )}
+        </div>
+
+        <div>
+          <p
+            className="font-sans font-bold text-accent"
+            style={{ fontSize: 'clamp(1.6rem, 2.6vw, 2rem)', lineHeight: 1.1 }}
+          >
+            {tier.price}
+          </p>
+          {tier.meta && (
+            <p className="mt-1 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint">
+              {tier.meta}
+            </p>
+          )}
+        </div>
+
+        {detail?.blurb && (
+          <p className="text-fg-soft text-sm leading-relaxed">{detail.blurb}</p>
+        )}
+
+        {tier.includes.length > 0 && (
+          <ul className="space-y-2 flex-1">
+            {tier.includes.map((item, i) => (
+              <li key={i} className="flex items-start gap-2.5">
+                <span
+                  className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full"
+                  style={{ background: 'var(--accent)' }}
+                  aria-hidden="true"
+                />
+                <span className="text-fg-soft text-sm leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className="mt-auto pt-1">
+          <QuoteButton
+            variant="outline"
+            size="md"
+            className="w-full"
+            prefill={{ service: 'fleet-detailing', serviceFrequency: detail?.prefillFrequency }}
+            track={{
+              category: 'conversion',
+              action: 'button_click',
+              label: 'fleet_pricing_get_quote',
+            }}
+          >
+            Request Quote
+          </QuoteButton>
+        </div>
+      </div>
+    </GlowCard>
+  );
+}
 
 export default async function FleetPage() {
   const fleet = await getService('fleet-detailing');
   if (!fleet) notFound();
+
+  // Split the CMS fleet tiers into the two marketing groups by name.
+  const oneTimeTiers = fleet.pricingTiers.filter(
+    (t) => FLEET_TIER_DETAIL[t.name]?.group === 'one-time'
+  );
+  const recurringTiers = fleet.pricingTiers.filter(
+    (t) => FLEET_TIER_DETAIL[t.name]?.group === 'recurring'
+  );
 
   return (
     <>
@@ -203,42 +317,62 @@ export default async function FleetPage() {
         </Container>
       </Section>
 
-      {/* ── Volume Pricing Tiers (no fabricated prices) ── */}
-      <Section surface="surface" id="pricing">
+      {/* ── Fleet Pricing — one-time detailing vs recurring plans (from the CMS) ── */}
+      <Section surface="surface" id="fleet-pricing">
         <Container>
           <SectionHeading
-            kicker="Custom Volume Pricing"
-            title="Fleet Programs by Size"
-            subtitle="Every program is custom-quoted based on fleet size, vehicle types, and service frequency. Request a free fleet assessment to receive your tailored proposal — no obligation."
+            kicker="Fleet Pricing"
+            title="Detailing & Maintenance Programs"
+            subtitle="Two ways to keep your fleet sharp — a one-time detail priced per vehicle, or a recurring maintenance plan on your schedule. All pricing is per vehicle and finalized after a quick assessment."
           />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-bay">
-            {TIERS.map((tier, i) => (
-              <Reveal key={tier.label} delay={i * 80} className="h-full">
-                <GlowCard className="h-full flex flex-col">
-                  <div className="p-6 flex flex-col flex-1 gap-4">
-                    <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg">
-                      {tier.label}
-                    </h3>
-                    <p className="text-fg-soft text-sm leading-relaxed flex-1">{tier.desc}</p>
-                    <div className="mt-auto">
-                      <QuoteButton
-                        variant="primary"
-                        size="md"
-                        prefill={{ service: 'fleet-detailing' }}
-                        track={{
-                          category: 'conversion',
-                          action:   'button_click',
-                          label:    `fleet_tier_custom_quote`,
-                        }}
-                      >
-                        Custom Quote
-                      </QuoteButton>
-                    </div>
-                  </div>
-                </GlowCard>
-              </Reveal>
-            ))}
-          </div>
+
+          {/* Group 1 — One-time per-vehicle detailing */}
+          {oneTimeTiers.length > 0 && (
+            <div className="mb-14">
+              <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+                <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-[clamp(1.35rem,2.2vw,1.75rem)]">
+                  One-Time Fleet Detailing
+                </h3>
+                <p className="text-fg-soft text-sm leading-relaxed md:max-w-md md:text-right">
+                  Priced per vehicle for a single visit — detail any number of vehicles, no commitment.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-bay">
+                {oneTimeTiers.map((tier, i) => (
+                  <Reveal key={tier.name} delay={i * 80} className="h-full">
+                    <FleetTierCard tier={tier} />
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Group 2 — Recurring scheduled maintenance plans */}
+          {recurringTiers.length > 0 && (
+            <div>
+              <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+                <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-[clamp(1.35rem,2.2vw,1.75rem)]">
+                  Recurring Maintenance Plans
+                </h3>
+                <p className="text-fg-soft text-sm leading-relaxed md:max-w-md md:text-right">
+                  Scheduled visits that keep every vehicle consistently clean, protected, and presentation-ready.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-bay">
+                {recurringTiers.map((tier, i) => (
+                  <Reveal key={tier.name} delay={i * 80} className="h-full">
+                    <FleetTierCard tier={tier} />
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {fleet.pricingNote && (
+            <p className="mt-10 max-w-3xl text-fg-faint text-xs leading-relaxed">
+              {fleet.pricingNote}
+            </p>
+          )}
         </Container>
       </Section>
 
