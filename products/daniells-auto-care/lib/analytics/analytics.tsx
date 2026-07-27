@@ -4,12 +4,11 @@ import { useEffect } from 'react';
 import { initTracking } from './track';
 
 /**
- * Analytics — client component that boots the delegated click listener.
- * Render once inside layout.tsx (outside any suspense boundary is fine).
+ * Boots the universal delegated analytics listeners once at the app root.
  */
 export function Analytics(): null {
   useEffect(() => {
-    initTracking();
+    return initTracking();
   }, []);
 
   return null;

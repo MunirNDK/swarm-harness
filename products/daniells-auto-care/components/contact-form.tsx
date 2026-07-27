@@ -3,6 +3,11 @@
 import { useState, FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { business } from '@/lib/site';
+import {
+  trackLeadFormError,
+  trackLeadFormResult,
+  type LeadFormAnalytics,
+} from '@/lib/analytics/track';
 import { cn } from '@/lib/utils';
 
 interface FormData {
@@ -23,19 +28,27 @@ const INITIAL: FormData = {
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
+const FORM_ANALYTICS: LeadFormAnalytics = {
+  form_type: 'contact',
+  form_identifier: 'contact-request-form',
+  form_name: 'contact request',
+  click_text: 'send message',
+  event_section: 'body',
+};
+
 /**
  * ContactForm — Contract §10, §6
  * Fields: name, email, phone (optional), message, honeypot
  * Full validation per contract §6.
  * POST → /api/quote
- * data-track on form: category=form, action=form_submit, label=contact_request
+ * Analytics context is declared through native form semantics + data-attribute.
  */
 export function ContactForm() {
   const [data, setData]     = useState<FormData>(INITIAL);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [status, setStatus] = useState<Status>('idle');
 
-  function validate(): boolean {
+  function validate(): Partial<Record<keyof FormData, string>> {
     const e: Partial<Record<keyof FormData, string>> = {};
     if (!data.name.trim())                        e.name    = 'Name is required';
     if (!data.email.trim())                       e.email   = 'Email is required';
@@ -44,13 +57,41 @@ export function ContactForm() {
     if (!data.message.trim())                     e.message = 'Message is required';
     else if (data.message.trim().length < 10)     e.message = 'Message must be at least 10 characters';
     setErrors(e);
-    return Object.keys(e).length === 0;
+    return e;
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (data._honey) return; // honeypot triggered
-    if (!validate()) return;
+    if (data._honey) {
+      trackLeadFormError(FORM_ANALYTICS, {
+        interaction_type: 'spam_error',
+        error_name: 'honeypot_triggered',
+        error_type: 'bot_detected',
+      });
+      return;
+    }
+
+    const validationErrors = validate();
+    const invalidFields = Object.keys(validationErrors) as (keyof FormData)[];
+    if (invalidFields.length > 0) {
+      const field = invalidFields[0];
+      const errorType =
+        field === 'email'
+          ? 'invalid_email'
+          : field === 'phone'
+            ? 'invalid_phone'
+            : validationErrors[field]?.toLowerCase().includes('required')
+              ? 'required_field_missing'
+              : 'invalid_format';
+      trackLeadFormError(FORM_ANALYTICS, {
+        interaction_type: 'form_error',
+        error_name: 'field_validation_failed',
+        error_type: errorType,
+        field_id: field,
+        error_count: invalidFields.length,
+      });
+      return;
+    }
 
     setStatus('loading');
     try {
@@ -67,8 +108,14 @@ export function ContactForm() {
       if (!res.ok) throw new Error('Failed');
       setStatus('success');
       setData(INITIAL);
+      trackLeadFormResult(FORM_ANALYTICS, 'successful');
     } catch {
       setStatus('error');
+      trackLeadFormError(FORM_ANALYTICS, {
+        interaction_type: 'system_error',
+        error_name: 'lead_form_submission_failed',
+        error_type: navigator.onLine ? 'js_exception' : 'network_offline',
+      });
     }
   }
 
@@ -99,11 +146,11 @@ export function ContactForm() {
 
   return (
     <form
+      id={FORM_ANALYTICS.form_identifier}
+      aria-label={FORM_ANALYTICS.form_name}
       onSubmit={handleSubmit}
       noValidate
-      data-track-category="form"
-      data-track-action="form_submit"
-      data-track-label="contact_request"
+      data-attribute={FORM_ANALYTICS.form_type}
     >
       {/* Honeypot */}
       <input

@@ -3,6 +3,11 @@
 import { useState, FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { business } from '@/lib/site';
+import {
+  trackLeadFormError,
+  trackLeadFormResult,
+  type LeadFormAnalytics,
+} from '@/lib/analytics/track';
 import { cn } from '@/lib/utils';
 import type { Service } from '@/lib/wordpress/types';
 
@@ -34,19 +39,32 @@ const INITIAL: FormData = {
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
+const FORM_ANALYTICS_BASE = {
+  form_type: 'quote',
+  form_name: 'get a quote',
+  click_text: 'schedule now',
+} as const;
+
 /**
  * QuoteForm — Contract §10, §6, §12.8
  * Fields: name, phone, zip, vehicle, service, fleetSize, notes
  * Honeypot: _honey (hidden field)
  * POST → /api/quote
- * data-track on form: category=form, action=form_submit, label=quote_request
+ * Analytics context is declared through native form semantics + data-attribute.
  */
 interface QuoteFormProps {
   prefill?: { service?: string; fleetSize?: string; vehicleType?: string; serviceFrequency?: string };
   services: Service[];
+  eventSection?: LeadFormAnalytics['event_section'];
 }
 
-export function QuoteForm({ prefill, services }: QuoteFormProps) {
+export function QuoteForm({ prefill, services, eventSection = 'body' }: QuoteFormProps) {
+  const formAnalytics: LeadFormAnalytics = {
+    ...FORM_ANALYTICS_BASE,
+    form_identifier:
+      eventSection === 'popup_form' ? 'quote-modal-request-form' : 'quote-request-form',
+    event_section: eventSection,
+  };
   const [data, setData] = useState<FormData>({
     ...INITIAL,
     service:          prefill?.service          ?? '',
@@ -57,7 +75,7 @@ export function QuoteForm({ prefill, services }: QuoteFormProps) {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [status, setStatus] = useState<Status>('idle');
 
-  function validate(): boolean {
+  function validate(): Partial<Record<keyof FormData, string>> {
     const e: Partial<Record<keyof FormData, string>> = {};
     if (!data.name.trim())    e.name    = 'Name is required';
     if (!data.phone.trim())   e.phone   = 'Phone is required';
@@ -76,13 +94,39 @@ export function QuoteForm({ prefill, services }: QuoteFormProps) {
       if (!data.serviceFrequency) e.serviceFrequency = 'Please select a frequency';
     }
     setErrors(e);
-    return Object.keys(e).length === 0;
+    return e;
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (data._honey) return; // honeypot triggered — silent reject
-    if (!validate()) return;
+    if (data._honey) {
+      trackLeadFormError(formAnalytics, {
+        interaction_type: 'spam_error',
+        error_name: 'honeypot_triggered',
+        error_type: 'bot_detected',
+      });
+      return;
+    }
+
+    const validationErrors = validate();
+    const invalidFields = Object.keys(validationErrors) as (keyof FormData)[];
+    if (invalidFields.length > 0) {
+      const field = invalidFields[0];
+      const errorType =
+        field === 'phone'
+          ? 'invalid_phone'
+          : validationErrors[field]?.toLowerCase().includes('required')
+            ? 'required_field_missing'
+            : 'invalid_format';
+      trackLeadFormError(formAnalytics, {
+        interaction_type: 'form_error',
+        error_name: 'field_validation_failed',
+        error_type: errorType,
+        field_id: field,
+        error_count: invalidFields.length,
+      });
+      return;
+    }
 
     setStatus('loading');
     try {
@@ -104,8 +148,14 @@ export function QuoteForm({ prefill, services }: QuoteFormProps) {
       if (!res.ok) throw new Error('Failed');
       setStatus('success');
       setData(INITIAL);
+      trackLeadFormResult(formAnalytics, 'successful');
     } catch {
       setStatus('error');
+      trackLeadFormError(formAnalytics, {
+        interaction_type: 'system_error',
+        error_name: 'lead_form_submission_failed',
+        error_type: navigator.onLine ? 'js_exception' : 'network_offline',
+      });
     }
   }
 
@@ -138,11 +188,11 @@ export function QuoteForm({ prefill, services }: QuoteFormProps) {
 
   return (
     <form
+      id={formAnalytics.form_identifier}
+      aria-label={formAnalytics.form_name}
       onSubmit={handleSubmit}
       noValidate
-      data-track-category="form"
-      data-track-action="form_submit"
-      data-track-label="quote_request"
+      data-attribute={formAnalytics.form_type}
     >
       {/* Honeypot — hidden from real users, bots fill it */}
       <input

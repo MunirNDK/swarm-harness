@@ -119,7 +119,7 @@ export function QuoteModal({ services }: { services: Service[] }) {
           >
             Get Your Free Quote
           </h2>
-          <QuoteForm prefill={prefill} services={services} />
+          <QuoteForm prefill={prefill} services={services} eventSection="popup_form" />
         </div>
       </div>
     </div>
