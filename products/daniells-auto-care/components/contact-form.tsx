@@ -106,9 +106,9 @@ export function ContactForm() {
         }),
       });
       if (!res.ok) throw new Error('Failed');
+      trackLeadFormResult(FORM_ANALYTICS, 'successful');
       setStatus('success');
       setData(INITIAL);
-      trackLeadFormResult(FORM_ANALYTICS, 'successful');
     } catch {
       setStatus('error');
       trackLeadFormError(FORM_ANALYTICS, {

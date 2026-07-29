@@ -146,9 +146,9 @@ export function QuoteForm({ prefill, services, eventSection = 'body' }: QuoteFor
         }),
       });
       if (!res.ok) throw new Error('Failed');
+      trackLeadFormResult(formAnalytics, 'successful');
       setStatus('success');
       setData(INITIAL);
-      trackLeadFormResult(formAnalytics, 'successful');
     } catch {
       setStatus('error');
       trackLeadFormError(formAnalytics, {

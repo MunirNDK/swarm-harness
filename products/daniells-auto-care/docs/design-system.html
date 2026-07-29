@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Daniells Auto Care — Design System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  /* ═══════════════════════════════════════════════════════════
+     Daniells Auto Care — Design System reference
+     Generated from the source of truth:
+       products/daniells-auto-care/app/globals.css  (:root tokens)
+       products/daniells-auto-care/tailwind.config.ts
+     Standalone doc — open directly in a browser. Doc chrome tokens
+     mirror the site's "Showroom Precision" light theme; color
+     swatches render literal hex inline so they read true in any
+     viewer theme.
+     ═══════════════════════════════════════════════════════════ */
+  :root {
+    --page-bg:      #F5F4F2;
+    --card:         #FFFFFF;
+    --card-2:       #ECEAE6;
+    --ink:          #171513;
+    --ink-soft:     #55504A;
+    --ink-faint:    #8C867E;
+    --rule:         #E4E1DB;
+    --accent:       #E80505;
+    --accent-deep:  #740404;
+    --shadow-sm:    0 1px 2px rgba(23,21,19,.06), 0 1px 4px rgba(23,21,19,.04);
+    --shadow-md:    0 4px 12px rgba(23,21,19,.10), 0 2px 6px rgba(23,21,19,.06);
+    --shadow-lg:    0 12px 32px rgba(23,21,19,.14), 0 6px 14px rgba(23,21,19,.08);
+
+    --sans: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Consolas', monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page-bg:   #161514;
+      --card:      #201E1C;
+      --card-2:    #2A2724;
+      --ink:       #F3F1EE;
+      --ink-soft:  #B8B2AA;
+      --ink-faint: #8C867E;
+      --rule:      #35322E;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.45);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="light"] {
+    --page-bg:#F5F4F2; --card:#FFFFFF; --card-2:#ECEAE6; --ink:#171513;
+    --ink-soft:#55504A; --ink-faint:#8C867E; --rule:#E4E1DB;
+    --shadow-sm:0 1px 2px rgba(23,21,19,.06),0 1px 4px rgba(23,21,19,.04);
+    --shadow-md:0 4px 12px rgba(23,21,19,.10),0 2px 6px rgba(23,21,19,.06);
+    --shadow-lg:0 12px 32px rgba(23,21,19,.14),0 6px 14px rgba(23,21,19,.08);
+  }
+  :root[data-theme="dark"] {
+    --page-bg:#161514; --card:#201E1C; --card-2:#2A2724; --ink:#F3F1EE;
+    --ink-soft:#B8B2AA; --ink-faint:#8C867E; --rule:#35322E;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+    --shadow-md:0 4px 12px rgba(0,0,0,.45);
+    --shadow-lg:0 12px 32px rgba(0,0,0,.55);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  }
+
+  /* ── HERO ─────────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #E80505, #980404);
+    color: #FFFFFF;
+    padding: clamp(48px, 8vw, 88px) 24px clamp(40px, 6vw, 64px);
+  }
+  .hero-inner { max-width: 1120px; margin: 0 auto; }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 12px; letter-spacing: .28em; text-transform: uppercase;
+    opacity: .82; margin: 0 0 18px;
+  }
+  .hero h1 {
+    font-family: var(--sans); font-weight: 900;
+    text-transform: uppercase; letter-spacing: -0.02em; line-height: .98;
+    font-size: clamp(40px, 8vw, 78px);
+    margin: 0; text-wrap: balance; max-width: 16ch;
+  }
+  .hero p {
+    max-width: 60ch; margin: 20px 0 0; font-size: clamp(15px, 2vw, 18px);
+    line-height: 1.6; color: rgba(255,255,255,.92);
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 30px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
+    text-transform: uppercase; color: rgba(255,255,255,.85);
+  }
+  .hero-meta b { color: #fff; font-weight: 600; }
+
+  /* ── STICKY NAV ───────────────────────────────────────── */
+  nav.toc {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--card);
+    border-bottom: 1px solid var(--rule);
+    box-shadow: var(--shadow-sm);
+  }
+  .toc-inner {
+    max-width: 1120px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+    min-height: 56px;
+  }
+  .toc a {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
+    text-transform: uppercase; text-decoration: none;
+    color: var(--ink-soft); padding: 8px 12px; border-radius: 4px;
+    transition: color .12s, background .12s;
+  }
+  .toc a:hover { color: var(--accent); background: var(--card-2); }
+  .theme-toggle {
+    margin-left: auto; font-family: var(--mono); font-size: 12px;
+    letter-spacing: .06em; text-transform: uppercase;
+    background: transparent; border: 1px solid var(--rule); color: var(--ink-soft);
+    padding: 7px 14px; border-radius: 9999px; cursor: pointer;
+    transition: border-color .12s, color .12s;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── LAYOUT ───────────────────────────────────────────── */
+  main { max-width: 1120px; margin: 0 auto; padding: 0 24px 96px; }
+  section { padding-top: clamp(48px, 7vw, 80px); scroll-margin-top: 72px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 28px; flex-wrap: wrap; }
+  .sec-num {
+    font-family: var(--mono); font-size: 13px; font-weight: 600;
+    color: var(--accent); letter-spacing: .08em;
+  }
+  .sec-head h2 {
+    font-family: var(--sans); font-weight: 800; text-transform: uppercase;
+    letter-spacing: -0.01em; font-size: clamp(22px, 3.4vw, 32px);
+    margin: 0; line-height: 1.1;
+  }
+  .sec-head p {
+    flex-basis: 100%; margin: 2px 0 0; color: var(--ink-soft);
+    font-size: 15px; max-width: 68ch;
+  }
+
+  /* ── COLOR SWATCHES ───────────────────────────────────── */
+  .group-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-faint);
+    margin: 32px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+  }
+  .swatches {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  }
+  .swatch {
+    background: var(--card); border: 1px solid var(--rule);
+    border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-sm);
+    cursor: pointer; transition: transform .12s, box-shadow .12s;
+    text-align: left; padding: 0; color: inherit; font: inherit; width: 100%;
+  }
+  .swatch:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .swatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .chip { height: 74px; width: 100%; display: block; position: relative; }
+  .chip.ring { box-shadow: inset 0 0 0 1px var(--rule); }
+  .swatch-body { padding: 12px 14px 14px; }
+  .swatch-name {
+    font-weight: 700; font-size: 13px; text-transform: uppercase;
+    letter-spacing: -0.005em; margin-bottom: 8px; line-height: 1.3;
+  }
+  .kv { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .kv + .kv { margin-top: 3px; }
+  .kv .k { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; color: var(--ink-faint); text-transform: uppercase; }
+  .kv .v { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); font-variant-numeric: tabular-nums; text-align: right; }
+  .kv .v.hex { color: var(--ink); font-weight: 600; }
+
+  /* ── TYPE ─────────────────────────────────────────────── */
+  .type-families { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-bottom: 8px; }
+  .fam-card { background: var(--card); border: 1px solid var(--rule); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); }
+  .fam-card .sample { font-size: 40px; line-height: 1.1; margin: 0 0 14px; letter-spacing: -0.01em; }
+  .fam-card .fam-name { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); margin-bottom: 6px; }
+  .fam-card .fam-meta { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); line-height: 1.7; }
+  .fam-card .fam-meta code { color: var(--ink); }
+  .fam-card .weights { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 14px; }
+  .fam-card .weights span { font-size: 16px; }
+
+  .scale-row {
+    display: grid; grid-template-columns: 88px 76px 1fr; gap: 20px; align-items: baseline;
+    padding: 16px 0; border-bottom: 1px solid var(--rule);
+  }
+  .scale-row .token { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .scale-row .size { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); font-variant-numeric: tabular-nums; line-height: 1.5; }
+  .scale-row .demo { color: var(--ink); font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.05; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .scale-row .demo.body { text-transform: none; font-weight: 400; letter-spacing: 0; white-space: normal; }
+
+  /* ── SPACING ──────────────────────────────────────────── */
+  .spacing-list { display: flex; flex-direction: column; gap: 4px; }
+  .space-row {
+    display: grid; grid-template-columns: 100px 60px 1fr; gap: 20px; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid var(--rule);
+  }
+  .space-row .token { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 600; }
+  .space-row .val { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .space-bar { height: 18px; background: var(--accent); border-radius: 3px; opacity: .9; }
+
+  /* ── RADIUS ───────────────────────────────────────────── */
+  .radius-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .radius-card { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 18px; text-align: center; box-shadow: var(--shadow-sm); }
+  .radius-demo { height: 78px; background: var(--accent); margin-bottom: 14px; box-shadow: inset 0 0 0 3px rgba(255,255,255,.18); }
+  .radius-card .token { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 600; }
+  .radius-card .val { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); margin-top: 3px; }
+
+  /* ── SHADOW ───────────────────────────────────────────── */
+  .shadow-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); padding: 8px 4px; }
+  .shadow-card { background: var(--card); border-radius: 12px; padding: 24px 18px; text-align: center; border: 1px solid var(--rule); }
+  .shadow-card.s-sm { box-shadow: var(--shadow-sm); }
+  .shadow-card.s-md { box-shadow: var(--shadow-md); }
+  .shadow-card.s-lg { box-shadow: var(--shadow-lg); }
+  .shadow-card.s-red { box-shadow: 0 4px 20px rgba(232,5,5,.22); }
+  .shadow-card .token { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 600; }
+  .shadow-card .val { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); margin-top: 6px; line-height: 1.5; word-break: break-all; }
+
+  /* ── TABLE (motion / layout) ──────────────────────────── */
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 12px; background: var(--card); box-shadow: var(--shadow-sm); }
+  table { width: 100%; border-collapse: collapse; min-width: 480px; }
+  th, td { text-align: left; padding: 13px 18px; border-bottom: 1px solid var(--rule); font-size: 13px; }
+  th { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  td.token { font-family: var(--mono); color: var(--accent); font-weight: 600; }
+  td.mono { font-family: var(--mono); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+  .note {
+    background: var(--card-2); border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0; padding: 14px 18px; margin-top: 22px;
+    font-size: 13.5px; color: var(--ink-soft); line-height: 1.6;
+  }
+  .note b { color: var(--ink); }
+  .note code { font-family: var(--mono); font-size: 12px; background: var(--card); padding: 1px 5px; border-radius: 4px; color: var(--accent); }
+
+  footer {
+    border-top: 1px solid var(--rule); margin-top: 64px; padding: 28px 24px;
+    text-align: center; font-family: var(--mono); font-size: 11px;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint);
+  }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--ink); color: var(--page-bg); font-family: var(--mono); font-size: 12px;
+    letter-spacing: .04em; padding: 10px 18px; border-radius: 9999px; box-shadow: var(--shadow-lg);
+    opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 560px) {
+    .scale-row { grid-template-columns: 70px 1fr; }
+    .scale-row .size { display: none; }
+    .space-row { grid-template-columns: 76px 52px 1fr; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">Design System · v1 Light Inversion</p>
+    <h1>Showroom Precision</h1>
+    <p>The complete token reference for <b>Daniells Auto Care</b> — a mobile auto-detailing brand in Northern NJ. Every value below is the live source of truth from <code style="font-family:var(--mono);font-size:.9em">app/globals.css</code> and <code style="font-family:var(--mono);font-size:.9em">tailwind.config.ts</code>.</p>
+    <div class="hero-meta">
+      <span>Ground <b>#F5F4F2</b></span>
+      <span>Ink <b>#171513</b></span>
+      <span>Detailer's Red <b>#E80505</b></span>
+      <span>Type <b>Montserrat / JetBrains Mono</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#color">Color</a>
+    <a href="#type">Type</a>
+    <a href="#spacing">Spacing</a>
+    <a href="#radius">Radius</a>
+    <a href="#shadow">Shadow</a>
+    <a href="#motion">Motion</a>
+    <a href="#layout">Layout</a>
+    <button class="theme-toggle" id="themeBtn" type="button">Theme</button>
+  </div>
+</nav>
+
+<main>
+  <!-- ══ COLOR ══ -->
+  <section id="color">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>Color</h2>
+      <p>Tokens are defined as CSS custom properties in the <code style="font-family:var(--mono);color:var(--accent);font-size:.9em">:root</code> block and exposed to Tailwind via <code style="font-family:var(--mono);color:var(--accent);font-size:.9em">theme.extend.colors</code>. Click any swatch to copy its hex.</p>
+    </div>
+
+    <div class="group-label">Surfaces — Showroom Floor</div>
+    <div class="swatches" id="grp-surface"></div>
+
+    <div class="group-label">Ink — Dark-on-Light Text</div>
+    <div class="swatches" id="grp-ink"></div>
+
+    <div class="group-label">Detailer's Red — Primary Accent</div>
+    <div class="swatches" id="grp-accent"></div>
+
+    <div class="group-label">Semantic — Status</div>
+    <div class="swatches" id="grp-semantic"></div>
+
+    <div class="group-label">Conversion Layer — CTA · Trust · Forms</div>
+    <div class="swatches" id="grp-cta"></div>
+
+    <div class="note"><b>Gotcha:</b> the red accent kept its original dark-theme value (<code>#E80505</code> passes WCAG AA on white at ~4.71:1). Any element sitting on the red accent or <code>--cta-gradient</code> must pin its text to <code>--cta-fg</code> (hardcoded white) — never <code>--ink</code>, which is now dark and renders unreadable on red.</div>
+  </section>
+
+  <!-- ══ TYPE ══ -->
+  <section id="type">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>Typography</h2>
+      <p>Two families loaded via <code style="font-family:var(--mono);color:var(--accent);font-size:.9em">next/font/google</code>. All headings render uppercase, weight 700+, letter-spacing −0.01em. If Montserrat / JetBrains Mono are not installed locally, specimens fall back to a system stack — the real families are named on each card.</p>
+    </div>
+
+    <div class="type-families">
+      <div class="fam-card">
+        <div class="fam-name">Body · Headings · UI</div>
+        <p class="sample" style="font-family:var(--sans);font-weight:800;text-transform:uppercase;letter-spacing:-0.01em">Montserrat</p>
+        <div class="fam-meta">
+          <code>--font-body</code> → <code>font-sans</code><br>
+          Weights: 400 · 500 · 600 · 700 · 800 · 900<br>
+          Body line-height 1.65 · headings uppercase
+        </div>
+        <div class="weights" style="font-family:var(--sans)">
+          <span style="font-weight:400">400</span>
+          <span style="font-weight:500">500</span>
+          <span style="font-weight:600">600</span>
+          <span style="font-weight:700">700</span>
+          <span style="font-weight:800">800</span>
+          <span style="font-weight:900">900</span>
+        </div>
+      </div>
+      <div class="fam-card">
+        <div class="fam-name">Mono · Labels · Data</div>
+        <p class="sample" style="font-family:var(--mono);font-weight:500;letter-spacing:.02em">JetBrains Mono</p>
+        <div class="fam-meta">
+          <code>--font-mono</code> → <code>font-mono</code><br>
+          Weights: 400 · 500 · 600<br>
+          Used for eyebrows, tickers, tabular data
+        </div>
+        <div class="weights" style="font-family:var(--mono)">
+          <span style="font-weight:400">400</span>
+          <span style="font-weight:500">500</span>
+          <span style="font-weight:600">600</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-label">Type Scale</div>
+    <div id="scale"></div>
+  </section>
+
+  <!-- ══ SPACING ══ -->
+  <section id="spacing">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>Spacing</h2>
+      <p>The "Bay Hardware" scale — named after garage fasteners and structures, smallest to largest. Exposed as Tailwind spacing utilities (e.g. <code style="font-family:var(--mono);color:var(--accent);font-size:.9em">p-panel</code>, <code style="font-family:var(--mono);color:var(--accent);font-size:.9em">gap-bay</code>).</p>
+    </div>
+    <div class="spacing-list" id="spacing-list"></div>
+  </section>
+
+  <!-- ══ RADIUS ══ -->
+  <section id="radius">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>Border Radius</h2>
+      <p>Five steps. Corners stay tight and mechanical — nothing softer than 12px except fully-round pills and avatars.</p>
+    </div>
+    <div class="radius-grid" id="radius-grid"></div>
+  </section>
+
+  <!-- ══ SHADOW ══ -->
+  <section id="shadow">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>Elevation</h2>
+      <p>Shadow alphas were softened for the light ground — the original dark-theme values read as heavy on white. The red glow is reserved for accent/CTA surfaces.</p>
+    </div>
+    <div class="shadow-grid">
+      <div class="shadow-card s-sm"><div class="token">shadow-sm</div><div class="val">0 1px 2px / 0 1px 4px · rgba(23,21,19,.06/.04)</div></div>
+      <div class="shadow-card s-md"><div class="token">shadow-md</div><div class="val">0 4px 12px / 0 2px 6px · rgba(23,21,19,.10/.06)</div></div>
+      <div class="shadow-card s-lg"><div class="token">shadow-lg</div><div class="val">0 12px 32px / 0 6px 14px · rgba(23,21,19,.14/.08)</div></div>
+      <div class="shadow-card s-red"><div class="token">shadow-red</div><div class="val">0 4px 20px · rgba(232,5,5,.22)</div></div>
+    </div>
+  </section>
+
+  <!-- ══ MOTION ══ -->
+  <section id="motion">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2>Motion</h2>
+      <p>Two easing curves and three durations. All motion respects <code style="font-family:var(--mono);color:var(--accent);font-size:.9em">prefers-reduced-motion</code>.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Tailwind</th><th>Value</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td class="token">--ease</td><td class="mono">ease-default</td><td class="mono">cubic-bezier(0.2, 0, 0, 1)</td><td>Standard — most transitions</td></tr>
+          <tr><td class="token">--ease-spring</td><td class="mono">ease-spring</td><td class="mono">cubic-bezier(0.34, 1.3, 0.64, 1)</td><td>Overshoot — playful pops</td></tr>
+          <tr><td class="token">--d-fast</td><td class="mono">duration-fast</td><td class="mono">120ms</td><td>Hover, focus, borders</td></tr>
+          <tr><td class="token">--d-base</td><td class="mono">duration-base</td><td class="mono">200ms</td><td>Default interactions</td></tr>
+          <tr><td class="token">--d-slow</td><td class="mono">duration-slow</td><td class="mono">350ms</td><td>Entrances, fade-ups</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><b>Keyframe catalog:</b> <code>pulse-dot</code> / <code>pulse-dot-green</code> (status dots), <code>ctaPulse</code> (sticky CTA bar), <code>marquee</code> (trust ribbon, 30s linear), <code>fadeUp</code> (headline entrance), <code>staggerRise</code> (grid items).</div>
+  </section>
+
+  <!-- ══ LAYOUT ══ -->
+  <section id="layout">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <h2>Layout</h2>
+      <p>Container, navigation, and fluid rhythm tokens that frame every page.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="token">--container-max-w</td><td class="mono">80rem · 1280px</td><td>Max content width (max-w-container)</td></tr>
+          <tr><td class="token">--nav-h</td><td class="mono">80px</td><td>Fixed header height</td></tr>
+          <tr><td class="token">--section-v-pad</td><td class="mono">clamp(64px, 10vw, 120px)</td><td>Vertical section rhythm (.section-v-pad)</td></tr>
+          <tr><td class="token">--card-grid-min</td><td class="mono">min(320px, 100%)</td><td>Auto-fill grid minimum track</td></tr>
+          <tr><td class="token">--nav-bg</td><td class="mono">#FFFFFF</td><td>Header background</td></tr>
+          <tr><td class="token">--nav-fg</td><td class="mono">#171513</td><td>Header foreground</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>Daniells Auto Care · Showroom Precision · Design tokens generated from source · Click swatches to copy</footer>
+<div class="toast" id="toast">Copied</div>
+
+<script>
+  // ── Color data — verbatim from globals.css :root ──
+  const groups = {
+    'grp-surface': [
+      ['Background', '--bg', 'bg', '#F5F4F2'],
+      ['Surface', '--surface', 'surface', '#FFFFFF'],
+      ['Surface 2', '--surface-2', 'surface2', '#ECEAE6'],
+      ['Surface Dark', '--surface-dark', 'surface-dark', '#FFFFFF'],
+      ['Surface Dark 2', '--surface-dark-2', 'surface-dark-2', '#FAFAF8'],
+      ['Overlay', '--overlay', '—', 'rgba(0,0,0,0.75)'],
+    ],
+    'grp-ink': [
+      ['Ink', '--ink', 'fg', '#171513'],
+      ['Ink Soft', '--ink-soft', 'fg-soft', '#55504A'],
+      ['Ink Faint', '--ink-faint', 'fg-faint', '#8C867E'],
+      ['Muted', '--muted', 'muted', '#B8B2AA'],
+      ['Rule / Border', '--rule', 'border', '#E4E1DB'],
+    ],
+    'grp-accent': [
+      ['Accent', '--accent', 'accent', '#E80505'],
+      ['Accent Deep', '--accent-deep', 'accent-deep', '#740404'],
+      ['Accent Mid', '--accent-mid', 'accent-mid', '#980404'],
+      ['Accent Light', '--accent-light', 'accent-light', '#B30404'],
+      ['Accent Soft', '--accent-soft', 'accent-soft', 'rgba(232,5,5,0.15)'],
+      ['Accent Mist', '--accent-mist', '—', 'rgba(232,5,5,0.06)'],
+    ],
+    'grp-semantic': [
+      ['Success', '--success', 'success', '#15803D'],
+      ['Warning', '--warning', 'warning', '#B45309'],
+      ['Danger', '--danger', 'danger', '#E80505'],
+      ['Info', '--info', 'info', '#1D4ED8'],
+    ],
+    'grp-cta': [
+      ['CTA Background', '--cta-bg', 'cta', '#E80505'],
+      ['CTA Foreground', '--cta-fg', 'cta-fg', '#FFFFFF'],
+      ['CTA Hover', '--cta-bg-hover', '—', '#980404'],
+      ['CTA Active', '--cta-bg-active', '—', '#740404'],
+      ['Trust Star', '--trust-star', 'trust-star', '#EAB308'],
+      ['Input Border', '--input-border', '—', '#D8D4CC'],
+      ['Urgency', '--urgency', 'urgency', '#E80505'],
+      ['Phone', '--phone-fg', '—', '#E80505'],
+    ],
+  };
+
+  // Colors that need a border ring to be visible on white cards
+  const lightVals = new Set(['#FFFFFF', '#FAFAF8', '#F5F4F2', '#ECEAE6', 'rgba(232,5,5,0.06)', 'rgba(232,5,5,0.15)']);
+
+  function makeSwatch([name, cssvar, tw, hex]) {
+    const el = document.createElement('button');
+    el.className = 'swatch';
+    el.type = 'button';
+    el.setAttribute('aria-label', name + ' ' + hex);
+    const ring = lightVals.has(hex) ? ' ring' : '';
+    el.innerHTML =
+      '<span class="chip' + ring + '" style="background:' + hex + '"></span>' +
+      '<span class="swatch-body">' +
+        '<div class="swatch-name">' + name + '</div>' +
+        '<div class="kv"><span class="k">hex</span><span class="v hex">' + hex + '</span></div>' +
+        '<div class="kv"><span class="k">var</span><span class="v">' + cssvar + '</span></div>' +
+        (tw !== '—' ? '<div class="kv"><span class="k">tw</span><span class="v">' + tw + '</span></div>' : '') +
+      '</span>';
+    el.addEventListener('click', () => copy(hex));
+    return el;
+  }
+  for (const [id, items] of Object.entries(groups)) {
+    const host = document.getElementById(id);
+    items.forEach(it => host.appendChild(makeSwatch(it)));
+  }
+
+  // ── Type scale ──
+  const scale = [
+    ['xs', '11px', '1.4', 20],
+    ['sm', '13px', '1.5', 22],
+    ['base', '16px', '1.65', 24],
+    ['md', '18px', '1.6', 26],
+    ['lg', '22px', '1.5', 30],
+    ['xl', '26px', '1.3', 34],
+    ['2xl', '32px', '1.2', 40],
+    ['3xl', 'clamp(34px, 4vw, 48px)', '1.1', 46],
+    ['4xl', 'clamp(42px, 6vw, 64px)', '1.05', 56],
+    ['display', 'clamp(48px, 8vw, 80px)', '1.0', 68],
+  ];
+  const scaleHost = document.getElementById('scale');
+  scale.forEach(([tok, size, lh, render]) => {
+    const row = document.createElement('div');
+    row.className = 'scale-row';
+    const isBody = (tok === 'base' || tok === 'md' || tok === 'sm' || tok === 'xs');
+    row.innerHTML =
+      '<span class="token">' + tok + '</span>' +
+      '<span class="size">' + size + '<br>lh ' + lh + '</span>' +
+      '<span class="demo' + (isBody ? ' body' : '') + '" style="font-size:' + render + 'px;line-height:' + lh + '">' +
+        (isBody ? 'Precision detailing, delivered to your driveway.' : 'Showroom Precision') +
+      '</span>';
+    scaleHost.appendChild(row);
+  });
+
+  // ── Spacing ──
+  const spacing = [
+    ['pin', '4px', 4], ['rivet', '8px', 8], ['bolt', '12px', 12],
+    ['gauge', '16px', 16], ['panel', '24px', 24], ['bay', '32px', 32],
+    ['stall', '48px', 48], ['deck', '64px', 64], ['hangar', '96px', 96],
+    ['perimeter', '128px', 128],
+  ];
+  const spHost = document.getElementById('spacing-list');
+  const maxSp = 128;
+  spacing.forEach(([tok, val, px]) => {
+    const row = document.createElement('div');
+    row.className = 'space-row';
+    row.innerHTML =
+      '<span class="token">' + tok + '</span>' +
+      '<span class="val">' + val + '</span>' +
+      '<span class="space-bar" style="width:' + (px / maxSp * 100) + '%"></span>';
+    spHost.appendChild(row);
+  });
+
+  // ── Radius ──
+  const radius = [
+    ['r-none', '0px'], ['r-sm', '4px'], ['r-md', '8px'], ['r-lg', '12px'], ['r-full', '9999px'],
+  ];
+  const rHost = document.getElementById('radius-grid');
+  radius.forEach(([tok, val]) => {
+    const card = document.createElement('div');
+    card.className = 'radius-card';
+    const rv = val === '9999px' ? '9999px' : val;
+    card.innerHTML =
+      '<div class="radius-demo" style="border-radius:' + rv + '"></div>' +
+      '<div class="token">' + tok + '</div>' +
+      '<div class="val">' + val + '</div>';
+    rHost.appendChild(card);
+  });
+
+  // ── Copy + toast ──
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  function copy(text) {
+    if (navigator.clipboard) { navigator.clipboard.writeText(text).catch(() => {}); }
+    toast.textContent = text + '  copied';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1400);
+  }
+
+  // ── Theme toggle ──
+  const root = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  btn.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme')
+      || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>

@@ -156,7 +156,7 @@ function pushDataLayer(payload: Record<string, unknown>): void {
   window.dataLayer.push(eventPayload);
 
   if (process.env.NODE_ENV === 'development') {
-    console.debug('[analytics:event]', JSON.stringify(eventPayload));
+    console.info('[analytics:event]', JSON.stringify(eventPayload));
   }
 }
 

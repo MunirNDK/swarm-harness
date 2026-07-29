@@ -6,8 +6,7 @@ import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { StickyCta } from '@/components/sticky-cta';
 import { QuoteModalProvider, QuoteModal } from '@/components/quote-modal';
-import { Analytics } from '@/lib/analytics/analytics';
-import { GoogleTagManager, GoogleTagManagerNoScript } from '@/lib/analytics/gtm';
+import { AnalyticsProvider } from '@/lib/analytics/analytics-provider';
 import { getServices } from '@/lib/wordpress/services';
 import { getServiceAreas } from '@/lib/wordpress/service-areas';
 
@@ -69,11 +68,6 @@ export default async function RootLayout({
       className={`${montserrat.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-bg text-fg font-sans antialiased">
-        {/* Google Tag Manager — next/script hoists the loader into <head> */}
-        <GoogleTagManager />
-        {/* Google Tag Manager (noscript) — must stay first inside <body> */}
-        <GoogleTagManagerNoScript />
-
         {/* Skip to main content — accessibility */}
         <a
           href="#main"
@@ -112,7 +106,7 @@ export default async function RootLayout({
           <QuoteModal services={services} />
         </QuoteModalProvider>
 
-        <Analytics />
+        <AnalyticsProvider />
       </body>
     </html>
   );
