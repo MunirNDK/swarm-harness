@@ -121,7 +121,6 @@ const SECTION_VALUES = new Set([
 
 const startedForms = new WeakSet<HTMLFormElement>();
 const mediaMilestones = new WeakMap<HTMLMediaElement, Set<number>>();
-const scrollMilestones = new Map<string, Set<number>>();
 const pageErrors = new Set<string>();
 
 function eventId(): string {
@@ -423,28 +422,6 @@ function handleSubmit(event: SubmitEvent): void {
   });
 }
 
-function handleScroll(): void {
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  if (scrollable <= 0) return;
-
-  const percent = Math.min(100, Math.round((window.scrollY / scrollable) * 100));
-  const pageKey = window.location.pathname;
-  const seen = scrollMilestones.get(pageKey) || new Set<number>();
-  scrollMilestones.set(pageKey, seen);
-
-  for (const milestone of [25, 50, 75, 100]) {
-    if (percent < milestone || seen.has(milestone)) continue;
-    seen.add(milestone);
-    trackAnalyticsEvent('content_interaction', {
-      interaction_type: 'scroll_milestone',
-      click_text: 'scroll',
-      event_section: 'body',
-      scroll_percent: milestone,
-      event_tier: milestone === 100 ? '2_engagement' : '3_diagnostic',
-    });
-  }
-}
-
 function mediaMetadata(
   media: HTMLMediaElement
 ): Pick<ContentInteractionParams, 'click_text' | 'event_section'> & AnalyticsParams {
@@ -547,15 +524,6 @@ export function initTracking(): (() => void) | undefined {
   if (typeof window === 'undefined' || window.__trackingInit) return undefined;
   window.__trackingInit = true;
 
-  let scrollFrame: number | null = null;
-  const scheduleScroll = () => {
-    if (scrollFrame !== null) return;
-    scrollFrame = window.requestAnimationFrame(() => {
-      scrollFrame = null;
-      handleScroll();
-    });
-  };
-
   const pageObserver = new MutationObserver(trackPageErrorIfPresent);
 
   document.addEventListener('click', handleClick, { passive: true });
@@ -564,13 +532,11 @@ export function initTracking(): (() => void) | undefined {
   document.addEventListener('play', handleMediaPlay, true);
   document.addEventListener('timeupdate', handleMediaProgress, true);
   document.addEventListener('ended', handleMediaComplete, true);
-  window.addEventListener('scroll', scheduleScroll, { passive: true });
   window.addEventListener('error', handleRuntimeError);
   window.addEventListener('unhandledrejection', handleUnhandledRejection);
   pageObserver.observe(document.body, { childList: true, subtree: true });
 
   trackPageErrorIfPresent();
-  scheduleScroll();
 
   return () => {
     document.removeEventListener('click', handleClick);
@@ -579,11 +545,9 @@ export function initTracking(): (() => void) | undefined {
     document.removeEventListener('play', handleMediaPlay, true);
     document.removeEventListener('timeupdate', handleMediaProgress, true);
     document.removeEventListener('ended', handleMediaComplete, true);
-    window.removeEventListener('scroll', scheduleScroll);
     window.removeEventListener('error', handleRuntimeError);
     window.removeEventListener('unhandledrejection', handleUnhandledRejection);
     pageObserver.disconnect();
-    if (scrollFrame !== null) window.cancelAnimationFrame(scrollFrame);
     window.__trackingInit = false;
   };
 }
