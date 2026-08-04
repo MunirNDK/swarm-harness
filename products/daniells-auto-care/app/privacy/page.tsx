@@ -28,7 +28,7 @@ export default function PrivacyPage() {
       {/* ── Breadcrumbs ── */}
       <div className="bg-surface-dark border-b border-border">
         <Container>
-          <div className="py-3">
+          <div className="py-bolt">
             <Breadcrumbs items={BREADCRUMBS} />
           </div>
         </Container>
@@ -38,23 +38,22 @@ export default function PrivacyPage() {
       <Section surface="bg" id="privacy-content">
         <Container>
           <div className="max-w-3xl mx-auto">
-            <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent mb-3">
+            <p className="font-mono text-mono-sm tracking-label uppercase text-accent mb-bolt">
               Legal
             </p>
             <h1
-              className="font-sans font-bold uppercase tracking-[-0.02em] text-fg mb-6"
-              style={{ fontSize: 'clamp(1.75rem,4vw,2.75rem)', lineHeight: '1.1' }}
+              className="tracking-tighter mb-panel text-3xl"
             >
               Privacy Policy
             </h1>
-            <p className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint mb-10">
+            <p className="font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-bay">
               Last updated: {LAST_UPDATED}
             </p>
 
-            <div className="space-y-10 text-fg-soft leading-[1.8]">
+            <div className="space-y-bay text-fg-soft leading-relaxed">
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   1. About This Policy
                 </h2>
                 <p>
@@ -66,11 +65,11 @@ export default function PrivacyPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   2. Information We Collect
                 </h2>
-                <p className="mb-3">We collect information you provide directly, including:</p>
-                <ul className="list-disc pl-5 space-y-1">
+                <p className="mb-bolt">We collect information you provide directly, including:</p>
+                <ul className="list-disc pl-gauge space-y-pin">
                   <li>
                     <strong className="text-fg">Contact details:</strong> name, email address, and
                     phone number submitted through our contact or quote forms.
@@ -84,7 +83,7 @@ export default function PrivacyPage() {
                     via our contact form.
                   </li>
                 </ul>
-                <p className="mt-3">
+                <p className="mt-bolt">
                   We may also collect standard technical data automatically, such as browser type,
                   referring URL, and pages visited, through standard web analytics tools. We do not
                   use cookies for advertising or cross-site tracking.
@@ -92,10 +91,10 @@ export default function PrivacyPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   3. How We Use Your Information
                 </h2>
-                <ul className="list-disc pl-5 space-y-1">
+                <ul className="list-disc pl-gauge space-y-pin">
                   <li>To respond to your quote requests and schedule services.</li>
                   <li>To communicate about your appointment and follow up after service.</li>
                   <li>To improve the content and functionality of our website.</li>
@@ -103,14 +102,14 @@ export default function PrivacyPage() {
                     To comply with legal obligations and enforce our terms of service.
                   </li>
                 </ul>
-                <p className="mt-3">
+                <p className="mt-bolt">
                   We do not sell, rent, or trade your personal information to third parties for
                   marketing purposes.
                 </p>
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   4. Third-Party Services
                 </h2>
                 <p>
@@ -122,7 +121,7 @@ export default function PrivacyPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   5. Data Retention
                 </h2>
                 <p>
@@ -134,7 +133,7 @@ export default function PrivacyPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   6. Your Rights
                 </h2>
                 <p>
@@ -154,7 +153,7 @@ export default function PrivacyPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   7. Security
                 </h2>
                 <p>
@@ -165,7 +164,7 @@ export default function PrivacyPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   8. Changes to This Policy
                 </h2>
                 <p>
@@ -176,7 +175,7 @@ export default function PrivacyPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   9. Contact
                 </h2>
                 <p>

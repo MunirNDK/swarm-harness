@@ -30,12 +30,11 @@ export function StatStrip({ stats = defaultStats, className }: StatStripProps) {
           className="border-t-2 border-accent border-b border-b-border px-gauge py-panel text-center"
         >
           <p
-            className="font-sans font-extrabold text-accent leading-none"
-            style={{ fontSize: 'var(--t-3xl)' }}
+            className="font-sans font-extrabold text-accent leading-none text-3xl"
           >
             {stat.value}
           </p>
-          <p className="font-mono text-xs text-fg-faint uppercase tracking-[0.1em] mt-rivet">
+          <p className="font-mono text-mono-sm text-fg-faint uppercase tracking-label mt-rivet">
             {stat.label}
           </p>
         </div>

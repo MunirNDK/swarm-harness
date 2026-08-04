@@ -70,10 +70,10 @@ export function GlowCard({
     <Tag
       ref={ref}
       className={cn(
-        'relative overflow-hidden rounded-lg border transition-all duration-base ease-default',
+        'relative overflow-hidden rounded-lg border-thin transition-all duration-base ease-default',
         'bg-surface shadow-sm',
         hovered && !reduced
-          ? 'border-[rgba(232,5,5,0.4)] -translate-y-0.5 shadow-red'
+          ? 'border-accent -translate-y-0.5 shadow-red'
           : 'border-border',
         className
       )}
@@ -87,13 +87,14 @@ export function GlowCard({
       onMouseLeave={handleMouseLeave}
       {...props}
     >
-      {/* Red glow overlay — tracks cursor */}
+      {/* Red glow overlay — tracks cursor. Tint is --accent-soft. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 transition-opacity duration-slow"
         style={{
           opacity: hovered && !reduced ? 1 : 0,
-          background: `radial-gradient(ellipse 300px 200px at var(--mx) var(--my), rgba(232,5,5,0.12), transparent 70%)`,
+          background:
+            'radial-gradient(ellipse 300px 200px at var(--mx) var(--my), var(--accent-soft), transparent 70%)',
         }}
       />
       {children}

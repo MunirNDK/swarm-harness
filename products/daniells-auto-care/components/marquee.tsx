@@ -15,7 +15,7 @@ export function Marquee({ items, className, speed = 40 }: MarqueeProps) {
   return (
     <div className={cn("overflow-hidden", className)}>
       <motion.div
-        className="flex gap-8 whitespace-nowrap"
+        className="flex gap-bay whitespace-nowrap"
         animate={{ x: ["0%", "-50%"] }}
         transition={{
           x: {
@@ -29,7 +29,7 @@ export function Marquee({ items, className, speed = 40 }: MarqueeProps) {
         {duplicated.map((item, idx) => (
           <span
             key={`${item}-${idx}`}
-            className="text-lg font-medium text-dac-muted/60 hover:text-white transition-colors cursor-default"
+            className="text-lg font-medium text-muted hover:text-fg transition-colors duration-fast ease-default cursor-default"
           >
             {item}
           </span>

@@ -74,32 +74,31 @@ export default async function AreaDetailPage({ params }: Props) {
       <Section surface="surface-dark" id="area-hero">
         <Container>
           <Reveal>
-            <Breadcrumbs items={breadcrumbs} className="mb-8" />
+            <Breadcrumbs items={breadcrumbs} className="mb-bay" />
           </Reveal>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="grid lg:grid-cols-2 gap-stall items-start">
             <div>
               <Reveal delay={60}>
-                <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent mb-3">
+                <p className="font-mono text-mono-sm tracking-label uppercase text-accent mb-bolt">
                   Mobile Auto Detailing · Northern NJ
                 </p>
               </Reveal>
               <Reveal delay={120}>
                 <h1
-                  className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
-                  style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', lineHeight: 1.07 }}
+                  className="mb-panel text-3xl"
                 >
                   Auto Detailing in{' '}
                   <span style={{ color: 'var(--accent)' }}>{town}</span>, NJ
                 </h1>
               </Reveal>
               <Reveal delay={180}>
-                <p className="text-fg-soft text-lg leading-relaxed mb-8">
+                <p className="text-fg-soft text-lg leading-relaxed mb-bay">
                   {intro}
                 </p>
               </Reveal>
               <Reveal delay={240}>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-gauge">
                   <QuoteButton
                     size="lg"
                     track={{
@@ -128,7 +127,7 @@ export default async function AreaDetailPage({ params }: Props) {
 
             {/* Stats column */}
             <Reveal delay={200}>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-gauge">
                 {[
                   { value: business.reviewsCount, label: 'Five-Star Reviews' },
                   { value: business.experienceYears, label: 'Years Combined Experience' },
@@ -136,14 +135,13 @@ export default async function AreaDetailPage({ params }: Props) {
                   { value: 'Quick', label: 'Quote Response' },
                 ].map((stat) => (
                   <GlowCard key={stat.label} className="h-full">
-                    <div className="p-6 text-center">
+                    <div className="p-panel text-center">
                       <p
-                        className="font-sans font-extrabold text-accent leading-none mb-1"
-                        style={{ fontSize: 'var(--t-3xl)' }}
+                        className="font-sans font-extrabold text-accent leading-none mb-pin text-3xl"
                       >
                         {stat.value}
                       </p>
-                      <p className="font-mono text-xs text-fg-faint uppercase tracking-[0.1em]">
+                      <p className="font-mono text-mono-sm text-fg-faint uppercase tracking-label">
                         {stat.label}
                       </p>
                     </div>
@@ -166,7 +164,7 @@ export default async function AreaDetailPage({ params }: Props) {
             title={`Detailing Services in ${town}`}
             subtitle={`Complete auto detailing, ceramic coating, paint correction, window tinting, and more — all available as mobile service in ${town}.`}
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-panel mb-bay">
             {availableServices.map((service, i) => (
               <Reveal key={service.slug} delay={i * 60}>
                 <ServiceCard
@@ -180,7 +178,7 @@ export default async function AreaDetailPage({ params }: Props) {
               </Reveal>
             ))}
           </div>
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-wrap gap-bolt justify-center">
             <Button
               variant="outline"
               href="/services"
@@ -205,7 +203,7 @@ export default async function AreaDetailPage({ params }: Props) {
             title={`Why ${town} Drivers Choose Us`}
             subtitle={`Mobile convenience, factory-trained technicians, and a 100% satisfaction guarantee — all backed by ${business.reviewsCount} five-star reviews.`}
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-panel">
             {[
               {
                 heading: 'Mobile Convenience',
@@ -226,8 +224,8 @@ export default async function AreaDetailPage({ params }: Props) {
             ].map((item, i) => (
               <Reveal key={item.heading} delay={i * 80}>
                 <GlowCard className="h-full">
-                  <div className="p-8 h-full">
-                    <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg mb-3">
+                  <div className="p-bay h-full">
+                    <h3 className="text-lg mb-bolt">
                       {item.heading}
                     </h3>
                     <p className="text-fg-soft text-sm leading-relaxed">
@@ -249,7 +247,7 @@ export default async function AreaDetailPage({ params }: Props) {
             title="What Our Customers Say"
             subtitle="Real reviews from drivers across Northern New Jersey."
           />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-panel">
             {reviews.map((review, i) => (
               <Reveal key={review.name} delay={i * 100}>
                 <ReviewCard review={review} />
@@ -267,7 +265,7 @@ export default async function AreaDetailPage({ params }: Props) {
             title={`Detailing Questions for ${town}`}
             subtitle="Common questions from customers in the area."
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-gauge max-w-5xl mx-auto items-start">
             {faqs.map((faq, i) => (
               <Reveal key={faq.q} delay={i * 40}>
                 <FaqItem faq={faq} index={i} />
@@ -280,15 +278,15 @@ export default async function AreaDetailPage({ params }: Props) {
       {/* ── NEARBY AREAS INTERNAL LINKS ── surface */}
       <Section surface="surface" id="nearby-areas">
         <Container>
-          <p className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg mb-4">
+          <p className="font-sans font-bold uppercase tracking-tight text-fg text-lg mb-gauge">
             Other Areas We Serve
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-bolt">
             {nearbyAreas.map((a) => (
               <Link
                 key={a.slug}
                 href={`/service-areas/${a.slug}`}
-                className="rounded-full border border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.06em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-[44px] flex items-center"
+                className="rounded-full border border-border px-gauge py-rivet font-mono text-mono-sm uppercase tracking-label text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-touch flex items-center"
                 data-track-category="navigation"
                 data-track-action="link_click"
                 data-track-label={`area_${a.slug}`}
@@ -305,7 +303,7 @@ export default async function AreaDetailPage({ params }: Props) {
       <Section surface="surface-dark" id="area-cta">
         <Container>
           <div
-            className="rounded-lg px-8 py-16 text-center"
+            className="rounded-lg px-bay py-deck text-center"
             style={{
               background:
                 'linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%)',
@@ -313,22 +311,20 @@ export default async function AreaDetailPage({ params }: Props) {
           >
             <Reveal>
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-4"
-                style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)' }}
+                className="text-cta-fg mb-gauge text-3xl"
               >
                 Book Your {town} Detail Today
               </h2>
               <p
-                className="text-lg mb-8 max-w-lg mx-auto"
-                style={{ color: 'rgba(255,255,255,0.82)' }}
+                className="text-lg mb-bay max-w-lg mx-auto text-cta-fg/80"
               >
                 Free, fast quotes. Same-day service available.
                 We come to your home or office in {town}, NJ.
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-gauge">
                 <QuoteButton
                   size="xl"
-                  className="bg-white text-accent hover:bg-white/90 border-transparent"
+                  className="bg-cta-fg text-accent hover:bg-cta-fg/90 border-transparent"
                   track={{
                     category: 'conversion',
                     action: 'button_click',
@@ -341,7 +337,7 @@ export default async function AreaDetailPage({ params }: Props) {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
+                  className="border-cta-fg/60 !text-cta-fg hover:bg-cta-fg/10 hover:!text-cta-fg hover:border-cta-fg"
                   track={{
                     category: 'conversion',
                     action: 'link_click',

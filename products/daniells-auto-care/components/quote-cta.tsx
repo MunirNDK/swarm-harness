@@ -17,22 +17,23 @@ export function QuoteCTA({ className, headline, subheadline }: QuoteCTAProps) {
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-3xl bg-gradient-to-r from-dac-red-dark via-dac-red to-dac-red-light p-8 md:p-12 shadow-2xl',
+        'relative overflow-hidden rounded-lg bg-cta-gradient p-bay md:p-stall shadow-lg',
         className
       )}
     >
       {/* Glass overlay */}
-      <div className="absolute inset-0 bg-white/5 backdrop-blur-sm" />
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="absolute inset-0 bg-cta-fg/5 backdrop-blur-sm" />
+      <div className="relative z-raised flex flex-col md:flex-row items-center justify-between gap-panel">
+        {/* Sits on the red gradient — text is pinned to --cta-fg, never --ink */}
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-white">
+          <h2 className="text-2xl text-cta-fg">
             {headline ?? 'Ready for a showroom finish?'}
           </h2>
-          <p className="mt-2 text-white/80">
+          <p className="mt-rivet text-cta-fg/80">
             {subheadline ?? 'Get your free quote quickly.'}
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-bolt">
           <QuoteButton variant={quoteCta.variant as 'primary' | 'secondary'} size="lg">
             {quoteCta.label}
           </QuoteButton>

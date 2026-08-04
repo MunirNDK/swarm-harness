@@ -11,7 +11,8 @@ interface StarRatingProps {
 
 /**
  * StarRating — Contract §10, §12.6
- * Red stars (--accent), NOT gold. 18x18px per spec §15.
+ * Red stars (--accent), NOT gold. 20x20px = icon-md, tokens doc
+ * §"Icon Size Tokens" (the old 18px was off the icon scale).
  */
 export function StarRating({
   value,
@@ -26,15 +27,14 @@ export function StarRating({
 
   return (
     <div
-      className={cn('flex items-center gap-0.5', className)}
+      className={cn('flex items-center gap-pin', className)}
       aria-label={`${filled} out of ${max} stars`}
       role="img"
     >
       {Array.from({ length: max }, (_, i) => (
         <svg
           key={i}
-          width="18"
-          height="18"
+          className="w-5 h-5"
           viewBox="0 0 18 18"
           aria-hidden="true"
           style={{

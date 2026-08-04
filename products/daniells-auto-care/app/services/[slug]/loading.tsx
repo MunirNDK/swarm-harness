@@ -13,7 +13,7 @@ export default function Loading() {
       <div className="h-[50vh] bg-surface-dark" />
 
       {/* Content rows */}
-      <div className="bg-bg py-16 px-4 space-y-6 max-w-4xl mx-auto">
+      <div className="bg-bg py-deck px-gauge space-y-panel max-w-4xl mx-auto">
         <div className="h-4 bg-surface rounded w-24" />
         <div className="h-8 bg-surface rounded w-3/4" />
         <div className="h-4 bg-surface rounded w-full" />

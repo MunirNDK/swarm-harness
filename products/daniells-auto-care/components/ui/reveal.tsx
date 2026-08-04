@@ -89,7 +89,8 @@ export function Reveal({
       style={{
         opacity:    hidden ? 0 : 1,
         transform:  hidden ? 'translateY(14px)' : 'translateY(0)',
-        transition: `opacity 350ms cubic-bezier(0.2,0,0,1) ${delay}ms, transform 350ms cubic-bezier(0.2,0,0,1) ${delay}ms`,
+        /* --d-slow / --ease — motion tokens, not literals */
+        transition: `opacity var(--d-slow) var(--ease) ${delay}ms, transform var(--d-slow) var(--ease) ${delay}ms`,
         willChange: 'opacity, transform',
         ...style,
       }}

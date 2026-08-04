@@ -33,7 +33,7 @@ export default function GalleryPage() {
       {/* ── Breadcrumbs ── */}
       <div className="bg-surface-dark border-b border-border">
         <Container>
-          <div className="py-3">
+          <div className="py-bolt">
             <Breadcrumbs items={BREADCRUMBS} />
           </div>
         </Container>
@@ -43,17 +43,16 @@ export default function GalleryPage() {
       <Section surface="bg" id="gallery-header">
         <Container>
           <Reveal>
-            <div className="text-center mb-12">
-              <p className="mb-3 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+            <div className="text-center mb-stall">
+              <p className="mb-bolt font-mono text-mono-sm tracking-label uppercase text-accent">
                 Our Work
               </p>
               <h1
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg"
-                style={{ fontSize: 'clamp(2rem,3.5vw,3rem)', lineHeight: '1.1' }}
+                className="text-3xl"
               >
                 Before &amp; After Gallery
               </h1>
-              <p className="mt-4 text-md text-fg-soft leading-relaxed max-w-[40rem] mx-auto">
+              <p className="mt-gauge text-md text-fg-soft leading-relaxed max-w-container-sm mx-auto">
                 Real transformations from real vehicles across Northern New Jersey. Drag the slider
                 on any comparison to reveal the difference.
               </p>
@@ -61,11 +60,11 @@ export default function GalleryPage() {
           </Reveal>
 
           <Reveal delay={80}>
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-wrap justify-center gap-rivet">
               {CATEGORIES.map((cat) => (
                 <span
                   key={cat}
-                  className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent bg-accent-soft border border-[rgba(232,5,5,0.2)] rounded-full px-3 py-1"
+                  className="font-mono text-mono-sm tracking-label uppercase text-accent bg-accent-soft border border-accent-soft rounded-full px-bolt py-pin"
                 >
                   {cat}
                 </span>
@@ -87,20 +86,18 @@ export default function GalleryPage() {
         <Container>
           <Reveal>
             <div
-              className="rounded-lg p-8 md:p-12 text-center"
-              style={{ background: 'linear-gradient(135deg,#E80505,#980404)' }}
+              className="rounded-lg p-bay md:p-stall text-center bg-cta-gradient"
             >
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-3"
-                style={{ fontSize: 'clamp(1.5rem,2.5vw,2rem)' }}
+                className="text-cta-fg mb-bolt text-2xl"
               >
                 Ready for Your Own Transformation?
               </h2>
-              <p className="text-white/80 mb-6 max-w-xl mx-auto leading-relaxed">
+              <p className="text-cta-fg/80 mb-panel max-w-xl mx-auto leading-relaxed">
                 Every result above started with a free quote. We come to you, anywhere in{' '}
                 {business.serviceArea}.
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-gauge">
                 <QuoteButton
                   size="lg"
                   track={{
@@ -113,7 +110,7 @@ export default function GalleryPage() {
                   href={business.phoneHref}
                   variant="outline"
                   size="lg"
-                  className="border-white/30 text-white hover:border-white hover:text-white"
+                  className="border-cta-fg/30 text-cta-fg hover:border-cta-fg hover:text-cta-fg"
                   track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
                 >
                   {business.phone}

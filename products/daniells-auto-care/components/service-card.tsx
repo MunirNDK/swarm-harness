@@ -74,7 +74,7 @@ export function ServiceCard({
       data-track-action="view"
       data-track-label={slug}
     >
-      <div className="p-8 flex flex-col h-full gap-4">
+      <div className="p-bay flex flex-col h-full gap-gauge">
         {/* Icon container — 48x48, surface-2 bg, rule border, r-md */}
         <div
           className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-md bg-surface2 border border-border"
@@ -87,18 +87,18 @@ export function ServiceCard({
         </div>
 
         {/* Title */}
-        <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl">
+        <h3 className="text-xl">
           {name}
         </h3>
 
         {/* Description */}
-        <p className="text-fg-soft text-[0.9rem] leading-[1.65] flex-grow">
+        <p className="text-fg-soft text-base leading-relaxed flex-grow">
           {short}
         </p>
 
         {/* View hint — visual affordance pushed to the bottom; not an anchor */}
         <span
-          className="mt-auto inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.05em] text-accent"
+          className="mt-auto inline-flex items-center gap-rivet text-sm font-bold uppercase tracking-label text-accent"
           aria-hidden="true"
         >
           View service

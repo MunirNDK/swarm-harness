@@ -1,30 +1,29 @@
-# Graph Report - Daniel Auto Website swarm harness  (2026-07-29)
+# Graph Report - C:\Users\user\Documents\Projects Directory\Daniel Auto Website swarm harness  (2026-08-04)
 
 ## Corpus Check
-- 354 files · ~1,256,295 words
-- Verdict: corpus is large enough that graph structure adds value.
+- cluster-only mode — file stats not available
 
 ## Summary
-- 3246 nodes · 4071 edges · 298 communities (287 shown, 11 thin omitted)
+- 3299 nodes · 4126 edges · 308 communities (296 shown, 12 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.69)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f479c9b8`
+- Built from commit: `156358d7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - transforms.ts
 - app.py
-- quote-modal.tsx
+- button.tsx
 - dependencies
-- services/page.tsx
-- site.ts
+- blog/[slug]/page.tsx
+- quote-modal.tsx
 - compilerOptions
 - shi_on_activation
-- cn
-- service-areas/[slug]/page.tsx
+- services/[slug]/page.tsx
+- fleet/page.tsx
 - 5.4 Section-by-section content requirements
 - migrate.ts
 - verify.mjs
@@ -32,7 +31,7 @@
 - intake.mjs
 - track.ts
 - admin-fields-ui.php
-- evidence.mjs
+- site.ts
 - build-site.mjs
 - Aesthetic Family Taxonomy
 - revise.mjs
@@ -40,7 +39,7 @@
 - 5.4 Section-by-section content requirements
 - relationships.php
 - fix-build.mjs
-- services/[slug]/page.tsx
+- Daniells Auto Care — Design Tokens
 - treatment-log.tsx
 - implement.mjs
 - deploy-matrix.mjs
@@ -55,6 +54,7 @@
 - Aesthetic Coverage Plan — Site Builder Design System Bias Fix
 - Brand Intake — Master Prompt
 - 5.4 Section-by-section content requirements
+- evidence.mjs
 - What each section MUST contain
 - Layout, Grid &amp; Composition Guidelines
 - SCAI Site Builder — Project Context
@@ -216,7 +216,7 @@
 - 8.5 DISTINCTNESS ACROSS RUNS — THE ANTI-CLUSTERING DISCIPLINE
 - F.4 RESTAURANT / FOOD SERVICE
 - 11. WORKED EXAMPLES — THINKING IN REGISTERS
-- 19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG
+- F.6 CREATIVE SERVICE (PHOTOGRAPHER / DESIGNER / AGENCY)
 - 8.5 DISTINCTNESS ACROSS RUNS — THE ANTI-CLUSTERING DISCIPLINE
 - F.4 RESTAURANT / FOOD SERVICE
 - omp Runtime Adaptation
@@ -271,7 +271,7 @@
 - F.9 LOCAL BUSINESS (GYM / SALON / STUDIO / DENTIST)
 - 19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG
 - F.9 LOCAL BUSINESS (GYM / SALON / STUDIO / DENTIST)
-- F.9 LOCAL BUSINESS (GYM / SALON / STUDIO / DENTIST)
+- 19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG
 - 11. Copy-paste prompt templates
 - 6. The spec system — how to define ANY problem so the swarm can build it
 - 2026-07-20 — Session 1 continued (owner found real gaps: images + un-wired pages)
@@ -302,11 +302,20 @@
 - fixer.md
 - reviser.md
 - verifier.md
-- blog/[slug]/page.tsx
+- app/page.tsx
+- Required Accessibility Patterns
 - AGENTS.md
+- asset-matrix.mjs
+- Typography
+- Color Tokens
+- service-areas/page.tsx
+- Component Tokens
+- Accessibility — WCAG Contrast Ratios
+- Form Tokens
+- Elevation
 
 ## God Nodes (most connected - your core abstractions)
-1. `cn()` - 40 edges
+1. `cn()` - 42 edges
 2. `Aesthetic Family Taxonomy` - 34 edges
 3. `Design System Builder — Master Prompt` - 27 edges
 4. `Design System Builder — Master Prompt` - 26 edges
@@ -318,45 +327,45 @@
 10. `Daniells Auto Care — Consolidated Design System Specification` - 25 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `step()` --calls--> `chatJSON()`  [EXTRACTED]
-  workers/build-site.mjs → harness/lib/openrouter.mjs
 - `step()` --calls--> `writeEvidence()`  [EXTRACTED]
   workers/build-site.mjs → harness/lib/evidence.mjs
 - `step()` --calls--> `recordCost()`  [EXTRACTED]
   workers/build-site.mjs → harness/lib/evidence.mjs
+- `step()` --calls--> `chatJSON()`  [EXTRACTED]
+  workers/build-site.mjs → harness/lib/openrouter.mjs
 - `QuoteCTA()` --calls--> `cn()`  [EXTRACTED]
   products/daniells-auto-care/components/quote-cta.tsx → products/daniells-auto-care/lib/utils.ts
-- `shi_on_activation()` --calls--> `shi_register_post_types()`  [INFERRED]
-  products/daniells-auto-care/wordpress-plugin/site-headless-integration/site-headless-integration.php → products/daniells-auto-care/wordpress-plugin/site-headless-integration/includes/post-types.php
+- `TreatmentLog()` --calls--> `cn()`  [EXTRACTED]
+  products/daniells-auto-care/components/treatment-log.tsx → products/daniells-auto-care/lib/utils.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (298 total, 11 thin omitted)
+## Communities (308 total, 12 thin omitted)
 
 ### Community 0 - "transforms.ts"
-Cohesion: 0.08
-Nodes (46): err(), hits, isValidEmail(), isValidPhone(), LIMITS, POST(), rateLimited(), submitToWordPress() (+38 more)
+Cohesion: 0.07
+Nodes (49): err(), hits, isValidEmail(), isValidPhone(), LIMITS, POST(), rateLimited(), submitToWordPress() (+41 more)
 
 ### Community 1 - "app.py"
 Cohesion: 0.09
 Nodes (46): Any, call_ai_gateway(), _check_cancellation(), DesignSystemGeneratorInput, DesignSystemGeneratorOutput, dynamo_get(), dynamo_update(), _extract_bg_hex() (+38 more)
 
-### Community 2 - "quote-modal.tsx"
-Cohesion: 0.08
-Nodes (29): ContactForm(), FORM_ANALYTICS, FormData, INITIAL, Status, QuoteCTA(), QuoteCTAProps, FORM_ANALYTICS_BASE (+21 more)
+### Community 2 - "button.tsx"
+Cohesion: 0.10
+Nodes (16): ContactForm(), FORM_ANALYTICS, FormData, INITIAL, Status, FORM_ANALYTICS_BASE, FormData, INITIAL (+8 more)
 
 ### Community 3 - "dependencies"
 Cohesion: 0.05
 Nodes (40): autoprefixer, class-variance-authority, clsx, framer-motion, lucide-react, next, postcss, dependencies (+32 more)
 
-### Community 4 - "services/page.tsx"
+### Community 4 - "blog/[slug]/page.tsx"
 Cohesion: 0.09
-Nodes (38): generateMetadata(), BREADCRUMBS, metadata, BREADCRUMBS, CATEGORIES, GalleryPage(), metadata, BREADCRUMBS (+30 more)
+Nodes (33): BlogPage(), BREADCRUMBS, metadata, BlogPostPage(), generateMetadata(), BREADCRUMBS, CATEGORIES, GalleryPage() (+25 more)
 
-### Community 5 - "site.ts"
-Cohesion: 0.09
-Nodes (26): jetbrainsMono, metadata, montserrat, Footer(), FooterProps, DropdownType, NAV_ITEMS, Navbar() (+18 more)
+### Community 5 - "quote-modal.tsx"
+Cohesion: 0.10
+Nodes (28): jetbrainsMono, metadata, montserrat, Footer(), FooterProps, DropdownType, NAV_ITEMS, Navbar() (+20 more)
 
 ### Community 6 - "compilerOptions"
 Cohesion: 0.07
@@ -366,13 +375,13 @@ Nodes (27): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModu
 Cohesion: 0.10
 Nodes (16): shi_add_missing_quote_fields(), shi_bootstrap_formidable_forms(), shi_create_field(), shi_register_post_types(), shi_preview_post_link(), shi_preview_secret(), shi_create_relation_tables(), shi_get_config() (+8 more)
 
-### Community 8 - "cn"
-Cohesion: 0.12
-Nodes (20): BeforeAfter(), BeforeAfterGrid(), BeforeAfterGridProps, BeforeAfterItem, BeforeAfterProps, Marquee(), MarqueeProps, ServicePricing() (+12 more)
+### Community 8 - "services/[slug]/page.tsx"
+Cohesion: 0.09
+Nodes (36): breadcrumbs, metadata, Props, BeforeAfter(), BeforeAfterGrid(), BeforeAfterGridProps, BeforeAfterItem, BeforeAfterProps (+28 more)
 
-### Community 9 - "service-areas/[slug]/page.tsx"
-Cohesion: 0.12
-Nodes (19): BENEFITS, BREADCRUMBS, FLEET_TIER_DETAIL, FleetTierDetail, metadata, Props, ReviewCard(), ReviewCardProps (+11 more)
+### Community 9 - "fleet/page.tsx"
+Cohesion: 0.18
+Nodes (12): BENEFITS, BREADCRUMBS, FLEET_TIER_DETAIL, FleetPage(), FleetTierDetail, metadata, generateMetadata(), ServiceDetailPage() (+4 more)
 
 ### Community 10 - "5.4 Section-by-section content requirements"
 Cohesion: 0.04
@@ -402,13 +411,13 @@ Nodes (43): AnalyticsProvider(), AnalyticsParams, AnalyticsValue, CommonEventPar
 Cohesion: 0.23
 Nodes (9): shi_render_meta_box(), shi_render_object_row(), shi_render_repeater_js(), shi_render_repeater_object(), shi_render_repeater_strings(), shi_save_meta_box_fields(), shi_field_schema(), shi_meta_args_for_field() (+1 more)
 
-### Community 17 - "evidence.mjs"
-Cohesion: 0.15
-Nodes (18): HomePage(), metadata, AreaDetailPage(), Stat, StatStrip(), StatStripProps, ArticleLdInput, BreadcrumbItem (+10 more)
+### Community 17 - "site.ts"
+Cohesion: 0.08
+Nodes (25): Stat, StatStrip(), StatStripProps, ArticleLdInput, BreadcrumbItem, FaqItem, PageMetaOptions, ServiceLdInput (+17 more)
 
 ### Community 18 - "build-site.mjs"
-Cohesion: 0.15
-Nodes (17): ensureDir(), LEDGER, readLedger(), recordCost(), ROOT, writeEvidence(), budget, cg (+9 more)
+Cohesion: 0.18
+Nodes (11): budget, cg, componentContracts, content, designSystem, PRODUCT_DIR, ROOT, spec (+3 more)
 
 ### Community 19 - "Aesthetic Family Taxonomy"
 Cohesion: 0.04
@@ -419,8 +428,8 @@ Cohesion: 0.20
 Nodes (7): budget, files, ROOT, SPEC_DIR, targetContents, TARGETS, targetSet
 
 ### Community 21 - "openrouter.mjs"
-Cohesion: 0.25
-Nodes (11): EVIDENCE_DIR, chat(), chatJSON(), CONFIG, extractJSON(), generateImage(), headers(), postWithRetry() (+3 more)
+Cohesion: 0.42
+Nodes (7): chat(), chatJSON(), CONFIG, extractJSON(), generateImage(), headers(), postWithRetry()
 
 ### Community 22 - "5.4 Section-by-section content requirements"
 Cohesion: 0.05
@@ -431,16 +440,16 @@ Cohesion: 0.39
 Nodes (5): shi_find_relation_by_name(), shi_link_relation_items(), shi_register_relationship_fields(), shi_slugs_for_ids(), shi_unlink_relation_items()
 
 ### Community 24 - "fix-build.mjs"
-Cohesion: 0.13
-Nodes (10): costGate(), budget, made, matrix, only, ROOT, budget, cg (+2 more)
+Cohesion: 0.25
+Nodes (4): budget, cg, MAX, ROOT
 
-### Community 25 - "services/[slug]/page.tsx"
-Cohesion: 0.29
-Nodes (9): FleetPage(), generateMetadata(), Props, ServiceDetailPage(), FaqItem(), FaqItemProps, serviceLd(), serviceImageUrl() (+1 more)
+### Community 25 - "Daniells Auto Care — Design Tokens"
+Cohesion: 0.11
+Nodes (18): Border Radius, Border Width Tokens, Breakpoint Tokens, Container Tokens, Daniells Auto Care — Design Tokens, Dark Mode Tokens, Focus Ring Tokens, Heading Hierarchy (+10 more)
 
 ### Community 26 - "treatment-log.tsx"
 Cohesion: 0.29
-Nodes (4): LogMeta, slugToLog, TreatmentLogProps, TreatmentStatus
+Nodes (5): LogMeta, slugToLog, TreatmentLog(), TreatmentLogProps, TreatmentStatus
 
 ### Community 27 - "implement.mjs"
 Cohesion: 0.29
@@ -465,6 +474,10 @@ Nodes (38): 0. WHO YOU ARE, 10. FAILURE MODES TO AVOID, 11. ONE FINAL REMINDER, 
 ### Community 43 - "5.4 Section-by-section content requirements"
 Cohesion: 0.06
 Nodes (35): 5.10 Length expectation by site type, 5.11 Industry-specific component modules (MANDATORY when applicable), 5.1 The 15-section spine (MANDATORY) + Industry-specific modules, 5.2 Section-head pattern (every section), 5.3 Hero pattern (mandatory anatomy), 5.4 Section-by-section content requirements, 5.5.1 The Generic Catalogue Trap (what you must NOT do), 5.5.2 The principle: a design system is a catalogue, but a catalogue can have voice (+27 more)
+
+### Community 44 - "evidence.mjs"
+Cohesion: 0.26
+Nodes (10): ensureDir(), EVIDENCE_DIR, LEDGER, readLedger(), recordCost(), ROOT, writeEvidence(), budget (+2 more)
 
 ### Community 45 - "What each section MUST contain"
 Cohesion: 0.06
@@ -1110,9 +1123,9 @@ Nodes (7): F.4 RESTAURANT / FOOD SERVICE, Module: Hours card, Module: Location m
 Cohesion: 0.29
 Nodes (7): 11.1 "I run a wood-fired pizzeria in Brooklyn.", 11.2 "I'm a personal injury lawyer in Atlanta.", 11.3 "I'm a B2B SaaS marketing analytics company.", 11.4 "I'm a wedding photographer in Charleston.", 11.5 "I run a boutique hotel in the Hudson Valley.", 11.6 "I'm a therapist in Brooklyn.", 11. WORKED EXAMPLES — THINKING IN REGISTERS
 
-### Community 206 - "19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG"
-Cohesion: 0.29
-Nodes (7): 19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG, F.11 INVENT-AS-NEEDED FOR ANYTHING ELSE, F.6 CREATIVE SERVICE (PHOTOGRAPHER / DESIGNER / AGENCY), Module: Inquiry form (story-led, not transactional), Module: Investment / packages, Module: Portfolio grid (xvi.), Module: Testimonials
+### Community 206 - "F.6 CREATIVE SERVICE (PHOTOGRAPHER / DESIGNER / AGENCY)"
+Cohesion: 0.40
+Nodes (5): F.6 CREATIVE SERVICE (PHOTOGRAPHER / DESIGNER / AGENCY), Module: Inquiry form (story-led, not transactional), Module: Investment / packages, Module: Portfolio grid (xvi.), Module: Testimonials
 
 ### Community 207 - "8.5 DISTINCTNESS ACROSS RUNS — THE ANTI-CLUSTERING DISCIPLINE"
 Cohesion: 0.29
@@ -1330,9 +1343,9 @@ Nodes (7): 19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG, F.11 INVENT-AS-
 Cohesion: 0.40
 Nodes (5): F.9 LOCAL BUSINESS (GYM / SALON / STUDIO / DENTIST), Module: First-visit offer block, Module: Location / hours card, Module: Schedule grid, Module: Service / class cards (xvi.)
 
-### Community 261 - "F.9 LOCAL BUSINESS (GYM / SALON / STUDIO / DENTIST)"
-Cohesion: 0.40
-Nodes (5): F.9 LOCAL BUSINESS (GYM / SALON / STUDIO / DENTIST), Module: First-visit offer block, Module: Location / hours card, Module: Schedule grid, Module: Service / class cards (xvi.)
+### Community 261 - "19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG"
+Cohesion: 0.29
+Nodes (7): 19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG, F.11 INVENT-AS-NEEDED FOR ANYTHING ELSE, F.9 LOCAL BUSINESS (GYM / SALON / STUDIO / DENTIST), Module: First-visit offer block, Module: Location / hours card, Module: Schedule grid, Module: Service / class cards (xvi.)
 
 ### Community 262 - "11. Copy-paste prompt templates"
 Cohesion: 0.40
@@ -1438,33 +1451,65 @@ Nodes (3): 4.1 The brief template, 4.2 Critique your own brief before building, 
 Cohesion: 0.67
 Nodes (3): 4.1 The brief template, 4.2 Critique your own brief before building, 4. PHASE 2 — COMMIT: WRITE THE BRAND BRIEF
 
-### Community 297 - "blog/[slug]/page.tsx"
-Cohesion: 0.15
-Nodes (18): BlogPage(), BREADCRUMBS, metadata, BlogPostPage(), generateStaticParams(), ContactPage(), RootLayout(), ServiceAreasPage() (+10 more)
+### Community 297 - "app/page.tsx"
+Cohesion: 0.16
+Nodes (20): BREADCRUMBS, ContactPage(), metadata, RootLayout(), HomePage(), metadata, ServiceAreasPage(), AreaDetailPage() (+12 more)
+
+### Community 298 - "Required Accessibility Patterns"
+Cohesion: 0.29
+Nodes (7): Focus, Form Labels, Icon Accessibility, Live Regions, Reduced Motion, Required Accessibility Patterns, Skip Link
 
 ### Community 299 - "AGENTS.md"
 Cohesion: 0.12
 Nodes (15): Active product: Daniells Auto Care, Core Rule, Current theme state — LIGHT (not dark), Deployment — Vercel, Do Not, Git identity — read this before committing, Graphify-First Code Navigation, Graphify Synchronization (+7 more)
 
+### Community 300 - "asset-matrix.mjs"
+Cohesion: 0.29
+Nodes (6): costGate(), budget, made, matrix, only, ROOT
+
+### Community 301 - "Typography"
+Cohesion: 0.33
+Nodes (6): Accessibility Notes, Font Size Guide, Labels & Mono, Minimum Size Rules, Type Scale, Typography
+
+### Community 302 - "Color Tokens"
+Cohesion: 0.33
+Nodes (6): Color Tokens, Conversion Layer — CTA · Trust · Forms, Detailer's Red — Primary Accent, Ink — Dark-on-Light Text, Semantic — Status, Surfaces — Showroom Floor
+
+### Community 303 - "service-areas/page.tsx"
+Cohesion: 0.47
+Nodes (4): breadcrumbs, metadata, TRUST_ITEMS, TrustMarquee()
+
+### Community 304 - "Component Tokens"
+Cohesion: 0.40
+Nodes (5): Buttons, Cards, Component Tokens, Input Fields, Modals
+
+### Community 305 - "Accessibility — WCAG Contrast Ratios"
+Cohesion: 0.67
+Nodes (3): Accessibility — WCAG Contrast Ratios, ✅ All WCAG AA Compliant, Usage Notes
+
+### Community 306 - "Form Tokens"
+Cohesion: 0.67
+Nodes (3): Form State Colors, Form Tokens, Input Sizes
+
 ## Knowledge Gaps
-- **2375 isolated node(s):** `ROOT`, `LEDGER`, `name`, `version`, `private` (+2370 more)
+- **2415 isolated node(s):** `ROOT`, `LEDGER`, `name`, `version`, `private` (+2410 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Design System Builder — Master Prompt` connect `Design System Builder — Master Prompt` to `17. APPENDIX C — ICON SET BY INDUSTRY`, `18. APPENDIX D — H2 STATEMENT LIBRARY`, `19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG`, `7.1 Aesthetic register exemplars`, `5.4 Section-by-section content requirements`, `4.0 ARTICULATE THE CREATIVE CONCEPT (DO THIS BEFORE THE BRIEF)`, `9. PHASE 4 — SELF-AUDIT (BEFORE DELIVERY)`, `12. SAMPLE BRIEFINGS — DISCOVERY QUESTION SETS BY INDUSTRY`, `11. WORKED EXAMPLES — THINKING IN REGISTERS`, `16. APPENDIX B — PALETTE STARTERS BY EMOTION + INDUSTRY`, `6. MOTION DISCIPLINE — EMIL KOWALSKI PRINCIPLES`, `8.5 DISTINCTNESS ACROSS RUNS — THE ANTI-CLUSTERING DISCIPLINE`, `14. COMMON FAILURE MODES — DEBUG GUIDE`, `8. ANTI-PATTERNS — THE NEVER LIST`?**
   _High betweenness centrality (0.007) - this node is a cross-community bridge._
-- **Why does `Design System Builder — Master Prompt` connect `Design System Builder — Master Prompt` to `16. APPENDIX B — PALETTE STARTERS BY EMOTION + INDUSTRY`, `6. MOTION DISCIPLINE — EMIL KOWALSKI PRINCIPLES`, `18. APPENDIX D — H2 STATEMENT LIBRARY`, `5.4 Section-by-section content requirements`, `14. COMMON FAILURE MODES — DEBUG GUIDE`, `12. SAMPLE BRIEFINGS — DISCOVERY QUESTION SETS BY INDUSTRY`, `11. WORKED EXAMPLES — THINKING IN REGISTERS`, `17. APPENDIX C — ICON SET BY INDUSTRY`, `19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG`, `4.1 REASON + EXPAND BEFORE YOU COMMIT (the deliberation layer)`, `8.5 DISTINCTNESS ACROSS RUNS — THE ANTI-CLUSTERING DISCIPLINE`, `8. ANTI-PATTERNS — THE NEVER LIST`, `9. PHASE 4 — SELF-AUDIT (BEFORE DELIVERY)`?**
+- **Why does `Design System Builder — Master Prompt` connect `Design System Builder — Master Prompt` to `16. APPENDIX B — PALETTE STARTERS BY EMOTION + INDUSTRY`, `6. MOTION DISCIPLINE — EMIL KOWALSKI PRINCIPLES`, `19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG`, `18. APPENDIX D — H2 STATEMENT LIBRARY`, `5.4 Section-by-section content requirements`, `14. COMMON FAILURE MODES — DEBUG GUIDE`, `12. SAMPLE BRIEFINGS — DISCOVERY QUESTION SETS BY INDUSTRY`, `11. WORKED EXAMPLES — THINKING IN REGISTERS`, `17. APPENDIX C — ICON SET BY INDUSTRY`, `4.1 REASON + EXPAND BEFORE YOU COMMIT (the deliberation layer)`, `8.5 DISTINCTNESS ACROSS RUNS — THE ANTI-CLUSTERING DISCIPLINE`, `8. ANTI-PATTERNS — THE NEVER LIST`, `9. PHASE 4 — SELF-AUDIT (BEFORE DELIVERY)`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **Why does `Design System Builder — Master Prompt` connect `Design System Builder — Master Prompt` to `6. MOTION DISCIPLINE — EMIL KOWALSKI PRINCIPLES`, `19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG`, `12. SAMPLE BRIEFINGS — DISCOVERY QUESTION SETS BY INDUSTRY`, `17. APPENDIX C — ICON SET BY INDUSTRY`, `11. WORKED EXAMPLES — THINKING IN REGISTERS`, `14. COMMON FAILURE MODES — DEBUG GUIDE`, `18. APPENDIX D — H2 STATEMENT LIBRARY`, `4. PHASE 2 — COMMIT: WRITE THE BRAND BRIEF`, `8.5 DISTINCTNESS ACROSS RUNS — THE ANTI-CLUSTERING DISCIPLINE`, `8. ANTI-PATTERNS — THE NEVER LIST`, `9. PHASE 4 — SELF-AUDIT (BEFORE DELIVERY)`, `5.4 Section-by-section content requirements`, `16. APPENDIX B — PALETTE STARTERS BY EMOTION + INDUSTRY`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+- **Why does `Design System Builder — Master Prompt` connect `Design System Builder — Master Prompt` to `4. PHASE 2 — COMMIT: WRITE THE BRAND BRIEF`, `16. APPENDIX B — PALETTE STARTERS BY EMOTION + INDUSTRY`, `6. MOTION DISCIPLINE — EMIL KOWALSKI PRINCIPLES`, `18. APPENDIX D — H2 STATEMENT LIBRARY`, `5.4 Section-by-section content requirements`, `12. SAMPLE BRIEFINGS — DISCOVERY QUESTION SETS BY INDUSTRY`, `11. WORKED EXAMPLES — THINKING IN REGISTERS`, `17. APPENDIX C — ICON SET BY INDUSTRY`, `14. COMMON FAILURE MODES — DEBUG GUIDE`, `19A. APPENDIX F — INDUSTRY-SPECIFIC MODULE CATALOG`, `8.5 DISTINCTNESS ACROSS RUNS — THE ANTI-CLUSTERING DISCIPLINE`, `8. ANTI-PATTERNS — THE NEVER LIST`, `9. PHASE 4 — SELF-AUDIT (BEFORE DELIVERY)`?**
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **What connects `ROOT`, `LEDGER`, `name` to the rest of the system?**
-  _2375 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _2415 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `transforms.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07570621468926554 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07093253968253968 - nodes in this community are weakly interconnected._
 - **Should `app.py` be split into smaller, more focused modules?**
   _Cohesion score 0.08821548821548822 - nodes in this community are weakly interconnected._
-- **Should `quote-modal.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.07807807807807808 - nodes in this community are weakly interconnected._
+- **Should `button.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.09956709956709957 - nodes in this community are weakly interconnected._

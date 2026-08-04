@@ -108,13 +108,13 @@ function FleetTierCard({ tier }: { tier: PricingTier }) {
   const detail = FLEET_TIER_DETAIL[tier.name];
   return (
     <GlowCard className="h-full flex flex-col">
-      <div className="p-6 flex flex-col flex-1 gap-4">
-        <div className="flex items-start justify-between gap-3">
-          <h4 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base leading-snug">
+      <div className="p-panel flex flex-col flex-1 gap-gauge">
+        <div className="flex items-start justify-between gap-bolt">
+          <h4 className="text-base leading-snug">
             {tier.name}
           </h4>
           {detail?.frequency && (
-            <span className="flex-shrink-0 rounded-full border border-accent/40 px-2.5 py-1 font-mono text-[0.55rem] tracking-[0.08em] uppercase text-accent whitespace-nowrap">
+            <span className="flex-shrink-0 rounded-full border border-accent/40 px-bolt py-pin font-mono text-mono-sm tracking-label uppercase text-accent whitespace-nowrap">
               {detail.frequency}
             </span>
           )}
@@ -122,13 +122,12 @@ function FleetTierCard({ tier }: { tier: PricingTier }) {
 
         <div>
           <p
-            className="font-sans font-bold text-accent"
-            style={{ fontSize: 'clamp(1.6rem, 2.6vw, 2rem)', lineHeight: 1.1 }}
+            className="font-sans font-bold text-accent text-2xl"
           >
             {tier.price}
           </p>
           {tier.meta && (
-            <p className="mt-1 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint">
+            <p className="mt-pin font-mono text-mono-sm tracking-label uppercase text-fg-faint">
               {tier.meta}
             </p>
           )}
@@ -139,11 +138,11 @@ function FleetTierCard({ tier }: { tier: PricingTier }) {
         )}
 
         {tier.includes.length > 0 && (
-          <ul className="space-y-2 flex-1">
+          <ul className="space-y-rivet flex-1">
             {tier.includes.map((item, i) => (
-              <li key={i} className="flex items-start gap-2.5">
+              <li key={i} className="flex items-start gap-bolt">
                 <span
-                  className="flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full"
+                  className="flex-shrink-0 mt-rivet w-1.5 h-1.5 rounded-full"
                   style={{ background: 'var(--accent)' }}
                   aria-hidden="true"
                 />
@@ -153,7 +152,7 @@ function FleetTierCard({ tier }: { tier: PricingTier }) {
           </ul>
         )}
 
-        <div className="mt-auto pt-1">
+        <div className="mt-auto pt-pin">
           <QuoteButton
             variant="outline"
             size="md"
@@ -197,7 +196,7 @@ export default async function FleetPage() {
       {/* ── Breadcrumbs ── */}
       <div className="bg-surface-dark border-b border-border">
         <Container>
-          <div className="py-3">
+          <div className="py-bolt">
             <Breadcrumbs items={BREADCRUMBS} />
           </div>
         </Container>
@@ -217,27 +216,26 @@ export default async function FleetPage() {
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(to bottom,rgba(255,255,255,0.75) 0%,rgba(250,250,248,1) 100%)',
+              'linear-gradient(to bottom, rgb(var(--surface-rgb) / 0.75) 0%, var(--surface-dark-2) 100%)',
           }}
           aria-hidden="true"
         />
-        <Container className="relative z-10 py-20 md:py-28">
+        <Container className="relative z-10 py-hangar md:py-28">
           <Reveal>
-            <p className="mb-4 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+            <p className="mb-gauge font-mono text-mono-sm tracking-label uppercase text-accent">
               Corporate Fleet Programs
             </p>
             <h1
-              className="font-sans font-bold uppercase tracking-[-0.02em] text-fg"
-              style={{ fontSize: 'clamp(2.25rem,5vw,3.75rem)', lineHeight: '1.05' }}
+              className="tracking-tighter text-4xl"
             >
               Mobile Fleet Detailing
               <br />
               <span className="text-accent">Built for Business</span>
             </h1>
-            <p className="mt-6 max-w-xl text-fg-soft text-lg leading-relaxed">
+            <p className="mt-panel max-w-xl text-fg-soft text-lg leading-relaxed">
               {fleet.longDescription}
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-bay flex flex-wrap gap-gauge">
               <QuoteButton
                 size="lg"
                 prefill={{ service: 'fleet-detailing' }}
@@ -273,11 +271,11 @@ export default async function FleetPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-bay">
             {BENEFITS.map((b, i) => (
               <Reveal key={b.title} delay={i * 60}>
-                <GlowCard className="h-full p-8 flex flex-col gap-4">
+                <GlowCard className="h-full p-bay flex flex-col gap-gauge">
                   <div className="w-12 h-12 rounded-lg bg-surface2 border border-border flex items-center justify-center text-accent flex-shrink-0">
                     <b.icon className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base">
+                  <h3 className="text-base">
                     {b.title}
                   </h3>
                   <p className="text-fg-soft text-sm leading-relaxed">{b.desc}</p>
@@ -299,14 +297,14 @@ export default async function FleetPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-bay">
             {fleet.processSteps.map((step, i) => (
               <Reveal key={step.title} delay={i * 80}>
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-gauge">
                   <div
                     className="w-10 h-10 rounded-full bg-accent flex items-center justify-center font-mono font-bold text-cta-fg text-sm flex-shrink-0"
                     aria-hidden="true"
                   >
                     {i + 1}
                   </div>
-                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base">
+                  <h3 className="text-base">
                     {step.title}
                   </h3>
                   <p className="text-fg-soft text-sm leading-relaxed">{step.desc}</p>
@@ -328,9 +326,9 @@ export default async function FleetPage() {
 
           {/* Group 1 — One-time per-vehicle detailing */}
           {oneTimeTiers.length > 0 && (
-            <div className="mb-14">
-              <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-[clamp(1.35rem,2.2vw,1.75rem)]">
+            <div className="mb-deck">
+              <div className="mb-panel flex flex-col gap-rivet md:flex-row md:items-baseline md:justify-between">
+                <h3 className="text-xl">
                   One-Time Fleet Detailing
                 </h3>
                 <p className="text-fg-soft text-sm leading-relaxed md:max-w-md md:text-right">
@@ -350,8 +348,8 @@ export default async function FleetPage() {
           {/* Group 2 — Recurring scheduled maintenance plans */}
           {recurringTiers.length > 0 && (
             <div>
-              <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-[clamp(1.35rem,2.2vw,1.75rem)]">
+              <div className="mb-panel flex flex-col gap-rivet md:flex-row md:items-baseline md:justify-between">
+                <h3 className="text-xl">
                   Recurring Maintenance Plans
                 </h3>
                 <p className="text-fg-soft text-sm leading-relaxed md:max-w-md md:text-right">
@@ -369,7 +367,7 @@ export default async function FleetPage() {
           )}
 
           {fleet.pricingNote && (
-            <p className="mt-10 max-w-3xl text-fg-faint text-xs leading-relaxed">
+            <p className="mt-bay max-w-3xl text-fg-faint text-sm leading-relaxed">
               {fleet.pricingNote}
             </p>
           )}
@@ -404,16 +402,15 @@ export default async function FleetPage() {
           <Reveal>
             <div className="text-center max-w-2xl mx-auto">
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4"
-                style={{ fontSize: 'clamp(1.75rem,3vw,2.5rem)' }}
+                className="mb-gauge text-3xl"
               >
                 Build a Fleet Program Today
               </h2>
-              <p className="text-fg-soft mb-8 leading-relaxed">
+              <p className="text-fg-soft mb-bay leading-relaxed">
                 Tell us about your fleet and we&apos;ll respond quickly with a
                 custom proposal — no obligation.
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-gauge">
                 <QuoteButton
                   size="lg"
                   prefill={{ service: 'fleet-detailing' }}

@@ -9,7 +9,7 @@ export default function Loading() {
       <div className="h-10 bg-surface-dark border-b border-border" />
 
       {/* Article header */}
-      <div className="bg-bg py-12 px-4 max-w-4xl mx-auto space-y-6">
+      <div className="bg-bg py-stall px-gauge max-w-4xl mx-auto space-y-panel">
         {/* Back link placeholder */}
         <div className="h-6 bg-surface rounded w-24" />
 
@@ -17,7 +17,7 @@ export default function Loading() {
         <div className="aspect-[3/1] rounded-lg bg-surface" />
 
         {/* Category + date */}
-        <div className="flex gap-3">
+        <div className="flex gap-bolt">
           <div className="h-5 bg-surface rounded-full w-24" />
           <div className="h-5 bg-surface rounded-full w-20" />
         </div>
@@ -29,9 +29,9 @@ export default function Loading() {
       </div>
 
       {/* Body paragraphs */}
-      <div className="bg-surface py-12 px-4 max-w-4xl mx-auto space-y-4">
+      <div className="bg-surface py-stall px-gauge max-w-4xl mx-auto space-y-gauge">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="space-y-2">
+          <div key={i} className="space-y-rivet">
             <div className="h-4 bg-surface2 rounded w-full" />
             <div className="h-4 bg-surface2 rounded w-11/12" />
             <div className="h-4 bg-surface2 rounded w-4/5" />

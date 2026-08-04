@@ -26,7 +26,7 @@ export default function NotFound() {
   return (
     <main
       id="main-content"
-      className="min-h-[80vh] flex items-center justify-center bg-bg py-16"
+      className="min-h-[80vh] flex items-center justify-center bg-bg py-deck"
       data-track-category="content"
       data-track-action="view"
       data-track-label="page_not_found"
@@ -36,17 +36,12 @@ export default function NotFound() {
 
           {/* ── 404 Stamp ── */}
           <p
-            className="font-mono font-bold text-accent mb-2 select-none"
-            style={{
-              fontSize:      'clamp(4rem,12vw,8rem)',
-              letterSpacing: '-0.02em',
-              lineHeight:    '1',
-            }}
+            className="font-mono font-bold text-accent mb-rivet select-none text-display tracking-tighter"
             aria-hidden="true"
           >
             404
           </p>
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-panel">
             <SearchX
               className="w-12 h-12 text-fg-faint"
               strokeWidth={1.5}
@@ -56,12 +51,11 @@ export default function NotFound() {
 
           {/* ── Heading ── */}
           <h1
-            className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-3"
-            style={{ fontSize: 'clamp(1.5rem,3vw,2rem)' }}
+            className="mb-bolt text-2xl"
           >
             Page Not Found
           </h1>
-          <p className="text-fg-soft mb-8 leading-relaxed">
+          <p className="text-fg-soft mb-bay leading-relaxed">
             That page doesn&apos;t exist or may have moved. Use the links below to find what
             you need, or search our site.
           </p>
@@ -69,7 +63,7 @@ export default function NotFound() {
           {/* ── Search Form — GET to Google site: search ── */}
           <form
             onSubmit={handleSearch}
-            className="flex gap-2 mb-10 max-w-sm mx-auto"
+            className="flex gap-rivet mb-bay max-w-sm mx-auto"
             data-track-category="form"
             data-track-action="form_submit"
             data-track-label="site_search"
@@ -88,7 +82,7 @@ export default function NotFound() {
             />
             <button
               type="submit"
-              className="min-w-[44px] min-h-[44px] px-4 py-2 bg-accent text-cta-fg font-mono text-xs uppercase tracking-[0.08em] rounded-sm hover:bg-accent-mid transition-colors duration-fast flex items-center justify-center"
+              className="min-w-touch min-h-touch px-gauge py-rivet bg-accent text-cta-fg font-mono text-sm uppercase tracking-label rounded-sm hover:bg-accent-mid transition-colors duration-fast flex items-center justify-center"
               aria-label="Search"
             >
               <Search className="w-4 h-4" aria-hidden="true" />
@@ -96,14 +90,14 @@ export default function NotFound() {
           </form>
 
           {/* ── Navigation Links ── */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
+          <div className="flex flex-wrap justify-center gap-bolt mb-bay">
             <Button
               href="/"
               variant="primary"
               size="md"
               track={{ category: 'navigation', action: 'link_click', label: 'home', context: 'internal' }}
             >
-              <Home className="w-4 h-4 mr-1.5" aria-hidden="true" />
+              <Home className="w-4 h-4 mr-rivet" aria-hidden="true" />
               Home
             </Button>
             <Button
@@ -112,7 +106,7 @@ export default function NotFound() {
               size="md"
               track={{ category: 'navigation', action: 'link_click', label: 'services', context: 'internal' }}
             >
-              <Layers className="w-4 h-4 mr-1.5" aria-hidden="true" />
+              <Layers className="w-4 h-4 mr-rivet" aria-hidden="true" />
               Services
             </Button>
             <Button
@@ -121,7 +115,7 @@ export default function NotFound() {
               size="md"
               track={{ category: 'navigation', action: 'link_click', label: 'contact', context: 'internal' }}
             >
-              <Mail className="w-4 h-4 mr-1.5" aria-hidden="true" />
+              <Mail className="w-4 h-4 mr-rivet" aria-hidden="true" />
               Contact
             </Button>
             <Button
@@ -141,7 +135,7 @@ export default function NotFound() {
             size="lg"
             track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
           >
-            <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
+            <Phone className="w-4 h-4 mr-rivet" aria-hidden="true" />
             {business.phone}
           </Button>
         </div>

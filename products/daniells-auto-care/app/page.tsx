@@ -63,7 +63,7 @@ export default async function HomePage() {
           {/* Dark base overlay */}
           <div
             className="absolute inset-0"
-            style={{ background: 'rgba(255,255,255,0.88)' }}
+            style={{ background: 'rgb(var(--surface-rgb) / 0.88)' }}
             aria-hidden="true"
           />
           {/* Red radial accent — right side on desktop */}
@@ -71,42 +71,34 @@ export default async function HomePage() {
             className="absolute inset-0"
             style={{
               background:
-                'radial-gradient(ellipse 55% 60% at 85% 45%, rgba(232,5,5,0.18) 0%, transparent 70%)',
+                'radial-gradient(ellipse 55% 60% at 85% 45%, var(--accent-soft) 0%, transparent 70%)',
             }}
             aria-hidden="true"
           />
         </div>
 
-        <Container className="relative z-10 py-24 lg:py-32">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <Container className="relative z-10 py-hangar lg:py-perimeter">
+          <div className="grid lg:grid-cols-2 gap-stall items-center">
             {/* Left column — h1 + subheading + CTAs */}
             <div>
               <Reveal>
-                <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent mb-4">
+                <p className="font-mono text-mono-sm tracking-label uppercase text-accent mb-gauge">
                   Northern New Jersey · Mobile Detailing
                 </p>
               </Reveal>
               <Reveal delay={80}>
-                <h1
-                  className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
-                  style={{
-                    fontSize: 'clamp(2.2rem, 5vw, 3.5rem)',
-                    lineHeight: 1.07,
-                  }}
-                >
+                <h1 className="mb-panel text-4xl">
                   Flawless Mobile Detailing{' '}
-                  <span style={{ color: 'var(--accent)' }}>
-                    Across Northern NJ.
-                  </span>
+                  <span className="text-accent">Across Northern NJ.</span>
                 </h1>
               </Reveal>
               <Reveal delay={160}>
-                <p className="text-fg-soft text-lg leading-relaxed mb-8 max-w-lg">
+                <p className="text-fg-soft text-lg leading-relaxed mb-bay max-w-lg">
                   Professional mobile detailing across Northern NJ — we come to your home or office, fully equipped to deliver a flawless, showroom finish.
                 </p>
               </Reveal>
               <Reveal delay={240}>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-gauge">
                   <QuoteButton
                     size="lg"
                     track={{
@@ -136,12 +128,10 @@ export default async function HomePage() {
             {/* Right column — QuoteForm (desktop only) */}
             <Reveal delay={200} className="hidden lg:block">
               <div
-                className="rounded-lg border border-border bg-surface p-8"
-                style={{ borderTop: '3px solid var(--accent)' }}
+                className="rounded-lg border border-border bg-surface p-bay border-t-thick border-accent"
               >
                 <h2
-                  className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
-                  style={{ fontSize: 'var(--t-xl)' }}
+                  className="mb-panel text-xl"
                 >
                   Get Your Free Quote
                 </h2>
@@ -168,7 +158,7 @@ export default async function HomePage() {
             title="Full-Spectrum Auto Detailing"
             subtitle={`Every service performed with professional-grade products and meticulous precision. All ${services.length} services, front and center — nothing hidden.`}
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-panel">
             {services.map((service, i) => (
               <Reveal key={service.slug} delay={i * 60}>
                 <ServiceCard
@@ -193,12 +183,12 @@ export default async function HomePage() {
             title="The Difference Is in the Details"
             subtitle="Mobile convenience meets factory-grade expertise. We bring the detailing bay to your driveway."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-panel">
             {whyChooseUs.map((item, i) => (
               <Reveal key={item.title} delay={i * 80} className="h-full">
                 <GlowCard className="h-full flex flex-col">
-                  <div className="p-8 h-full">
-                    <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg mb-3">
+                  <div className="p-bay h-full">
+                    <h3 className="text-lg mb-bolt">
                       {item.title}
                     </h3>
                     <p className="text-fg-soft text-sm leading-relaxed">
@@ -220,18 +210,18 @@ export default async function HomePage() {
             title="Quote → Arrive → Detail → Done"
             subtitle="Four simple steps to a showroom-ready vehicle, all at your location."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-bay">
             {processSteps.map((step, i) => (
               <Reveal key={step.title} delay={i * 100}>
                 <div>
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-cta-fg text-sm mb-4 flex-shrink-0"
+                    className="w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-cta-fg text-sm mb-gauge flex-shrink-0"
                     style={{ background: 'var(--accent)' }}
                     aria-hidden="true"
                   >
                     {i + 1}
                   </div>
-                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base mb-2">
+                  <h3 className="text-base mb-rivet">
                     {step.title}
                   </h3>
                   <p className="text-fg-soft text-sm leading-relaxed">
@@ -256,7 +246,7 @@ export default async function HomePage() {
             items={beforeAfter.slice(0, 3)}
             className="md:grid-cols-3"
           />
-          <div className="mt-8 text-center">
+          <div className="mt-bay text-center">
             <Button
               variant="outline"
               href="/gallery"
@@ -281,7 +271,7 @@ export default async function HomePage() {
             title="140+ Five-Star Reviews"
             subtitle={`Rated 5.0 on Google with ${business.googleReviews} verified reviews from Northern NJ drivers.`}
           />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-panel">
             {reviews.map((review, i) => (
               <Reveal key={review.name} delay={i * 100}>
                 <ReviewCard review={review} />
@@ -299,12 +289,12 @@ export default async function HomePage() {
             title="Northern NJ's Mobile Detail Team"
             subtitle="We come to your doorstep. Select your area for local service details and availability."
           />
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-bolt mb-bay">
             {areas.map((area) => (
               <Reveal key={area.slug}>
                 <Link
                   href={`/service-areas/${area.slug}`}
-                  className="flex items-center justify-center rounded-lg border border-border bg-surface px-3 py-4 text-center font-mono text-xs uppercase tracking-[0.08em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-base ease-default min-h-[44px]"
+                  className="flex items-center justify-center rounded-lg border border-border bg-surface px-bolt py-gauge text-center font-mono text-mono-sm uppercase tracking-label text-fg-soft hover:border-accent hover:text-accent transition-all duration-base ease-default min-h-touch"
                   data-track-category="navigation"
                   data-track-action="link_click"
                   data-track-label={`area_${area.slug}`}
@@ -340,7 +330,7 @@ export default async function HomePage() {
             title="Frequently Asked Questions"
             subtitle="Everything you need to know about mobile auto detailing in Northern NJ."
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-gauge max-w-5xl mx-auto items-start">
             {faqs.map((faq, i) => (
               <Reveal key={faq.q} delay={i * 40}>
                 <FaqItem faq={faq} index={i} />
@@ -354,33 +344,31 @@ export default async function HomePage() {
       <Section surface="surface-dark" id="final-cta">
         <Container>
           <div
-            className="rounded-lg px-8 py-16 md:py-20 text-center"
+            className="rounded-lg px-bay py-deck md:py-hangar text-center"
             style={{
               background:
                 'linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%)',
             }}
           >
             <Reveal>
-              <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+              <p className="font-mono text-mono-sm tracking-label uppercase mb-bolt text-cta-fg/60">
                 Same-Day Service Available
               </p>
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-4"
-                style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+                className="text-cta-fg mb-gauge text-3xl"
               >
                 Ready for a Showroom Finish?
               </h2>
               <p
-                className="text-lg mb-8 max-w-xl mx-auto"
-                style={{ color: 'rgba(255,255,255,0.82)' }}
+                className="text-lg mb-bay max-w-xl mx-auto text-cta-fg/80"
               >
                 Free, no-obligation quotes — fast. We come to you anywhere
                 in Northern NJ — home, office, or anywhere convenient.
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-gauge">
                 <QuoteButton
                   size="xl"
-                  className="bg-white text-accent hover:bg-white/90 border-transparent"
+                  className="bg-cta-fg text-accent hover:bg-cta-fg/90 border-transparent"
                   track={{
                     category: 'conversion',
                     action: 'button_click',
@@ -393,7 +381,7 @@ export default async function HomePage() {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
+                  className="border-cta-fg/60 !text-cta-fg hover:bg-cta-fg/10 hover:!text-cta-fg hover:border-cta-fg"
                   track={{
                     category: 'conversion',
                     action: 'link_click',

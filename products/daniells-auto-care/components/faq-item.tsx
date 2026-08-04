@@ -19,7 +19,7 @@ export function FaqItem({ faq, index }: FaqItemProps) {
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-controls={`faq-panel-${index}`}
-        className="flex items-center justify-between gap-4 w-full px-6 py-5 cursor-pointer text-left font-sans font-bold text-fg text-sm uppercase tracking-[0.02em] hover:text-accent transition-colors duration-fast ease-default min-h-[84px]"
+        className="flex items-center justify-between gap-gauge w-full px-panel py-gauge cursor-pointer text-left font-sans font-bold text-fg text-sm uppercase tracking-label hover:text-accent transition-colors duration-fast ease-default min-h-touch-xl"
         data-track-category="engagement"
         data-track-action="toggle"
         data-track-label={`faq_${index}`}
@@ -41,7 +41,7 @@ export function FaqItem({ faq, index }: FaqItemProps) {
             transition={{ duration: 0.28, ease: [0.2, 0, 0, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-6 pb-5 text-fg-soft text-sm leading-relaxed border-t border-border pt-4">
+            <div className="px-panel pb-gauge text-fg-soft text-sm leading-relaxed border-t border-border pt-gauge">
               {faq.a}
             </div>
           </motion.div>

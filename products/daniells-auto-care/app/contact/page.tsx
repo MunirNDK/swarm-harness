@@ -35,7 +35,7 @@ export default async function ContactPage() {
       {/* ── Breadcrumbs ── */}
       <div className="bg-surface-dark border-b border-border">
         <Container>
-          <div className="py-3">
+          <div className="py-bolt">
             <Breadcrumbs items={BREADCRUMBS} />
           </div>
         </Container>
@@ -46,27 +46,26 @@ export default async function ContactPage() {
         <Container>
           <Reveal>
             <div className="text-center max-w-2xl mx-auto">
-              <p className="mb-3 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+              <p className="mb-bolt font-mono text-mono-sm tracking-label uppercase text-accent">
                 Get in Touch
               </p>
               <h1
-                className="font-sans font-bold uppercase tracking-[-0.02em] text-fg"
-                style={{ fontSize: 'clamp(2rem,4vw,3rem)', lineHeight: '1.05' }}
+                className="tracking-tighter text-3xl"
               >
                 Contact Daniells Auto Care
               </h1>
-              <p className="mt-4 text-fg-soft leading-relaxed">
+              <p className="mt-gauge text-fg-soft leading-relaxed">
                 Fill out the form and we&apos;ll respond quickly — no
                 obligation. Or call us directly if you prefer to speak right away.
               </p>
-              <div className="mt-6">
+              <div className="mt-panel">
                 <Button
                   href={business.phoneHref}
                   variant="phone"
                   size="lg"
                   track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
                 >
-                  <Phone className="w-4 h-4 mr-2" aria-hidden="true" />
+                  <Phone className="w-4 h-4 mr-rivet" aria-hidden="true" />
                   {business.phone}
                 </Button>
               </div>
@@ -83,14 +82,9 @@ export default async function ContactPage() {
             {/* ── Contact Form ── */}
             <div className="lg:col-span-3">
               <Reveal>
-                <GlowCard className="p-6 md:p-8">
-                  <h2
-                    className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-1"
-                    style={{ fontSize: 'var(--t-xl)' }}
-                  >
-                    Send a Message
-                  </h2>
-                  <p className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint mb-6">
+                <GlowCard className="p-panel md:p-bay">
+                  <h2 className="mb-pin text-xl">Send a Message</h2>
+                  <p className="font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-panel">
                     SVC-CONTACT // MOBILE DISPATCH
                   </p>
                   <ContactForm />
@@ -101,18 +95,18 @@ export default async function ContactPage() {
             {/* ── Business Info ── */}
             <div className="lg:col-span-2 flex flex-col gap-bolt">
               <Reveal delay={80}>
-                <GlowCard className="p-6">
-                  <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4 text-base">
+                <GlowCard className="p-panel">
+                  <h2 className="mb-gauge text-xl">
                     Contact Info
                   </h2>
-                  <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
+                  <ul className="space-y-gauge">
+                    <li className="flex items-start gap-bolt">
                       <Phone
-                        className="w-4 h-4 text-accent mt-0.5 flex-shrink-0"
+                        className="w-4 h-4 text-accent mt-pin flex-shrink-0"
                         aria-hidden="true"
                       />
                       <div>
-                        <p className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint mb-0.5">
+                        <p className="font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-pin">
                           Phone
                         </p>
                         <a
@@ -126,37 +120,37 @@ export default async function ContactPage() {
                         </a>
                       </div>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-bolt">
                       <Clock
-                        className="w-4 h-4 text-accent mt-0.5 flex-shrink-0"
+                        className="w-4 h-4 text-accent mt-pin flex-shrink-0"
                         aria-hidden="true"
                       />
                       <div>
-                        <p className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint mb-0.5">
+                        <p className="font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-pin">
                           Hours
                         </p>
                         <p className="text-fg">{business.hours}</p>
                       </div>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-bolt">
                       <MapPin
-                        className="w-4 h-4 text-accent mt-0.5 flex-shrink-0"
+                        className="w-4 h-4 text-accent mt-pin flex-shrink-0"
                         aria-hidden="true"
                       />
                       <div>
-                        <p className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint mb-0.5">
+                        <p className="font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-pin">
                           Service Area
                         </p>
                         <p className="text-fg">{business.serviceArea}</p>
                       </div>
                     </li>
-                    <li className="flex items-start gap-3">
+                    <li className="flex items-start gap-bolt">
                       <Timer
-                        className="w-4 h-4 text-accent mt-0.5 flex-shrink-0"
+                        className="w-4 h-4 text-accent mt-pin flex-shrink-0"
                         aria-hidden="true"
                       />
                       <div>
-                        <p className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint mb-0.5">
+                        <p className="font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-pin">
                           Quote Response
                         </p>
                         <p className="text-fg">{business.responseTime}</p>
@@ -168,16 +162,16 @@ export default async function ContactPage() {
 
               {/* ── Service Area Pills — linked to /service-areas/<slug> ── */}
               <Reveal delay={120}>
-                <GlowCard className="p-6">
-                  <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4 text-base">
+                <GlowCard className="p-panel">
+                  <h2 className="mb-gauge text-xl">
                     Areas We Serve
                   </h2>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-rivet">
                     {areas.map((area) => (
                       <Link
                         key={area.slug}
                         href={`/service-areas/${area.slug}`}
-                        className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-soft bg-surface2 border border-border rounded-full px-3 py-1 hover:border-accent hover:text-accent transition-colors duration-fast min-h-[44px] flex items-center"
+                        className="font-mono text-mono-sm tracking-label uppercase text-fg-soft bg-surface2 border border-border rounded-full px-bolt py-pin hover:border-accent hover:text-accent transition-colors duration-fast min-h-touch flex items-center"
                         data-track-category="navigation"
                         data-track-action="link_click"
                         data-track-label={area.slug}

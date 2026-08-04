@@ -94,7 +94,7 @@ export function Navbar({ services, areas }: NavbarProps) {
           key={s.slug}
           href={`/services/${s.slug}`}
           onClick={(e) => e.currentTarget.blur()}
-          className="block px-4 py-2 text-sm text-fg-soft hover:text-fg hover:bg-surface2 rounded-sm transition-colors duration-fast ease-default"
+          className="block px-gauge py-rivet text-sm text-fg-soft hover:text-fg hover:bg-surface2 rounded-sm transition-colors duration-fast ease-default"
           data-track-category="navigation"
           data-track-action="link_click"
           data-track-label={`service_${s.slug}`}
@@ -109,7 +109,7 @@ export function Navbar({ services, areas }: NavbarProps) {
         key={area.slug}
         href={`/service-areas/${area.slug}`}
         onClick={(e) => e.currentTarget.blur()}
-        className="block px-4 py-2 text-sm text-fg-soft hover:text-fg hover:bg-surface2 rounded-sm transition-colors duration-fast ease-default"
+        className="block px-gauge py-rivet text-sm text-fg-soft hover:text-fg hover:bg-surface2 rounded-sm transition-colors duration-fast ease-default"
         data-track-category="navigation"
         data-track-action="link_click"
         data-track-label={`area_${area.slug}`}
@@ -125,7 +125,7 @@ export function Navbar({ services, areas }: NavbarProps) {
       ref={mobileMenuRef}
       className={cn(
         'sticky top-0 left-0 right-0 border-b transition-all duration-base ease-default',
-        mobileOpen ? 'z-[60]' : 'z-50',
+        mobileOpen ? 'z-overlay' : 'z-sticky',
         scrolled
           ? 'bg-surface-dark/90 backdrop-blur-xl border-border shadow-md'
           : 'bg-surface-dark border-transparent'
@@ -140,7 +140,7 @@ export function Navbar({ services, areas }: NavbarProps) {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 flex-shrink-0"
+            className="flex items-center gap-rivet flex-shrink-0"
             data-track-category="navigation"
             data-track-action="link_click"
             data-track-label="logo"
@@ -158,7 +158,7 @@ export function Navbar({ services, areas }: NavbarProps) {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-pin">
             {NAV_ITEMS.map((item) => {
               const isActive =
                 item.href === '/'
@@ -172,7 +172,7 @@ export function Navbar({ services, areas }: NavbarProps) {
                       href={item.href}
                       onClick={(e) => e.currentTarget.blur()}
                       className={cn(
-                        'flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-sm transition-colors duration-fast ease-default',
+                        'flex items-center gap-pin px-bolt py-rivet text-sm font-medium rounded-sm transition-colors duration-fast ease-default',
                         isActive ? 'text-fg' : 'text-fg-soft hover:text-fg'
                       )}
                       data-track-category="navigation"
@@ -181,11 +181,11 @@ export function Navbar({ services, areas }: NavbarProps) {
                       data-track-context="internal"
                     >
                       {item.label}
-                      <ChevronDown className="h-3.5 w-3.5 opacity-60" aria-hidden="true" />
+                      <ChevronDown className="h-4 w-4 opacity-muted" aria-hidden="true" />
                     </Link>
 
                     {/* Hover dropdown */}
-                    <div className="absolute top-full left-0 mt-1 w-52 bg-surface-dark border border-border rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-base ease-default">
+                    <div className="absolute top-full left-0 mt-pin w-52 bg-surface-dark border-thin border-border rounded-md shadow-lg py-pin z-dropdown opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-base ease-default">
                       {renderDropdown(item.dropdown)}
                     </div>
                   </div>
@@ -197,7 +197,7 @@ export function Navbar({ services, areas }: NavbarProps) {
                   key={item.label}
                   href={item.href}
                   className={cn(
-                    'px-3 py-2 text-sm font-medium rounded-sm transition-colors duration-fast ease-default',
+                    'px-bolt py-rivet text-sm font-medium rounded-sm transition-colors duration-fast ease-default',
                     isActive ? 'text-fg' : 'text-fg-soft hover:text-fg'
                   )}
                   data-track-category="navigation"
@@ -212,10 +212,10 @@ export function Navbar({ services, areas }: NavbarProps) {
           </div>
 
           {/* Desktop CTAs */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-gauge">
             <a
               href={business.phoneHref}
-              className="flex items-center gap-1.5 text-sm font-bold text-accent hover:text-accent-mid transition-colors duration-fast ease-default"
+              className="flex items-center gap-rivet text-sm font-bold text-accent hover:text-accent-mid transition-colors duration-fast ease-default"
               data-track-category="conversion"
               data-track-action="link_click"
               data-track-label="phone_call"
@@ -234,7 +234,7 @@ export function Navbar({ services, areas }: NavbarProps) {
 
           {/* Mobile hamburger */}
           <button
-            className="lg:hidden p-2 text-fg min-w-[44px] min-h-[44px] flex items-center justify-center rounded-sm"
+            className="lg:hidden p-rivet text-fg min-w-touch min-h-touch flex items-center justify-center rounded-sm"
             onClick={() => setMobileOpen((o) => !o)}
             aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={mobileOpen}
@@ -254,9 +254,9 @@ export function Navbar({ services, areas }: NavbarProps) {
       {mobileOpen && (
         <div
           id="mobile-menu"
-          className="lg:hidden bg-surface-dark/95 backdrop-blur-xl border-t border-border max-h-[calc(100vh-var(--nav-h))] overflow-y-auto"
+          className="lg:hidden bg-surface-dark/95 backdrop-blur-xl border-t-thin border-border max-h-[calc(100vh-var(--nav-h))] overflow-y-auto"
         >
-          <Container className="py-4 space-y-1">
+          <Container className="py-gauge space-y-pin">
             {NAV_ITEMS.map((item) => {
               if ('dropdown' in item && item.dropdown) {
                 const isOpen = activeDropdown === item.label;
@@ -264,7 +264,7 @@ export function Navbar({ services, areas }: NavbarProps) {
                   <div key={item.label}>
                     <button
                       onClick={() => setActiveDropdown(isOpen ? null : item.label)}
-                      className="flex items-center justify-between w-full px-4 py-3 text-left text-base font-medium text-fg rounded-sm hover:bg-surface2 transition-colors duration-fast ease-default min-h-[44px]"
+                      className="flex items-center justify-between w-full px-gauge py-bolt text-left text-base font-medium text-fg rounded-sm hover:bg-surface2 transition-colors duration-fast ease-default min-h-touch"
                       aria-expanded={isOpen}
                     >
                       {item.label}
@@ -277,7 +277,7 @@ export function Navbar({ services, areas }: NavbarProps) {
                       />
                     </button>
                     {isOpen && (
-                      <div className="ml-4 mt-1 space-y-0.5 border-l border-border pl-4">
+                      <div className="ml-gauge mt-pin space-y-pin border-l-thin border-border pl-gauge">
                         {renderDropdown(item.dropdown)}
                       </div>
                     )}
@@ -289,7 +289,7 @@ export function Navbar({ services, areas }: NavbarProps) {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="block px-4 py-3 text-base font-medium text-fg rounded-sm hover:bg-surface2 transition-colors duration-fast ease-default min-h-[44px]"
+                  className="block px-gauge py-bolt text-base font-medium text-fg rounded-sm hover:bg-surface2 transition-colors duration-fast ease-default min-h-touch"
                   data-track-category="navigation"
                   data-track-action="link_click"
                   data-track-label={item.href.replace(/^\//, '') || 'home'}
@@ -301,10 +301,10 @@ export function Navbar({ services, areas }: NavbarProps) {
             })}
 
             {/* Mobile CTAs */}
-            <div className="pt-4 border-t border-border space-y-3">
+            <div className="pt-gauge border-t-thin border-border space-y-bolt">
               <a
                 href={business.phoneHref}
-                className="flex items-center gap-2 px-4 py-3 text-base font-bold text-accent min-h-[44px]"
+                className="flex items-center gap-rivet px-gauge py-bolt text-base font-bold text-accent min-h-touch"
                 data-track-category="conversion"
                 data-track-action="link_click"
                 data-track-label="phone_call"

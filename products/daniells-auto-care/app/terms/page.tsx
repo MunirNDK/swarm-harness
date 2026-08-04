@@ -28,7 +28,7 @@ export default function TermsPage() {
       {/* ── Breadcrumbs ── */}
       <div className="bg-surface-dark border-b border-border">
         <Container>
-          <div className="py-3">
+          <div className="py-bolt">
             <Breadcrumbs items={BREADCRUMBS} />
           </div>
         </Container>
@@ -38,23 +38,22 @@ export default function TermsPage() {
       <Section surface="bg" id="terms-content">
         <Container>
           <div className="max-w-3xl mx-auto">
-            <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent mb-3">
+            <p className="font-mono text-mono-sm tracking-label uppercase text-accent mb-bolt">
               Legal
             </p>
             <h1
-              className="font-sans font-bold uppercase tracking-[-0.02em] text-fg mb-6"
-              style={{ fontSize: 'clamp(1.75rem,4vw,2.75rem)', lineHeight: '1.1' }}
+              className="tracking-tighter mb-panel text-3xl"
             >
               Terms of Service
             </h1>
-            <p className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint mb-10">
+            <p className="font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-bay">
               Last updated: {LAST_UPDATED}
             </p>
 
-            <div className="space-y-10 text-fg-soft leading-[1.8]">
+            <div className="space-y-bay text-fg-soft leading-relaxed">
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   1. Acceptance of Terms
                 </h2>
                 <p>
@@ -76,7 +75,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   2. Services
                 </h2>
                 <p>
@@ -89,7 +88,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   3. Quotes and Pricing
                 </h2>
                 <p>
@@ -102,7 +101,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   4. Scheduling and Cancellations
                 </h2>
                 <p>
@@ -114,7 +113,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   5. Customer Responsibilities
                 </h2>
                 <p>
@@ -126,7 +125,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   6. Limitation of Liability
                 </h2>
                 <p>
@@ -139,7 +138,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   7. Satisfaction Guarantee
                 </h2>
                 <p>
@@ -150,7 +149,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   8. Website Use
                 </h2>
                 <p>
@@ -162,7 +161,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   9. Governing Law
                 </h2>
                 <p>
@@ -174,7 +173,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   10. Changes to These Terms
                 </h2>
                 <p>
@@ -186,7 +185,7 @@ export default function TermsPage() {
               </section>
 
               <section>
-                <h2 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3">
+                <h2 className="text-xl mb-bolt">
                   11. Contact
                 </h2>
                 <p>

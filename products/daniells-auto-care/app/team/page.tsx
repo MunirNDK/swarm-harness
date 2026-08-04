@@ -57,7 +57,7 @@ export default function TeamPage() {
       {/* ── Breadcrumbs ── */}
       <div className="bg-surface-dark border-b border-border">
         <Container>
-          <div className="py-3">
+          <div className="py-bolt">
             <Breadcrumbs items={BREADCRUMBS} />
           </div>
         </Container>
@@ -69,17 +69,16 @@ export default function TeamPage() {
           <Reveal>
             <div className="mx-auto text-center">
               <div className="max-w-2xl mx-auto">
-                <p className="mb-4 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+                <p className="mb-gauge font-mono text-mono-sm tracking-label uppercase text-accent">
                   Daniells Auto Care
                 </p>
                 <h1
-                  className="font-sans font-bold uppercase tracking-[-0.02em] text-fg"
-                  style={{ fontSize: 'clamp(2.25rem,5vw,3.75rem)', lineHeight: '1.05' }}
+                  className="tracking-tighter text-4xl"
                 >
                   Our Team
                 </h1>
               </div>
-              <p className="mt-6 text-fg-soft text-lg leading-relaxed max-w-[850px] mx-auto">
+              <p className="mt-panel text-fg-soft text-lg leading-relaxed max-w-container-md mx-auto">
                 {business.experienceYears} years of combined team experience. {business.vehiclesDetailed} vehicles
                 detailed. {business.reviewsCount} five-star reviews. A professional mobile detailing
                 operation built on craft, reliability, and genuine care for your vehicle.
@@ -100,7 +99,7 @@ export default function TeamPage() {
               />
             </Reveal>
             <Reveal delay={60}>
-              <div className="space-y-4 text-fg-soft leading-relaxed">
+              <div className="space-y-gauge text-fg-soft leading-relaxed">
                 <p>
                   Daniells Auto Care was built on a straightforward idea: bring showroom-quality
                   detailing directly to our clients without compromising on the craft. With{' '}
@@ -139,11 +138,11 @@ export default function TeamPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-bay">
             {CREDENTIALS.map((c, i) => (
               <Reveal key={c.title} delay={i * 60}>
-                <GlowCard className="h-full p-8 flex flex-col gap-4">
+                <GlowCard className="h-full p-bay flex flex-col gap-gauge">
                   <div className="w-12 h-12 rounded-lg bg-surface2 border border-border flex items-center justify-center text-accent flex-shrink-0">
                     <c.icon className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base">
+                  <h3 className="text-base">
                     {c.title}
                   </h3>
                   <p className="text-fg-soft text-sm leading-relaxed">{c.desc}</p>
@@ -175,11 +174,11 @@ export default function TeamPage() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   </div>
-                  <div className="p-6 flex flex-col gap-1 flex-1">
-                    <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base">
+                  <div className="p-panel flex flex-col gap-pin flex-1">
+                    <h3 className="text-base">
                       {member.name}
                     </h3>
-                    <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+                    <p className="font-mono text-mono-sm tracking-label uppercase text-accent">
                       {member.role}
                     </p>
                   </div>
@@ -201,12 +200,12 @@ export default function TeamPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-bay">
             {whyChooseUs.map((item, i) => (
               <Reveal key={item.title} delay={i * 50}>
-                <GlowCard className="h-full p-6 flex flex-col gap-3">
+                <GlowCard className="h-full p-panel flex flex-col gap-bolt">
                   <div
                     className="w-2 h-8 rounded-full bg-accent flex-shrink-0"
                     aria-hidden="true"
                   />
-                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-sm">
+                  <h3 className="text-base">
                     {item.title}
                   </h3>
                   <p className="text-fg-soft text-sm leading-relaxed">{item.desc}</p>
@@ -226,15 +225,14 @@ export default function TeamPage() {
           <Reveal>
             <div className="text-center max-w-xl mx-auto">
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-4"
-                style={{ fontSize: 'clamp(1.75rem,3vw,2.5rem)' }}
+                className="mb-gauge text-3xl"
               >
                 Experience the Difference
               </h2>
-              <p className="text-fg-soft mb-8 leading-relaxed">
+              <p className="text-fg-soft mb-bay leading-relaxed">
                 Ready to put our team to work on your vehicle? Get your free quote — we respond quickly.
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-gauge">
                 <QuoteButton
                   size="lg"
                   track={{

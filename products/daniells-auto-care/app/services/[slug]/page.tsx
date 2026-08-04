@@ -75,33 +75,32 @@ export default async function ServiceDetailPage({ params }: Props) {
       <Section surface="surface-dark" id="service-hero">
         <Container>
           <Reveal>
-            <Breadcrumbs items={breadcrumbs} className="mb-8" />
+            <Breadcrumbs items={breadcrumbs} className="mb-bay" />
           </Reveal>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+          <div className="grid lg:grid-cols-2 gap-stall items-stretch">
             {/* Left — h1 + description + CTAs */}
             <div>
               <Reveal delay={60}>
-                <p className="font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent mb-3">
+                <p className="font-mono text-mono-sm tracking-label uppercase text-accent mb-bolt">
                   Professional Mobile Service · Northern NJ
                 </p>
               </Reveal>
               <Reveal delay={120}>
                 <h1
-                  className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
-                  style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', lineHeight: 1.07 }}
+                  className="mb-panel text-3xl"
                 >
                   {service.name}
                 </h1>
               </Reveal>
               <Reveal delay={180}>
-                <p className="text-fg-soft text-lg leading-relaxed mb-6">
+                <p className="text-fg-soft text-lg leading-relaxed mb-panel">
                   {service.longDescription}
                 </p>
               </Reveal>
 
               <Reveal delay={260}>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-gauge">
                   <QuoteButton
                     size="lg"
                     track={{
@@ -136,7 +135,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                   className="absolute inset-0 z-0 pointer-events-none"
                   style={{
                     background:
-                      'radial-gradient(ellipse 80% 80% at 50% 0%, rgba(232,5,5,0.12) 0%, transparent 70%)',
+                      'radial-gradient(ellipse 80% 80% at 50% 0%, var(--accent-soft) 0%, transparent 70%)',
                   }}
                   aria-hidden="true"
                 />
@@ -166,14 +165,14 @@ export default async function ServiceDetailPage({ params }: Props) {
                 'Every service includes our commitment to quality, meticulous attention to detail, and 100% satisfaction guarantee.'
               }
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gauge">
               {service.benefits.map((benefit, i) => (
                 <Reveal key={i} delay={i * 50}>
                   <GlowCard className="h-full">
-                    <div className="p-6 flex items-start gap-4">
+                    <div className="p-panel flex items-start gap-gauge">
                       {/* Red bullet */}
                       <span
-                        className="flex-shrink-0 mt-1 w-2 h-2 rounded-full"
+                        className="flex-shrink-0 mt-pin w-2 h-2 rounded-full"
                         style={{ background: 'var(--accent)' }}
                         aria-hidden="true"
                       />
@@ -204,11 +203,11 @@ export default async function ServiceDetailPage({ params }: Props) {
                 'A proven, step-by-step approach for consistent, showroom-quality results every time.'
               }
             />
-            <div className="max-w-4xl mx-auto space-y-6">
+            <div className="max-w-4xl mx-auto space-y-panel">
               {service.processSteps.map((step, i) => (
                 <Reveal key={i} delay={i * 80}>
                   <GlowCard>
-                    <div className="p-6 md:p-8 flex gap-6">
+                    <div className="p-panel md:p-bay flex gap-panel">
                       <div
                         className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-cta-fg text-sm"
                         style={{ background: 'var(--accent)' }}
@@ -217,7 +216,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                         {i + 1}
                       </div>
                       <div>
-                        <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base mb-2">
+                        <h3 className="text-base mb-rivet">
                           {step.title}
                         </h3>
                         <p className="text-fg-soft text-sm leading-relaxed">
@@ -242,7 +241,7 @@ export default async function ServiceDetailPage({ params }: Props) {
               title={service.faqTitle || `${service.name} Questions`}
               subtitle={service.faqSubtitle || 'Answers to common questions about this service.'}
             />
-            <div className="max-w-3xl mx-auto space-y-4">
+            <div className="max-w-3xl mx-auto space-y-gauge">
               {service.faqItems.map((item, i) => (
                 <Reveal key={i} delay={i * 60}>
                   <FaqItem faq={{ q: item.q, a: item.a }} index={i} />
@@ -262,7 +261,7 @@ export default async function ServiceDetailPage({ params }: Props) {
               title="Related Services"
               subtitle="Complete your vehicle care with these complementary services — all available as mobile service in Northern NJ."
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-panel mb-bay">
               {relatedServices.map((rs, i) => (
                 <Reveal key={rs.slug} delay={i * 80}>
                   <ServiceCard
@@ -271,7 +270,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                 </Reveal>
               ))}
             </div>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap gap-gauge justify-center">
               <Button
                 variant="outline"
                 href="/services"
@@ -305,7 +304,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       <Section surface="surface-dark" id="service-cta">
         <Container>
           <div
-            className="rounded-lg px-8 py-14 text-center"
+            className="rounded-lg px-bay py-deck text-center"
             style={{
               background:
                 'linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%)',
@@ -313,22 +312,20 @@ export default async function ServiceDetailPage({ params }: Props) {
           >
             <Reveal>
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-4"
-                style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)' }}
+                className="text-cta-fg mb-gauge text-3xl"
               >
                 Ready to Book {service.name}?
               </h2>
               <p
-                className="text-lg mb-8 max-w-lg mx-auto"
-                style={{ color: 'rgba(255,255,255,0.82)' }}
+                className="text-lg mb-bay max-w-lg mx-auto text-cta-fg/80"
               >
                 Free, fast quotes. We come to you anywhere
                 in Northern NJ — no shop visit required.
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-gauge">
                 <QuoteButton
                   size="xl"
-                  className="bg-white text-accent hover:bg-white/90 border-transparent"
+                  className="bg-cta-fg text-accent hover:bg-cta-fg/90 border-transparent"
                   track={{
                     category: 'conversion',
                     action: 'button_click',
@@ -341,7 +338,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
+                  className="border-cta-fg/60 !text-cta-fg hover:bg-cta-fg/10 hover:!text-cta-fg hover:border-cta-fg"
                   track={{
                     category: 'conversion',
                     action: 'link_click',
@@ -359,15 +356,15 @@ export default async function ServiceDetailPage({ params }: Props) {
       {/* ── SERVICE AREAS INTERNAL LINKS ── */}
       <Section surface="bg" id="service-areas-links">
         <Container>
-          <p className="font-mono text-[0.65rem] tracking-[0.12em] uppercase text-accent mb-4">
+          <p className="font-mono text-mono-sm tracking-label uppercase text-accent mb-gauge">
             Available In
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-bolt">
             {availableAreas.map((area) => (
               <Link
                 key={area.slug}
                 href={`/service-areas/${area.slug}`}
-                className="rounded-full border border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.06em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-[44px] flex items-center"
+                className="rounded-full border border-border px-gauge py-rivet font-mono text-mono-sm uppercase tracking-label text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-touch flex items-center"
                 data-track-category="navigation"
                 data-track-action="link_click"
                 data-track-label={`area_${area.slug}`}

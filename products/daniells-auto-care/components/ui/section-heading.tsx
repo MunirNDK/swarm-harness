@@ -15,9 +15,10 @@ interface SectionHeadingProps {
 
 /**
  * SectionHeading — Contract §10, §12.12
- * kicker: mono red uppercase label above the title
- * title: display font, uppercase, tight tracking
- * subtitle: soft color, max-width 40rem
+ * kicker:   mono red uppercase label above the title (text-kicker = 12px/0.28em)
+ * title:    h2 — size/weight/tracking come from the heading hierarchy in
+ *           globals.css, so nothing is restated here
+ * subtitle: soft ink, capped at container-sm for a readable measure
  */
 export function SectionHeading({
   kicker,
@@ -37,29 +38,22 @@ export function SectionHeading({
   return (
     <div
       className={cn(
-        'mb-12',
+        'mb-stall',
         resolvedAlign === 'center' && 'text-center',
         className
       )}
     >
       {resolvedKicker && (
-        <p className="mb-3 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+        <p className="mb-bolt font-mono text-kicker uppercase text-accent">
           {resolvedKicker}
         </p>
       )}
-      <h2
-        className={cn(
-          'font-sans font-bold uppercase tracking-[-0.01em] text-fg',
-          'text-[clamp(2rem,3.5vw,3rem)]'
-        )}
-      >
-        {title}
-      </h2>
+      <h2>{title}</h2>
       {subtitle && (
         <p
           className={cn(
-            'mt-4 text-md text-fg-soft leading-relaxed',
-            resolvedAlign === 'center' && 'max-w-[40rem] mx-auto'
+            'mt-gauge text-md text-fg-soft',
+            resolvedAlign === 'center' && 'max-w-container-sm mx-auto'
           )}
         >
           {subtitle}

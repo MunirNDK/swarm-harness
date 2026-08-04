@@ -1020,54 +1020,54 @@
     "semantic_hash": "9bf43b525e40d86755eb7b1548ac01f9"
   },
   "products/daniells-auto-care/app/blog/[slug]/loading.tsx": {
-    "mtime": 1782871571.6014483,
-    "ast_hash": "8f08d32766908c2e271da5e2b6d62d8c",
-    "semantic_hash": "8f08d32766908c2e271da5e2b6d62d8c"
+    "mtime": 1785851079.4540582,
+    "ast_hash": "391715add8d4dd442104687c6fe04a15",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/blog/[slug]/page.tsx": {
-    "mtime": 1784566107.2870266,
-    "ast_hash": "04c61b9ae55f294b6d1665eca88ecfe5",
-    "semantic_hash": "04c61b9ae55f294b6d1665eca88ecfe5"
+    "mtime": 1785852130.752757,
+    "ast_hash": "21a9a573793b7b39df447a7aeb002b05",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/blog/page.tsx": {
-    "mtime": 1784566070.1880014,
-    "ast_hash": "f57a3e3d1efa78967d6cf724b3084c27",
-    "semantic_hash": "f57a3e3d1efa78967d6cf724b3084c27"
+    "mtime": 1785852130.7618806,
+    "ast_hash": "4086355c4235709fdbcb18d1af6cd9ca",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/contact/page.tsx": {
-    "mtime": 1784566579.5607388,
-    "ast_hash": "92ddadf9b7ad8cd32ff58c845cb155f2",
-    "semantic_hash": "92ddadf9b7ad8cd32ff58c845cb155f2"
+    "mtime": 1785852593.4534338,
+    "ast_hash": "169c8b492d0707bc929a052b853f67d1",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/fleet/page.tsx": {
-    "mtime": 1784825346.4505079,
-    "ast_hash": "488153e279c450189ed1ec9d13d13fde",
+    "mtime": 1785852130.7668936,
+    "ast_hash": "cbf542e4f5194bc6d116471218c80c76",
     "semantic_hash": ""
   },
   "products/daniells-auto-care/app/gallery/page.tsx": {
-    "mtime": 1784531595.2933993,
-    "ast_hash": "86ec77cc2d5979cb26d07b4057e565ee",
-    "semantic_hash": "86ec77cc2d5979cb26d07b4057e565ee"
+    "mtime": 1785852130.7825813,
+    "ast_hash": "31a561890cec7e572d8f896d8fc6a26b",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/layout.tsx": {
-    "mtime": 1785304726.7813983,
-    "ast_hash": "719d335b947eb9c682cae439b56e1061",
+    "mtime": 1785851543.9218776,
+    "ast_hash": "116059dc94b19fa71a2b61f629f25d8f",
     "semantic_hash": ""
   },
   "products/daniells-auto-care/app/not-found.tsx": {
-    "mtime": 1784531522.1812198,
-    "ast_hash": "53c882daf3da001f65fb6056127b6c73",
-    "semantic_hash": "53c882daf3da001f65fb6056127b6c73"
+    "mtime": 1785852171.0780785,
+    "ast_hash": "f038d84a2650f3d7fd06fc571c29ebc1",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/page.tsx": {
-    "mtime": 1784566400.607426,
-    "ast_hash": "522ae45c6939c64d75965113dcc00dcc",
-    "semantic_hash": "522ae45c6939c64d75965113dcc00dcc"
+    "mtime": 1785852173.9279468,
+    "ast_hash": "bf5479878fde0eec5646e6ffa3295128",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/privacy/page.tsx": {
-    "mtime": 1782871650.803546,
-    "ast_hash": "74a0df1651d105c6aa1345bbb3b64e15",
-    "semantic_hash": "74a0df1651d105c6aa1345bbb3b64e15"
+    "mtime": 1785852130.7951238,
+    "ast_hash": "67aa9b6099af8596752705b6ce560c38",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/robots.ts": {
     "mtime": 1782871523.5279076,
@@ -1075,34 +1075,34 @@
     "semantic_hash": "0ef0031aff3717552a2f50def987e9bf"
   },
   "products/daniells-auto-care/app/service-areas/[slug]/loading.tsx": {
-    "mtime": 1782871561.2591364,
-    "ast_hash": "21a9de8d9fe988806a4cd932f0afda4b",
-    "semantic_hash": "21a9de8d9fe988806a4cd932f0afda4b"
+    "mtime": 1785851079.5450952,
+    "ast_hash": "ef21babfa6b665fc37bac22bd30fdc17",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/service-areas/[slug]/page.tsx": {
-    "mtime": 1784545441.1170943,
-    "ast_hash": "5d6828f4932b6028c31108aad2381f49",
-    "semantic_hash": "5d6828f4932b6028c31108aad2381f49"
+    "mtime": 1785852130.8079932,
+    "ast_hash": "27bc1afe8b42ea9aa6acf477d69e0a5e",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/service-areas/page.tsx": {
-    "mtime": 1784545400.401359,
-    "ast_hash": "ccacd1e36f3081952531c4c9bb059941",
-    "semantic_hash": "ccacd1e36f3081952531c4c9bb059941"
+    "mtime": 1785852130.8109963,
+    "ast_hash": "e6ad590a8a1981ef54b4ffd6c3f56962",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/services/[slug]/loading.tsx": {
-    "mtime": 1782871554.905986,
-    "ast_hash": "7d3d21b3fcafddb82b41d76f0178db69",
-    "semantic_hash": "7d3d21b3fcafddb82b41d76f0178db69"
+    "mtime": 1785851079.5627685,
+    "ast_hash": "92d73c81c0b8deb7460399b88069deef",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/services/[slug]/page.tsx": {
-    "mtime": 1784800228.2460215,
-    "ast_hash": "26dd87df13f08804d601bcb1ec82214b",
+    "mtime": 1785852130.8129919,
+    "ast_hash": "873019df3f831e343d8edb0ec9b8b698",
     "semantic_hash": ""
   },
   "products/daniells-auto-care/app/services/page.tsx": {
-    "mtime": 1784545284.7005534,
-    "ast_hash": "54222b4ce3fe058c7aee089ace6fcba8",
-    "semantic_hash": "54222b4ce3fe058c7aee089ace6fcba8"
+    "mtime": 1785852130.8200076,
+    "ast_hash": "19034c45daf8654d455635876bc28249",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/sitemap.ts": {
     "mtime": 1784554060.3554542,
@@ -1110,99 +1110,99 @@
     "semantic_hash": "0714ea2223c7190cb75c1217d0bb51e3"
   },
   "products/daniells-auto-care/app/team/page.tsx": {
-    "mtime": 1783479284.320089,
-    "ast_hash": "d3447d53ad6534314c45c432e6fa63ac",
-    "semantic_hash": "d3447d53ad6534314c45c432e6fa63ac"
+    "mtime": 1785852623.552228,
+    "ast_hash": "f5a8c4ad09a6eb5f93a49467fe365c06",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/app/terms/page.tsx": {
-    "mtime": 1782871476.8747897,
-    "ast_hash": "31ad01cd0ca4fc0ecf5f24aabe6cb9fd",
-    "semantic_hash": "31ad01cd0ca4fc0ecf5f24aabe6cb9fd"
+    "mtime": 1785852130.8250084,
+    "ast_hash": "4eabb93a5c9528fccc4461809e3c1a17",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/before-after.tsx": {
-    "mtime": 1784537453.57332,
-    "ast_hash": "de8ab9874d78f55483e441cd32b759ff",
-    "semantic_hash": "de8ab9874d78f55483e441cd32b759ff"
+    "mtime": 1785851145.47885,
+    "ast_hash": "852ee7db2ab25e35c7db6cefa8dec426",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/contact-form.tsx": {
-    "mtime": 1785304643.8204398,
-    "ast_hash": "47124a1ce3796400ef7931b71127fdfc",
+    "mtime": 1785851543.4089608,
+    "ast_hash": "4afe8e706e09d99b6e50b7df2f9117a5",
     "semantic_hash": ""
   },
   "products/daniells-auto-care/components/faq-item.tsx": {
-    "mtime": 1783432593.9318132,
-    "ast_hash": "e29b3ae62931c15c913698a07ecce9e9",
-    "semantic_hash": "e29b3ae62931c15c913698a07ecce9e9"
+    "mtime": 1785851608.0830102,
+    "ast_hash": "15cd4a7a0b4e84dd86a9925727a20976",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/footer.tsx": {
-    "mtime": 1784566301.7864058,
-    "ast_hash": "b21516a2455f7f6fc774bcecf4f1e89f",
-    "semantic_hash": "b21516a2455f7f6fc774bcecf4f1e89f"
+    "mtime": 1785851543.92919,
+    "ast_hash": "6f9b62c151ef3f2fbfb4413962dd26ca",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/marquee.tsx": {
-    "mtime": 1782603434.8354578,
-    "ast_hash": "a01945350fce5e2bda063b19cc71e669",
-    "semantic_hash": "a01945350fce5e2bda063b19cc71e669"
+    "mtime": 1785850820.0295818,
+    "ast_hash": "ed594bfa3664055f6acefe71ef01c368",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/navbar.tsx": {
-    "mtime": 1784566264.6220365,
-    "ast_hash": "e5ae996839e0e055a55e5a4cc238431a",
-    "semantic_hash": "e5ae996839e0e055a55e5a4cc238431a"
+    "mtime": 1785851006.3250837,
+    "ast_hash": "708de8f202ab6078c6c611ad2ebd32c2",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/quote-cta.tsx": {
-    "mtime": 1783428772.8743842,
-    "ast_hash": "d459144950b71ea125c342af4e07b76a",
-    "semantic_hash": "d459144950b71ea125c342af4e07b76a"
+    "mtime": 1785850807.1010146,
+    "ast_hash": "052dec1d19ef49fc9dae7113d02526ef",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/quote-form.tsx": {
-    "mtime": 1785304632.5406644,
-    "ast_hash": "a6c00992ed2fbfd1b6b47bf34db0fdee",
+    "mtime": 1785851543.409466,
+    "ast_hash": "1a2b2c8ed1da878fbae1d9b9f5d8028e",
     "semantic_hash": ""
   },
   "products/daniells-auto-care/components/quote-modal.tsx": {
-    "mtime": 1785141997.8343997,
-    "ast_hash": "7fba13e00e0a296d54dc0b31f40681e0",
+    "mtime": 1785852130.8340232,
+    "ast_hash": "0cb58debc04dc3dbc5c647d07c2c0949",
     "semantic_hash": ""
   },
   "products/daniells-auto-care/components/review-card.tsx": {
-    "mtime": 1783428705.9296138,
-    "ast_hash": "4139633974a10f357d90ae85a09fbb26",
-    "semantic_hash": "4139633974a10f357d90ae85a09fbb26"
+    "mtime": 1785851543.4104729,
+    "ast_hash": "cb681c9385d58ba21ae03fe2f53a498e",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/service-card.tsx": {
-    "mtime": 1782876852.843174,
-    "ast_hash": "62cdeda7c91524ecc2e64f01f71f28dc",
-    "semantic_hash": "62cdeda7c91524ecc2e64f01f71f28dc"
+    "mtime": 1785851953.4362895,
+    "ast_hash": "3b48247ce7ac2bc86e5b74b7d5fb09d4",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/stat-strip.tsx": {
-    "mtime": 1782869987.822091,
-    "ast_hash": "3fad7242bf073c267a4d92d49c6108e6",
-    "semantic_hash": "3fad7242bf073c267a4d92d49c6108e6"
+    "mtime": 1785852130.8410256,
+    "ast_hash": "a0fe6b48d32c0323e4efe693afa9243c",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/sticky-cta.tsx": {
-    "mtime": 1783478894.5421336,
-    "ast_hash": "8bc2c03ade5bc5064369b77f5f2dc882",
-    "semantic_hash": "8bc2c03ade5bc5064369b77f5f2dc882"
+    "mtime": 1785851015.355507,
+    "ast_hash": "0f0a3fdde2ba0b328b761788c40001d5",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/treatment-log.tsx": {
-    "mtime": 1782869859.2704463,
-    "ast_hash": "ee29e0251a41c5109b85fe4cb662cbd4",
-    "semantic_hash": "ee29e0251a41c5109b85fe4cb662cbd4"
+    "mtime": 1785852236.507751,
+    "ast_hash": "51183f664b643da6babc5cd303427e27",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/trust-marquee.tsx": {
-    "mtime": 1784531602.4757023,
-    "ast_hash": "2d9b41af49db82c87ecb6abec582adfc",
-    "semantic_hash": "2d9b41af49db82c87ecb6abec582adfc"
+    "mtime": 1785850839.108365,
+    "ast_hash": "ac0bf133e403e923014fdd19a37f0667",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/ui/breadcrumbs.tsx": {
-    "mtime": 1782869815.664005,
-    "ast_hash": "056bdfd086cf2738783555336e7168c8",
-    "semantic_hash": "056bdfd086cf2738783555336e7168c8"
+    "mtime": 1785850923.1863275,
+    "ast_hash": "4723b433d2b9e29d33966b261bccf9eb",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/ui/button.tsx": {
-    "mtime": 1784531507.576241,
-    "ast_hash": "6b653df0a04e0fd0387be64fbde8295c",
-    "semantic_hash": "6b653df0a04e0fd0387be64fbde8295c"
+    "mtime": 1785850886.3911235,
+    "ast_hash": "ac30bc601d265ce8cf0e9fb567968343",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/ui/container.tsx": {
     "mtime": 1782869707.7583468,
@@ -1210,14 +1210,14 @@
     "semantic_hash": "6c589153730556dbf76350b48a13b224"
   },
   "products/daniells-auto-care/components/ui/glass-card.tsx": {
-    "mtime": 1782870110.9235895,
-    "ast_hash": "c612e346940dfb1339675df33c724ec6",
-    "semantic_hash": "c612e346940dfb1339675df33c724ec6"
+    "mtime": 1785850941.9676242,
+    "ast_hash": "8dd41ce702b48edfbf20c8492413d5f2",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/ui/glow-card.tsx": {
-    "mtime": 1782870326.2323303,
-    "ast_hash": "ba44fd814d52e5f803bc6c580654fe35",
-    "semantic_hash": "ba44fd814d52e5f803bc6c580654fe35"
+    "mtime": 1785850933.7639868,
+    "ast_hash": "4604525378ee28e7f069ad47956fb670",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/ui/jsonld.tsx": {
     "mtime": 1782869822.1696894,
@@ -1225,14 +1225,14 @@
     "semantic_hash": "c9312696dc32d210ede4f62997ca17d1"
   },
   "products/daniells-auto-care/components/ui/reveal.tsx": {
-    "mtime": 1782872524.9135702,
-    "ast_hash": "15c8a1249c7d1533fb5bd9b1c7400bbb",
-    "semantic_hash": "15c8a1249c7d1533fb5bd9b1c7400bbb"
+    "mtime": 1785850940.43881,
+    "ast_hash": "d30f09f58b958badb63f81b4487c82b0",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/ui/section-heading.tsx": {
-    "mtime": 1782869746.4605694,
-    "ast_hash": "ffd909b02c49c411633d98e5ce9318cf",
-    "semantic_hash": "ffd909b02c49c411633d98e5ce9318cf"
+    "mtime": 1785851981.0416224,
+    "ast_hash": "6f0287f37693993cee35f7da21846210",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/components/ui/section.tsx": {
     "mtime": 1782869726.91738,
@@ -1240,13 +1240,13 @@
     "semantic_hash": "4297bb91d28f88b0e0e4d680828e5404"
   },
   "products/daniells-auto-care/components/ui/star-rating.tsx": {
-    "mtime": 1782869833.23463,
-    "ast_hash": "4d8d2275e65375552e15e05f1d0b9cc0",
-    "semantic_hash": "4d8d2275e65375552e15e05f1d0b9cc0"
+    "mtime": 1785850955.7217715,
+    "ast_hash": "85073896efd83e2c957e4edf1f2f9cb5",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/lib/analytics/track.ts": {
-    "mtime": 1785307828.5018947,
-    "ast_hash": "5d59b738ed0902f2f5b2c6f1bef006d1",
+    "mtime": 1785344772.3088305,
+    "ast_hash": "adb8695fe76e093e8d18e2cb18879c2a",
     "semantic_hash": ""
   },
   "products/daniells-auto-care/lib/blog.ts": {
@@ -1350,9 +1350,9 @@
     "semantic_hash": ""
   },
   "products/daniells-auto-care/tailwind.config.ts": {
-    "mtime": 1782869636.8711123,
-    "ast_hash": "f1ad825be7b62203e4bdbfdf804fedef",
-    "semantic_hash": "f1ad825be7b62203e4bdbfdf804fedef"
+    "mtime": 1785851615.5422788,
+    "ast_hash": "b8984e9cc96bfb312c2b08dd1c3ff643",
+    "semantic_hash": ""
   },
   "products/daniells-auto-care/tsconfig.json": {
     "mtime": 1784550348.0957868,
@@ -1485,8 +1485,8 @@
     "semantic_hash": "05dbeffe78742f717441dcbf04fc62fa"
   },
   "products/daniells-auto-care/components/service-pricing.tsx": {
-    "mtime": 1784825054.5294092,
-    "ast_hash": "63980d83c8d534d53bb3d19a7b4857dd",
+    "mtime": 1785852130.840025,
+    "ast_hash": "b88dbfdcb7aef0f60ffaed7aea397bdb",
     "semantic_hash": ""
   },
   ".github/ISSUE_TEMPLATE/pcr.yml": {
@@ -2497,6 +2497,46 @@
   "products/daniells-auto-care/lib/analytics/analytics-provider.tsx": {
     "mtime": 1785304737.951393,
     "ast_hash": "7e717245e44db7ff114e6e34d7b9d468",
+    "semantic_hash": ""
+  },
+  "products/daniells-auto-care/lib/analytics/gtm.tsx": {
+    "mtime": 1785750466.5126176,
+    "ast_hash": "11a19cafbb1b14137da4f4fc87ccc505",
+    "semantic_hash": ""
+  },
+  "Design Updates/daniells-auto-care-design-system.html": {
+    "mtime": 1785849867.3076692,
+    "ast_hash": "222bea959f2d274601bab8e85d3d1b0e",
+    "semantic_hash": ""
+  },
+  "Design Updates/daniells-auto-care-design-tokens.md": {
+    "mtime": 1785849873.8967683,
+    "ast_hash": "e143b2b4f4bdd3252b480311c20ccbfe",
+    "semantic_hash": ""
+  },
+  "contact.jpeg": {
+    "mtime": 1785852037.9673352,
+    "ast_hash": "e79d9be7206ccee6e423587ad7626d92",
+    "semantic_hash": ""
+  },
+  "cta-band.jpeg": {
+    "mtime": 1785851893.503443,
+    "ast_hash": "4e798828b70399de3d941d57a9f061d2",
+    "semantic_hash": ""
+  },
+  "home-full.jpeg": {
+    "mtime": 1785851836.243852,
+    "ast_hash": "134bd8a71ab787d2206c8e7780031cf1",
+    "semantic_hash": ""
+  },
+  "home-top.jpeg": {
+    "mtime": 1785851811.565435,
+    "ast_hash": "07e2c5a2047c051b9bb4db518517d05b",
+    "semantic_hash": ""
+  },
+  "services-full.jpeg": {
+    "mtime": 1785852013.4267302,
+    "ast_hash": "71b375cd1c84e28d70b1afc8af2f2aad",
     "semantic_hash": ""
   }
 }

@@ -20,21 +20,21 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className={cn('flex items-center flex-wrap gap-1', className)}
+      className={cn('flex items-center flex-wrap gap-pin', className)}
     >
-      <ol className="flex items-center flex-wrap gap-1 list-none p-0 m-0">
+      <ol className="flex items-center flex-wrap gap-pin list-none p-0 m-0">
         {items.map((item, idx) => {
           const isLast = idx === items.length - 1;
           return (
-            <li key={item.href} className="flex items-center gap-1">
+            <li key={item.href} className="flex items-center gap-pin">
               {idx > 0 && (
-                <span className="text-muted text-xs mx-1" aria-hidden="true">
+                <span className="text-muted text-mono-sm mx-pin" aria-hidden="true">
                   /
                 </span>
               )}
               {isLast ? (
                 <span
-                  className="text-fg-faint font-mono text-xs uppercase tracking-[0.05em]"
+                  className="text-fg-faint font-mono text-mono-sm uppercase tracking-label"
                   aria-current="page"
                 >
                   {item.label}
@@ -42,7 +42,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
               ) : (
                 <Link
                   href={item.href}
-                  className="text-fg-soft font-mono text-xs uppercase tracking-[0.05em] hover:text-accent transition-colors duration-fast ease-default"
+                  className="text-fg-soft font-mono text-mono-sm uppercase tracking-label hover:text-accent transition-colors duration-fast ease-default"
                   data-track-category="navigation"
                   data-track-action="link_click"
                   data-track-label={item.href.replace(/^\//, '') || 'home'}

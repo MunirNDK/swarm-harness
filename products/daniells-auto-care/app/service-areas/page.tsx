@@ -38,24 +38,23 @@ export default async function ServiceAreasPage() {
       <Section surface="surface-dark" id="areas-header">
         <Container>
           <Reveal>
-            <Breadcrumbs items={breadcrumbs} className="mb-8" />
+            <Breadcrumbs items={breadcrumbs} className="mb-bay" />
           </Reveal>
           <Reveal delay={80}>
             <h1
-              className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
-              style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}
+              className="mb-panel text-3xl"
             >
               Serving Northern New Jersey
             </h1>
           </Reveal>
           <Reveal delay={160}>
-            <p className="text-fg-soft text-lg leading-relaxed max-w-3xl mb-8">
+            <p className="text-fg-soft text-lg leading-relaxed max-w-3xl mb-bay">
               Daniells Auto Care brings professional mobile detailing directly to your doorstep across{' '}
               {business.serviceArea}. Same-day availability, free quotes, and {business.reviewsCount} five-star reviews across the region.
             </p>
           </Reveal>
           <Reveal delay={240}>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-gauge">
               <QuoteButton
                 size="lg"
                 track={{
@@ -95,7 +94,7 @@ export default async function ServiceAreasPage() {
             subtitle="Click your town to see local service details, area-specific info, and how to book your mobile detail."
           />
           {areas.length === 0 ? (
-            <p className="text-fg-soft text-center py-12 mb-8">
+            <p className="text-fg-soft text-center py-stall mb-bay">
               Service areas are being updated — check back shortly, or{' '}
               <Link href="/contact" className="text-accent hover:text-accent-mid">
                 contact us
@@ -103,31 +102,31 @@ export default async function ServiceAreasPage() {
               to confirm coverage in your town.
             </p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-panel mb-bay">
               {areas.map((area, i) => (
                 <Reveal key={area.slug} delay={i * 60}>
                   <GlowCard>
                     <Link
                       href={`/service-areas/${area.slug}`}
-                      className="block p-8 group min-h-[44px]"
+                      className="block p-bay group min-h-touch"
                       data-track-category="navigation"
                       data-track-action="link_click"
                       data-track-label={`area_${area.slug}`}
                       data-track-context="internal"
                     >
                       {/* Red area code indicator */}
-                      <p className="font-mono text-[0.65rem] tracking-[0.12em] uppercase text-accent mb-2">
+                      <p className="font-mono text-mono-sm tracking-label uppercase text-accent mb-rivet">
                         NJ · {area.slug}
                       </p>
-                      <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-xl mb-3 group-hover:text-accent transition-colors duration-fast ease-default">
+                      <h3 className="text-xl mb-bolt group-hover:text-accent transition-colors duration-fast ease-default">
                         {area.name}
                       </h3>
-                      <p className="text-fg-soft text-sm leading-relaxed mb-4">
+                      <p className="text-fg-soft text-sm leading-relaxed mb-gauge">
                         Professional mobile auto detailing in {area.name}, NJ.
                         Same-day service, factory-trained technicians, free
                         quotes.
                       </p>
-                      <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.05em] text-accent group-hover:text-accent-mid transition-colors duration-fast ease-default">
+                      <span className="inline-flex items-center gap-rivet text-mono-sm font-bold uppercase tracking-label text-accent group-hover:text-accent-mid transition-colors duration-fast ease-default">
                         View {area.name} services
                         <svg
                           width="12"
@@ -153,16 +152,16 @@ export default async function ServiceAreasPage() {
           )}
 
           {/* Service cross-links */}
-          <div className="pt-8 border-t border-border">
-            <p className="font-mono text-[0.65rem] tracking-[0.12em] uppercase text-fg-faint mb-4">
+          <div className="pt-bay border-t border-border">
+            <p className="font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-gauge">
               Services Available in All Areas
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-bolt">
               {services.map((s) => (
                 <Link
                   key={s.slug}
                   href={`/services/${s.slug}`}
-                  className="rounded-full border border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.06em] text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-[44px] flex items-center"
+                  className="rounded-full border border-border px-gauge py-rivet font-mono text-mono-sm uppercase tracking-label text-fg-soft hover:border-accent hover:text-accent transition-all duration-fast ease-default min-h-touch flex items-center"
                   data-track-category="navigation"
                   data-track-action="link_click"
                   data-track-label={`service_${s.slug}`}
@@ -184,7 +183,7 @@ export default async function ServiceAreasPage() {
             title="We Come to You"
             subtitle="No shop, no waiting, no wasted time. Our fully equipped van arrives at your home or office with everything needed for a showroom finish."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-panel">
             {[
               {
                 heading: 'Self-Contained Setup',
@@ -205,8 +204,8 @@ export default async function ServiceAreasPage() {
             ].map((item, i) => (
               <Reveal key={item.heading} delay={i * 80}>
                 <GlowCard className="h-full flex flex-col">
-                  <div className="p-8 h-full">
-                    <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg mb-3">
+                  <div className="p-bay h-full">
+                    <h3 className="text-lg mb-bolt">
                       {item.heading}
                     </h3>
                     <p className="text-fg-soft text-sm leading-relaxed">
@@ -224,7 +223,7 @@ export default async function ServiceAreasPage() {
       <Section surface="surface-dark" id="areas-cta">
         <Container>
           <div
-            className="rounded-lg px-8 py-16 text-center"
+            className="rounded-lg px-bay py-deck text-center"
             style={{
               background:
                 'linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%)',
@@ -232,21 +231,19 @@ export default async function ServiceAreasPage() {
           >
             <Reveal>
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-4"
-                style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)' }}
+                className="text-cta-fg mb-gauge text-3xl"
               >
                 Not Sure If We Cover Your Area?
               </h2>
               <p
-                className="text-lg mb-8 max-w-lg mx-auto"
-                style={{ color: 'rgba(255,255,255,0.82)' }}
+                className="text-lg mb-bay max-w-lg mx-auto text-cta-fg/80"
               >
                 Just ask — we likely cover your area. Free, fast quotes, no obligation.
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-gauge">
                 <QuoteButton
                   size="xl"
-                  className="bg-white text-accent hover:bg-white/90 border-transparent"
+                  className="bg-cta-fg text-accent hover:bg-cta-fg/90 border-transparent"
                   track={{
                     category: 'conversion',
                     action: 'button_click',
@@ -259,7 +256,7 @@ export default async function ServiceAreasPage() {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
+                  className="border-cta-fg/60 !text-cta-fg hover:bg-cta-fg/10 hover:!text-cta-fg hover:border-cta-fg"
                   track={{
                     category: 'conversion',
                     action: 'link_click',

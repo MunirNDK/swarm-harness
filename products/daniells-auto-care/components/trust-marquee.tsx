@@ -2,9 +2,9 @@
 
 /**
  * TrustMarquee — Contract §10, §4 Signature Move #3
- * Full-width linear-gradient(135deg,#E80505,#980404) band
- * with horizontally scrolling mono trust signals.
+ * Full-width --cta-gradient band with horizontally scrolling trust signals.
  * Items duplicated for seamless loop, edge fade mask, ctaPulse overlay.
+ * Sits on the red accent: all text here is pinned to --cta-fg, never --ink.
  */
 
 const TRUST_ITEMS = [
@@ -20,14 +20,13 @@ export function TrustMarquee() {
 
   return (
     <div
-      className="relative w-full overflow-hidden animate-cta-pulse"
-      style={{ background: 'linear-gradient(135deg, #E80505, #980404)', padding: 'var(--panel) 0' }}
+      className="relative w-full overflow-hidden animate-cta-pulse bg-cta-gradient py-panel"
       aria-label="Trust signals"
     >
       {/* Edge fade mask */}
       <div
         aria-hidden="true"
-        className="marquee-mask absolute inset-0 pointer-events-none z-10"
+        className="marquee-mask absolute inset-0 pointer-events-none z-raised"
       />
 
       {/* Scrolling track */}
@@ -35,12 +34,11 @@ export function TrustMarquee() {
         {items.map((item, idx) => (
           <span
             key={idx}
-            className="flex items-center gap-stall font-sans font-semibold uppercase text-[1.3rem] tracking-[0.05em] text-white/90 whitespace-nowrap px-stall"
-            style={{ letterSpacing: '0.05em' }}
+            className="flex items-center gap-stall font-sans font-semibold uppercase text-lg tracking-label text-cta-fg/90 whitespace-nowrap px-stall"
           >
-            {/* Red dot separator */}
+            {/* Dot separator */}
             <span
-              className="inline-block w-2 h-2 rounded-full bg-white opacity-60 mr-4 flex-shrink-0"
+              className="inline-block w-rivet h-rivet rounded-full bg-cta-fg opacity-muted mr-gauge flex-shrink-0"
               aria-hidden="true"
             />
             {item}

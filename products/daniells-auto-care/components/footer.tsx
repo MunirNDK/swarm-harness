@@ -12,7 +12,7 @@ interface FooterProps {
 
 /**
  * Footer — Contract §6, §10, DS-CS-011
- * Surface-dark (#050505), brand, sitemap columns (Services, Service Areas, Company),
+ * Surface-dark, brand, sitemap columns (Services, Service Areas, Company),
  * social icons, phone, copyright current year, area pills.
  * Company column includes Our Team, Privacy, Terms per contract §6.
  */
@@ -20,13 +20,14 @@ export function Footer({ services, areas }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-surface-dark border-t border-border pb-[60px] md:pb-0">
-      <Container className="py-12">
+    /* pb-deck on mobile clears the fixed StickyCta bar */
+    <footer className="bg-surface-dark border-t border-border pb-deck md:pb-0">
+      <Container className="py-stall">
         {/* Grid: Brand | Services | Company | Service Areas on desktop */}
-        <div className="grid grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-12">
+        <div className="grid grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr] gap-stall">
 
           {/* Brand column */}
-          <div className="space-y-4 col-span-2 lg:col-span-1">
+          <div className="space-y-gauge col-span-2 lg:col-span-1">
             <Link
               href="/"
               className="inline-block"
@@ -45,7 +46,7 @@ export function Footer({ services, areas }: FooterProps) {
               />
             </Link>
 
-            <p className="font-sans font-bold text-[1.5rem] uppercase text-fg">
+            <p className="font-sans font-bold text-xl uppercase text-fg">
               Daniells<span className="text-accent"> Auto Care</span>
             </p>
 
@@ -57,7 +58,7 @@ export function Footer({ services, areas }: FooterProps) {
             {/* Phone */}
             <a
               href={business.phoneHref}
-              className="flex items-center gap-2 text-sm font-bold text-accent hover:text-accent-mid transition-colors duration-fast ease-default"
+              className="flex items-center gap-rivet text-sm font-bold text-accent hover:text-accent-mid transition-colors duration-fast ease-default"
               data-track-category="conversion"
               data-track-action="link_click"
               data-track-label="phone_call"
@@ -67,17 +68,17 @@ export function Footer({ services, areas }: FooterProps) {
             </a>
 
             {/* Availability */}
-            <p className="font-mono text-xs text-fg-faint uppercase tracking-widest">
+            <p className="font-mono text-mono-sm text-fg-faint uppercase tracking-label">
               {business.hours}
             </p>
 
             {/* Social icons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-bolt">
               {social.map((s) => (
                 <a
                   key={s.platform}
                   href={s.href}
-                  className="p-2 rounded-sm border border-border text-fg-faint hover:text-accent hover:border-accent transition-colors duration-fast ease-default min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="p-rivet rounded-sm border border-border text-fg-faint hover:text-accent hover:border-accent transition-colors duration-fast ease-default min-w-touch min-h-touch flex items-center justify-center"
                   aria-label={s.platform}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -105,10 +106,10 @@ export function Footer({ services, areas }: FooterProps) {
 
           {/* Services column */}
           <div>
-            <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-4">
+            <p className="font-mono text-mono-sm tracking-label text-accent uppercase mb-gauge">
               Services
             </p>
-            <ul className="space-y-2">
+            <ul className="space-y-rivet">
               {services.map((s) => (
                 <li key={s.slug}>
                   <Link
@@ -128,10 +129,10 @@ export function Footer({ services, areas }: FooterProps) {
 
           {/* Company column */}
           <div>
-            <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-4">
+            <p className="font-mono text-mono-sm tracking-label text-accent uppercase mb-gauge">
               Company
             </p>
-            <ul className="space-y-2">
+            <ul className="space-y-rivet">
               {[
                 { label: 'Our Team',      href: '/team' },
                 { label: 'Gallery',       href: '/gallery' },
@@ -158,15 +159,15 @@ export function Footer({ services, areas }: FooterProps) {
 
           {/* Service Areas column — own column on desktop */}
           <div className="col-span-2 lg:col-span-1">
-            <p className="font-mono text-[0.65rem] tracking-[0.1em] text-accent uppercase mb-4">
+            <p className="font-mono text-mono-sm tracking-label text-accent uppercase mb-gauge">
               Service Areas
             </p>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-rivet">
               {areas.map((area) => (
                 <Link
                   key={area.slug}
                   href={`/service-areas/${area.slug}`}
-                  className="font-mono text-[0.65rem] tracking-[0.05em] text-fg-soft uppercase bg-surface border border-border rounded-full px-3 py-1 hover:border-accent hover:text-accent transition-colors duration-fast ease-default"
+                  className="font-mono text-mono-sm tracking-label text-fg-soft uppercase bg-surface border border-border rounded-full px-bolt py-pin hover:border-accent hover:text-accent transition-colors duration-fast ease-default"
                   data-track-category="navigation"
                   data-track-action="link_click"
                   data-track-label={`area_${area.slug}`}
@@ -180,14 +181,14 @@ export function Footer({ services, areas }: FooterProps) {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="font-mono text-[0.65rem] tracking-[0.05em] text-fg-faint uppercase">
+        <div className="mt-stall pt-panel border-t border-border flex flex-col sm:flex-row items-center justify-between gap-bolt">
+          <p className="font-mono text-mono-sm tracking-label text-fg-faint uppercase">
             &copy; {year} {business.name}. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-gauge">
             <Link
               href="/privacy"
-              className="font-mono text-[0.65rem] tracking-[0.05em] text-fg-faint uppercase hover:text-accent transition-colors duration-fast ease-default"
+              className="font-mono text-mono-sm tracking-label text-fg-faint uppercase hover:text-accent transition-colors duration-fast ease-default"
               data-track-category="navigation"
               data-track-action="link_click"
               data-track-label="privacy"
@@ -197,7 +198,7 @@ export function Footer({ services, areas }: FooterProps) {
             </Link>
             <Link
               href="/terms"
-              className="font-mono text-[0.65rem] tracking-[0.05em] text-fg-faint uppercase hover:text-accent transition-colors duration-fast ease-default"
+              className="font-mono text-mono-sm tracking-label text-fg-faint uppercase hover:text-accent transition-colors duration-fast ease-default"
               data-track-category="navigation"
               data-track-action="link_click"
               data-track-label="terms"

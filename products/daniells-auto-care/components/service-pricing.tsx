@@ -57,7 +57,7 @@ export function ServicePricing({ service, surface = 'surface', title, subtitle }
           }
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-panel">
           {pricingTiers.map((tier, i) => {
             const featured = Boolean(tier.badge);
             return (
@@ -69,14 +69,14 @@ export function ServicePricing({ service, surface = 'surface', title, subtitle }
                   )}
                   style={featured ? { borderColor: 'var(--accent)' } : undefined}
                 >
-                  <div className="p-6 md:p-7 flex flex-col flex-1 gap-4">
+                  <div className="p-panel md:p-7 flex flex-col flex-1 gap-gauge">
                     {/* Header — name + optional badge */}
-                    <div className="flex items-start justify-between gap-3">
-                      <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg leading-snug">
+                    <div className="flex items-start justify-between gap-bolt">
+                      <h3 className="text-lg leading-snug">
                         {tier.name}
                       </h3>
                       {tier.badge && (
-                        <span className="flex-shrink-0 rounded-full bg-accent px-2.5 py-1 font-mono text-[0.6rem] tracking-[0.08em] uppercase text-cta-fg">
+                        <span className="flex-shrink-0 rounded-full bg-accent px-bolt py-pin font-mono text-mono-sm tracking-label uppercase text-cta-fg">
                           {tier.badge}
                         </span>
                       )}
@@ -85,13 +85,12 @@ export function ServicePricing({ service, surface = 'surface', title, subtitle }
                     {/* Price + optional descriptor */}
                     <div>
                       <p
-                        className="font-sans font-bold text-accent"
-                        style={{ fontSize: 'clamp(1.75rem, 3vw, 2.25rem)', lineHeight: 1.1 }}
+                        className="font-sans font-bold text-accent text-2xl"
                       >
                         {tier.price}
                       </p>
                       {tier.meta && (
-                        <p className="mt-1 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint">
+                        <p className="mt-pin font-mono text-mono-sm tracking-label uppercase text-fg-faint">
                           {tier.meta}
                         </p>
                       )}
@@ -99,11 +98,11 @@ export function ServicePricing({ service, surface = 'surface', title, subtitle }
 
                     {/* Includes list */}
                     {tier.includes.length > 0 && (
-                      <ul className="space-y-2.5 flex-1">
+                      <ul className="space-y-bolt flex-1">
                         {tier.includes.map((item, j) => (
-                          <li key={j} className="flex items-start gap-3">
+                          <li key={j} className="flex items-start gap-bolt">
                             <span
-                              className="flex-shrink-0 mt-1.5 w-2 h-2 rounded-full"
+                              className="flex-shrink-0 mt-rivet w-2 h-2 rounded-full"
                               style={{ background: 'var(--accent)' }}
                               aria-hidden="true"
                             />
@@ -113,7 +112,7 @@ export function ServicePricing({ service, surface = 'surface', title, subtitle }
                       </ul>
                     )}
 
-                    <div className="mt-auto pt-2">
+                    <div className="mt-auto pt-rivet">
                       <QuoteButton
                         variant={featured ? 'primary' : 'outline'}
                         size="md"
@@ -136,30 +135,30 @@ export function ServicePricing({ service, surface = 'surface', title, subtitle }
         </div>
 
         {pricingNote && (
-          <p className="mt-8 max-w-3xl text-fg-faint text-xs leading-relaxed">
+          <p className="mt-bay max-w-3xl text-fg-faint text-sm leading-relaxed">
             {pricingNote}
           </p>
         )}
 
         {/* ── Popular Add-Ons — hidden entirely when the service has none ── */}
         {addons.length > 0 && (
-          <div className="mt-16">
-            <div className="mb-8">
-              <p className="mb-3 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+          <div className="mt-deck">
+            <div className="mb-bay">
+              <p className="mb-bolt font-mono text-mono-sm tracking-label uppercase text-accent">
                 Enhance Your Service
               </p>
-              <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-[clamp(1.5rem,2.5vw,2rem)]">
+              <h3 className="text-2xl">
                 {addonsTitle || 'Popular Add-Ons'}
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-gauge">
               {addons.map((addon, i) => (
                 <Reveal key={`${addon.name}-${i}`} delay={i * 60}>
                   <GlowCard className="h-full">
-                    <div className="p-5 md:p-6 flex flex-col gap-2 h-full">
-                      <div className="flex items-baseline justify-between gap-4">
-                        <h4 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base leading-snug">
+                    <div className="p-gauge md:p-panel flex flex-col gap-rivet h-full">
+                      <div className="flex items-baseline justify-between gap-gauge">
+                        <h4 className="text-base leading-snug">
                           {addon.name}
                         </h4>
                         <span className="flex-shrink-0 font-sans font-bold text-accent text-lg whitespace-nowrap">
@@ -167,7 +166,7 @@ export function ServicePricing({ service, surface = 'surface', title, subtitle }
                         </span>
                       </div>
                       {addon.priceType && (
-                        <p className="font-mono text-[0.6rem] tracking-[0.08em] uppercase text-fg-faint">
+                        <p className="font-mono text-mono-sm tracking-label uppercase text-fg-faint">
                           {addon.priceType}
                         </p>
                       )}

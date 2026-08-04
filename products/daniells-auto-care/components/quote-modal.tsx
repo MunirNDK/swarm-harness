@@ -87,22 +87,20 @@ export function QuoteModal({ services }: { services: Service[] }) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.75)' }}
+      className="fixed inset-0 z-dropdown flex items-center justify-center p-gauge bg-overlay"
       onClick={(e) => { if (e.target === overlayRef.current) close(); }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="quote-modal-title"
     >
       <div
-        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg border border-border bg-surface shadow-lg"
-        style={{ borderTop: '3px solid var(--accent)' }}
+        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg border border-border bg-surface shadow-lg border-t-thick border-accent"
       >
         {/* Close button */}
         <button
           ref={closeButtonRef}
           onClick={close}
-          className="absolute top-4 right-4 p-1.5 text-fg-faint hover:text-fg transition-colors duration-fast ease-default rounded-sm min-w-[44px] min-h-[44px] flex items-center justify-center"
+          className="absolute top-4 right-4 p-rivet text-fg-faint hover:text-fg transition-colors duration-fast ease-default rounded-sm min-w-touch min-h-touch flex items-center justify-center"
           aria-label="Close modal"
           data-track-category="navigation"
           data-track-action="toggle"
@@ -111,11 +109,10 @@ export function QuoteModal({ services }: { services: Service[] }) {
           <X className="h-5 w-5" aria-hidden="true" />
         </button>
 
-        <div className="p-6 md:p-8">
+        <div className="p-panel md:p-bay">
           <h2
             id="quote-modal-title"
-            className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
-            style={{ fontSize: 'var(--t-2xl)' }}
+            className="mb-panel text-2xl"
           >
             Get Your Free Quote
           </h2>

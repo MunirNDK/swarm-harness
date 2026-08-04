@@ -37,7 +37,7 @@ export default async function BlogPage() {
       {/* ── Breadcrumbs ── */}
       <div className="bg-surface-dark border-b border-border">
         <Container>
-          <div className="py-3">
+          <div className="py-bolt">
             <Breadcrumbs items={BREADCRUMBS} />
           </div>
         </Container>
@@ -47,17 +47,16 @@ export default async function BlogPage() {
       <Section surface="bg" id="blog-header">
         <Container>
           <Reveal>
-            <div className="text-center mb-12">
-              <p className="mb-3 font-mono text-[0.7rem] tracking-[0.15em] uppercase text-accent">
+            <div className="text-center mb-stall">
+              <p className="mb-bolt font-mono text-mono-sm tracking-label uppercase text-accent">
                 Expert Insights
               </p>
               <h1
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg"
-                style={{ fontSize: 'clamp(2rem,3.5vw,3rem)', lineHeight: '1.1' }}
+                className="text-3xl"
               >
                 The Daniells Auto Care Blog
               </h1>
-              <p className="mt-4 text-md text-fg-soft leading-relaxed max-w-[40rem] mx-auto">
+              <p className="mt-gauge text-md text-fg-soft leading-relaxed max-w-container-sm mx-auto">
                 Tips, guides, and car-care advice from professional detailers in Northern New Jersey.
               </p>
             </div>
@@ -69,7 +68,7 @@ export default async function BlogPage() {
       <Section surface="surface" id="blog-grid">
         <Container>
           {blogPosts.length === 0 ? (
-            <p className="text-fg-soft text-center py-12">
+            <p className="text-fg-soft text-center py-stall">
               New articles are coming soon — check back shortly.
             </p>
           ) : (
@@ -100,23 +99,23 @@ export default async function BlogPage() {
                         className="absolute inset-0"
                         style={{
                           background:
-                            'linear-gradient(to top,rgba(10,10,10,0.6),transparent)',
+                            'linear-gradient(to top, var(--overlay), transparent)',
                         }}
                         aria-hidden="true"
                       />
                     </div>
 
                     {/* Card Body */}
-                    <div className="flex flex-col flex-1 p-6 gap-3">
+                    <div className="flex flex-col flex-1 p-panel gap-bolt">
                       {/* Category badge + Date */}
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <span className="flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent bg-accent-soft border border-[rgba(232,5,5,0.2)] rounded-full px-2 py-0.5">
+                      <div className="flex items-center gap-bolt flex-wrap">
+                        <span className="flex items-center gap-rivet font-mono text-mono-sm tracking-label uppercase text-accent bg-accent-soft border border-accent-soft rounded-full px-rivet py-pin">
                           <Tag className="w-3 h-3" aria-hidden="true" />
                           {post.category}
                         </span>
                         <time
                           dateTime={post.date}
-                          className="flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint"
+                          className="flex items-center gap-rivet font-mono text-mono-sm tracking-label uppercase text-fg-faint"
                         >
                           <Calendar className="w-3 h-3" aria-hidden="true" />
                           {new Date(post.date).toLocaleDateString('en-US', {
@@ -128,7 +127,7 @@ export default async function BlogPage() {
                       </div>
 
                       {/* Title (heading — no nested anchor) */}
-                      <p className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base leading-snug hover:text-accent transition-colors duration-fast">
+                      <p className="font-sans font-bold uppercase tracking-tight text-fg text-base leading-snug hover:text-accent transition-colors duration-fast">
                         {post.title}
                       </p>
 
@@ -136,7 +135,7 @@ export default async function BlogPage() {
                       <p className="text-fg-soft text-sm leading-relaxed flex-1">{post.excerpt}</p>
 
                       {/* Read more indicator (not a link — card itself is the link) */}
-                      <div className="inline-flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent mt-auto min-h-[44px]">
+                      <div className="inline-flex items-center gap-rivet font-mono text-mono-sm tracking-label uppercase text-accent mt-auto min-h-touch">
                         Read Article
                         <ArrowRight className="w-3 h-3" aria-hidden="true" />
                       </div>
@@ -156,15 +155,14 @@ export default async function BlogPage() {
           <Reveal>
             <div className="text-center max-w-2xl mx-auto">
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-3"
-                style={{ fontSize: 'clamp(1.5rem,2.5vw,2rem)' }}
+                className="mb-bolt text-2xl"
               >
                 Ready to Get Started?
               </h2>
-              <p className="text-fg-soft mb-6 leading-relaxed">
+              <p className="text-fg-soft mb-panel leading-relaxed">
                 We serve {business.serviceArea}. Get a free, no-obligation quote — fast.
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-gauge">
                 <QuoteButton
                   size="lg"
                   track={{

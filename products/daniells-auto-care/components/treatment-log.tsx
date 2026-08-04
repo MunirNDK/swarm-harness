@@ -2,8 +2,8 @@
  * TreatmentLog — Contract §10, §4 Signature Move #1
  *
  * Format: SVC-XX · <SERVICE> · STG <n> · EST <hrs> · ● <STATUS>
- * Mono 0.65rem, uppercase, letter-spacing 0.06em
- * Dark bg, red top+bottom borders (rgba(232,5,5,.3))
+ * Mono label: text-mono-sm (12px) uppercase, tracking-label (0.12em)
+ * Dark bg, red top+bottom borders (--accent-soft)
  * STATUS: READY (green dot) or BOOKING (red pulsing dot)
  *
  * This is a server component — pulse animation is pure CSS.
@@ -30,6 +30,8 @@ interface TreatmentLogProps {
   status: TreatmentStatus;
 }
 
+import { cn } from '@/lib/utils';
+
 export function TreatmentLog({
   code,
   title,
@@ -41,53 +43,36 @@ export function TreatmentLog({
 
   return (
     <div
-      style={{
-        background:    'var(--surface-dark-2)',
-        borderTop:     '1px solid rgba(232,5,5,0.3)',
-        borderBottom:  '1px solid rgba(232,5,5,0.3)',
-        padding:       'var(--pin) var(--bolt)',
-        fontFamily:    'var(--font-mono)',
-        fontSize:      '0.65rem',
-        letterSpacing: '0.06em',
-        textTransform: 'uppercase',
-        color:         'var(--ink-faint)',
-        display:       'flex',
-        flexWrap:      'wrap',
-        alignItems:    'center',
-        gap:           '0.35rem',
-        borderRadius:  'var(--r-sm)',
-      }}
+      className={
+        'flex flex-wrap items-center gap-pin rounded-sm bg-surface-dark-2 ' +
+        'border-t-thin border-b-thin border-accent-soft px-bolt py-pin ' +
+        'font-mono text-mono-sm tracking-label uppercase text-fg-faint'
+      }
       aria-label={`Service log: ${title}, stage ${stage}, estimated ${est}, status ${status}`}
     >
-      <span style={{ color: 'var(--accent)', fontWeight: 600 }}>SVC-{code}</span>
-      <span style={{ color: 'var(--muted)' }}>·</span>
+      <span className="font-semibold text-accent">SVC-{code}</span>
+      <span className="text-muted">·</span>
       <span>{title}</span>
-      <span style={{ color: 'var(--muted)' }}>·</span>
+      <span className="text-muted">·</span>
       <span>STG {stage}</span>
-      <span style={{ color: 'var(--muted)' }}>·</span>
+      <span className="text-muted">·</span>
       <span>EST {est}</span>
-      <span style={{ color: 'var(--muted)' }}>·</span>
+      <span className="text-muted">·</span>
 
       {/* Status dot + label */}
       <span
-        style={{
-          display:    'flex',
-          alignItems: 'center',
-          gap:        '0.3rem',
-          color:      isReady ? 'var(--success)' : 'var(--accent)',
-        }}
+        className={cn(
+          'flex items-center gap-pin',
+          isReady ? 'text-success' : 'text-accent'
+        )}
       >
         <span
-          style={{
-            display:      'inline-block',
-            width:        '6px',
-            height:       '6px',
-            borderRadius: '50%',
-            background:   isReady ? 'var(--success)' : 'var(--accent)',
-            animation:    isReady
-              ? 'pulse-dot-green 2s cubic-bezier(0.2,0,0,1) infinite'
-              : 'pulse-dot 2s cubic-bezier(0.2,0,0,1) infinite',
-          }}
+          className={cn(
+            'inline-block w-1.5 h-1.5 rounded-full',
+            isReady
+              ? 'bg-success animate-pulse-dot-green'
+              : 'bg-accent animate-pulse-dot-red'
+          )}
           aria-hidden="true"
         />
         {status}

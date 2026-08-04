@@ -12,26 +12,26 @@ import { QuoteButton } from '@/components/quote-modal';
  */
 export function StickyCta() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 md:hidden bg-surface-dark border-t border-border p-1.5">
-      <div className="grid grid-cols-2 gap-2">
+    <div className="fixed inset-x-0 bottom-0 z-sticky md:hidden bg-surface-dark border-t-thin border-border p-rivet">
+      <div className="grid grid-cols-2 gap-rivet">
         <Button
           href={business.phoneHref}
           variant="phone"
           size="sm"
-          className="min-h-[44px]"
+          className="min-h-touch"
           track={{
             category: 'conversion',
             action:   'link_click',
             label:    'phone_call',
           }}
         >
-          <Phone className="h-3.5 w-3.5 mr-1" aria-hidden="true" />
+          <Phone className="h-4 w-4 mr-pin" aria-hidden="true" />
           Call
         </Button>
         <QuoteButton
           variant="primary"
           size="sm"
-          className="min-h-[44px]"
+          className="min-h-touch"
           track={{
             category: 'conversion',
             action:   'button_click',

@@ -77,18 +77,18 @@ export default async function RootLayout({
         {/* Skip to main content — accessibility */}
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-accent focus:text-cta-fg focus:rounded-sm focus:font-sans focus:text-sm"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-sticky focus:px-gauge focus:py-rivet focus:bg-accent focus:text-cta-fg focus:rounded-sm focus:font-sans focus:text-sm"
         >
           Skip to main content
         </a>
 
         {/* Status strip §12.11 */}
         <div
-          className="relative z-[60] bg-surface-dark border-b border-border overflow-hidden"
+          className="relative z-overlay bg-surface-dark border-b border-border overflow-hidden"
           aria-hidden="true"
         >
-          <div className="flex items-center justify-center gap-6 py-2 font-mono text-xs tracking-widest text-fg-faint uppercase whitespace-nowrap">
-            <span className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-panel py-rivet font-mono text-mono-sm tracking-label text-fg-faint uppercase whitespace-nowrap">
+            <span className="flex items-center gap-rivet">
               <span
                 className="inline-block w-2 h-2 rounded-full bg-success animate-pulse-dot-green"
                 aria-hidden="true"

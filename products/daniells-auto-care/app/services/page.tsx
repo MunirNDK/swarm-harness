@@ -42,18 +42,17 @@ export default async function ServicesPage() {
       <Section surface="surface-dark" id="services-header">
         <Container>
           <Reveal>
-            <Breadcrumbs items={breadcrumbs} className="mb-8" />
+            <Breadcrumbs items={breadcrumbs} className="mb-bay" />
           </Reveal>
           <Reveal delay={80}>
             <h1
-              className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-6"
-              style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)' }}
+              className="mb-panel text-3xl"
             >
               Professional Auto Detailing Services
             </h1>
           </Reveal>
           <Reveal delay={160}>
-            <p className="text-fg-soft text-lg leading-relaxed max-w-3xl mb-8">
+            <p className="text-fg-soft text-lg leading-relaxed max-w-3xl mb-bay">
               Daniells Auto Care delivers premium mobile detailing across{' '}
               {business.serviceArea} — from{' '}
               <Link
@@ -81,7 +80,7 @@ export default async function ServicesPage() {
             </p>
           </Reveal>
           <Reveal delay={240}>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-gauge">
               <QuoteButton
                 size="lg"
                 track={{
@@ -121,7 +120,7 @@ export default async function ServicesPage() {
             subtitle="Every service is performed with professional-grade products and meticulous attention to detail — from a quick interior refresh to full ceramic packages."
           />
           {services.length === 0 ? (
-            <p className="text-fg-soft text-center py-12">
+            <p className="text-fg-soft text-center py-stall">
               Services are being updated — check back shortly, or{' '}
               <Link href="/contact" className="text-accent hover:text-accent-mid">
                 contact us
@@ -129,7 +128,7 @@ export default async function ServicesPage() {
               for current offerings.
             </p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-panel">
               {services.map((service, i) => (
                 <Reveal key={service.slug} delay={i * 60}>
                   <ServiceCard
@@ -155,12 +154,12 @@ export default async function ServicesPage() {
             title="The Daniells Difference"
             subtitle="We don't just clean cars — we restore and protect them with factory-grade techniques and a commitment to excellence that shows in every detail."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-panel">
             {whyChooseUs.map((item, i) => (
               <Reveal key={item.title} delay={i * 80}>
                 <GlowCard className="h-full flex flex-col">
-                  <div className="p-8 h-full">
-                    <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-lg mb-3">
+                  <div className="p-bay h-full">
+                    <h3 className="text-lg mb-bolt">
                       {item.title}
                     </h3>
                     <p className="text-fg-soft text-sm leading-relaxed">
@@ -182,18 +181,18 @@ export default async function ServicesPage() {
             title="From Quote to Showroom Finish"
             subtitle="A transparent, four-step process that puts you in control from start to finish."
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-bay">
             {processSteps.map((step, i) => (
               <Reveal key={step.title} delay={i * 100}>
                 <div>
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-cta-fg text-sm mb-4 flex-shrink-0"
+                    className="w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-cta-fg text-sm mb-gauge flex-shrink-0"
                     style={{ background: 'var(--accent)' }}
                     aria-hidden="true"
                   >
                     {i + 1}
                   </div>
-                  <h3 className="font-sans font-bold uppercase tracking-[-0.01em] text-fg text-base mb-2">
+                  <h3 className="text-base mb-rivet">
                     {step.title}
                   </h3>
                   <p className="text-fg-soft text-sm leading-relaxed">
@@ -210,7 +209,7 @@ export default async function ServicesPage() {
       <Section surface="bg" id="services-cta">
         <Container>
           <div
-            className="rounded-lg px-8 py-16 text-center"
+            className="rounded-lg px-bay py-deck text-center"
             style={{
               background:
                 'linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%)',
@@ -218,28 +217,25 @@ export default async function ServicesPage() {
           >
             <Reveal>
               <p
-                className="font-mono text-[0.7rem] tracking-[0.15em] uppercase mb-3"
-                style={{ color: 'rgba(255,255,255,0.65)' }}
+                className="font-mono text-mono-sm tracking-label uppercase mb-bolt text-cta-fg/60"
               >
                 {business.hours} · {business.responseTime}
               </p>
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-4"
-                style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)' }}
+                className="text-cta-fg mb-gauge text-3xl"
               >
                 Schedule Your Detail Today
               </h2>
               <p
-                className="text-lg mb-8 max-w-lg mx-auto"
-                style={{ color: 'rgba(255,255,255,0.82)' }}
+                className="text-lg mb-bay max-w-lg mx-auto text-cta-fg/80"
               >
                 Get a free, no-obligation quote — fast. We
                 come to your home or office anywhere in {business.serviceArea}.
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-gauge">
                 <QuoteButton
                   size="xl"
-                  className="bg-white text-accent hover:bg-white/90 border-transparent"
+                  className="bg-cta-fg text-accent hover:bg-cta-fg/90 border-transparent"
                   track={{
                     category: 'conversion',
                     action: 'button_click',
@@ -252,7 +248,7 @@ export default async function ServicesPage() {
                   variant="phone"
                   size="xl"
                   href={business.phoneHref}
-                  className="border-white/60 !text-white hover:bg-white/10 hover:!text-white hover:border-white"
+                  className="border-cta-fg/60 !text-cta-fg hover:bg-cta-fg/10 hover:!text-cta-fg hover:border-cta-fg"
                   track={{
                     category: 'conversion',
                     action: 'link_click',

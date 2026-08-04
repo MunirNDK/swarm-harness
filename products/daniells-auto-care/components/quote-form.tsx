@@ -175,8 +175,8 @@ export function QuoteForm({ prefill, services, eventSection = 'body' }: QuoteFor
 
   if (status === 'success') {
     return (
-      <div className="text-center py-6">
-        <p className="font-sans font-bold text-2xl uppercase text-fg mb-2">
+      <div className="text-center py-panel">
+        <p className="font-sans font-bold text-2xl uppercase text-fg mb-rivet">
           Quote Request Sent!
         </p>
         <p className="text-fg-soft text-sm">
@@ -206,7 +206,7 @@ export function QuoteForm({ prefill, services, eventSection = 'body' }: QuoteFor
         style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', height: 0 }}
       />
 
-      <div className="space-y-4">
+      <div className="space-y-gauge">
         {/* Name + Phone row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-bolt">
           <FieldGroup label="Full Name" htmlFor="q-name" required error={errors.name}>
@@ -392,15 +392,15 @@ function FieldGroup({
     <div>
       <label
         htmlFor={htmlFor}
-        className="block font-mono text-[0.65rem] tracking-[0.1em] uppercase text-fg-faint mb-1.5"
+        className="block font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-rivet"
       >
         {label}
-        {required && <span className="text-accent ml-1" aria-hidden="true">*</span>}
+        {required && <span className="text-accent ml-pin" aria-hidden="true">*</span>}
         {required && <span className="sr-only"> (required)</span>}
       </label>
       {children}
       {error && (
-        <p className="mt-1 text-xs text-accent" role="alert">
+        <p className="mt-pin text-sm text-danger" role="alert">
           {error}
         </p>
       )}

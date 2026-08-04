@@ -75,7 +75,7 @@ export default async function BlogPostPage({
       {/* ── Breadcrumbs ── */}
       <div className="bg-surface-dark border-b border-border">
         <Container>
-          <div className="py-3">
+          <div className="py-bolt">
             <Breadcrumbs items={BREADCRUMBS} />
           </div>
         </Container>
@@ -90,17 +90,17 @@ export default async function BlogPostPage({
               href="/blog"
               variant="ghost"
               size="sm"
-              className="mb-6 -ml-1"
+              className="mb-panel -ml-pin"
               track={{ category: 'navigation', action: 'link_click', label: 'blog', context: 'internal' }}
             >
-              <ArrowLeft className="w-4 h-4 mr-1.5" aria-hidden="true" />
+              <ArrowLeft className="w-4 h-4 mr-rivet" aria-hidden="true" />
               Back to Blog
             </Button>
           </Reveal>
 
           {/* Featured image — lazy (not LCP; hero section below is) */}
           <Reveal delay={40}>
-            <div className="relative aspect-[3/1] min-h-[200px] overflow-hidden rounded-lg mb-8">
+            <div className="relative aspect-[3/1] min-h-[200px] overflow-hidden rounded-lg mb-bay">
               <Image
                 src={blogImageUrl(post.slug, post.featuredImage?.url)}
                 alt={post.featuredImage?.alt || post.title}
@@ -113,7 +113,7 @@ export default async function BlogPostPage({
                 className="absolute inset-0"
                 style={{
                   background:
-                    'linear-gradient(to top,rgba(10,10,10,0.75) 0%,transparent 60%)',
+                    'linear-gradient(to top, var(--overlay) 0%, transparent 60%)',
                 }}
                 aria-hidden="true"
               />
@@ -123,14 +123,14 @@ export default async function BlogPostPage({
           {/* h1, date, category */}
           <Reveal delay={80}>
             <div className="max-w-3xl mx-auto text-center">
-              <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
-                <span className="flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent bg-accent-soft border border-[rgba(232,5,5,0.2)] rounded-full px-2 py-0.5">
+              <div className="flex flex-wrap items-center justify-center gap-bolt mb-gauge">
+                <span className="flex items-center gap-rivet font-mono text-mono-sm tracking-label uppercase text-accent bg-accent-soft border border-accent-soft rounded-full px-rivet py-pin">
                   <Tag className="w-3 h-3" aria-hidden="true" />
                   {post.category}
                 </span>
                 <time
                   dateTime={post.date}
-                  className="flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-fg-faint"
+                  className="flex items-center gap-rivet font-mono text-mono-sm tracking-label uppercase text-fg-faint"
                 >
                   <Calendar className="w-3 h-3" aria-hidden="true" />
                   {new Date(post.date).toLocaleDateString('en-US', {
@@ -142,12 +142,11 @@ export default async function BlogPostPage({
               </div>
 
               <h1
-                className="font-sans font-bold uppercase tracking-[-0.02em] text-fg"
-                style={{ fontSize: 'clamp(1.75rem,4vw,3rem)', lineHeight: '1.1' }}
+                className="tracking-tighter text-3xl"
               >
                 {post.title}
               </h1>
-              <p className="mt-4 text-fg-soft text-lg leading-relaxed">{post.excerpt}</p>
+              <p className="mt-gauge text-fg-soft text-lg leading-relaxed">{post.excerpt}</p>
             </div>
           </Reveal>
         </Container>
@@ -157,10 +156,10 @@ export default async function BlogPostPage({
       <Section surface="surface" id="post-body">
         <Container>
           <div className="max-w-3xl mx-auto">
-            <div className="space-y-6">
+            <div className="space-y-panel">
               {post.body.map((paragraph, i) => (
                 <Reveal key={i} delay={i * 40}>
-                  <p className="text-fg-soft leading-[1.8] text-base">{paragraph}</p>
+                  <p className="text-fg-soft leading-relaxed text-base">{paragraph}</p>
                 </Reveal>
               ))}
             </div>
@@ -168,22 +167,21 @@ export default async function BlogPostPage({
             {/* In-article CTA */}
             <Reveal delay={200}>
               <div
-                className="mt-12 rounded-lg p-6 md:p-8"
-                style={{ background: 'linear-gradient(135deg,#E80505,#980404)' }}
+                className="mt-stall rounded-lg p-panel md:p-bay bg-cta-gradient"
               >
-                <p className="font-mono text-[0.65rem] tracking-[0.15em] uppercase text-white/60 mb-2">
+                <p className="font-mono text-mono-sm tracking-label uppercase text-cta-fg/60 mb-rivet">
                   Northern NJ Mobile Detailing
                 </p>
                 <h2
-                  className="font-sans font-bold uppercase tracking-[-0.01em] text-cta-fg mb-2 text-xl"
+                  className="text-cta-fg mb-rivet text-xl"
                 >
                   Ready for a Free Quote?
                 </h2>
-                <p className="text-white/80 text-sm mb-4 leading-relaxed">
+                <p className="text-cta-fg/80 text-sm mb-gauge leading-relaxed">
                   We respond quickly and come to your home, office, or any
                   location in {business.serviceArea}.
                 </p>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-bolt">
                   <QuoteButton
                     size="md"
                     track={{
@@ -196,7 +194,7 @@ export default async function BlogPostPage({
                     href={business.phoneHref}
                     variant="outline"
                     size="md"
-                    className="border-white/40 text-white hover:border-white hover:text-white"
+                    className="border-cta-fg/40 text-cta-fg hover:border-cta-fg hover:text-cta-fg"
                     track={{ category: 'conversion', action: 'link_click', label: 'phone_call' }}
                   >
                     {business.phone}
@@ -214,8 +212,7 @@ export default async function BlogPostPage({
           <Container>
             <Reveal>
               <h2
-                className="font-sans font-bold uppercase tracking-[-0.01em] text-fg mb-8"
-                style={{ fontSize: 'clamp(1.25rem,2vw,1.75rem)' }}
+                className="mb-bay text-xl"
               >
                 Related Articles
               </h2>
@@ -223,7 +220,7 @@ export default async function BlogPostPage({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-bay">
               {related.map((r, i) => (
                 <Reveal key={r.slug} delay={i * 60}>
-                  <GlowCard className="relative flex gap-4 p-4 min-h-[44px]">
+                  <GlowCard className="relative flex gap-gauge p-gauge min-h-touch">
                     <div className="relative w-24 h-20 rounded overflow-hidden flex-shrink-0">
                       <Image
                         src={blogImageUrl(r.slug, r.featuredImage?.url)}
@@ -233,14 +230,14 @@ export default async function BlogPostPage({
                         className="object-cover"
                       />
                     </div>
-                    <div className="flex flex-col gap-1 min-w-0">
-                      <span className="font-mono text-[0.6rem] tracking-[0.08em] uppercase text-accent">
+                    <div className="flex flex-col gap-pin min-w-0">
+                      <span className="font-mono text-mono-sm tracking-label uppercase text-accent">
                         {r.category}
                       </span>
                       <div className="font-sans font-bold text-sm uppercase tracking-tight text-fg leading-snug">
                         {r.title}
                       </div>
-                      <span className="flex items-center gap-1 font-mono text-[0.6rem] tracking-[0.08em] uppercase text-fg-faint mt-auto">
+                      <span className="flex items-center gap-pin font-mono text-mono-sm tracking-label uppercase text-fg-faint mt-auto">
                         Read more{' '}
                         <ArrowRight className="w-2.5 h-2.5" aria-hidden="true" />
                       </span>

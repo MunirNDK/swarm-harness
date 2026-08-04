@@ -20,7 +20,7 @@ export function GlassCard({
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-lg border border-border bg-surface shadow-sm',
+        'relative overflow-hidden rounded-lg border-thin border-border bg-surface shadow-sm',
         className
       )}
       {...props}

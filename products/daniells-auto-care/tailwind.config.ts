@@ -1,5 +1,13 @@
 import type { Config } from 'tailwindcss';
 
+/**
+ * Colours backed by an RGB channel triplet in globals.css.
+ * Emitting `rgb(var(--x-rgb) / <alpha-value>)` is what makes opacity
+ * modifiers (`bg-surface/90`, `text-cta-fg/80`) resolve — a bare
+ * `var(--x)` colour silently drops the modifier and emits no CSS.
+ */
+const ch = (name: string) => `rgb(var(--${name}-rgb) / <alpha-value>)`;
+
 const config: Config = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,47 +18,50 @@ const config: Config = {
   theme: {
     extend: {
       /* ═══════════════════════════════════════════
-         COLORS — Design Spec §18
-         All mapped to CSS custom properties.
+         COLORS — tokens doc §"Color Tokens"
+         Every colour resolves to a CSS custom property in globals.css.
+         There are no literal hex values in this file by design: if a
+         colour is not here, it is not part of the system.
          ═══════════════════════════════════════════ */
       colors: {
-        bg:             'var(--bg)',
-        surface:        'var(--surface)',
-        surface2:       'var(--surface-2)',
-        'surface-dark':   'var(--surface-dark)',
-        'surface-dark-2': 'var(--surface-dark-2)',
-        border:         'var(--rule)',
-        fg:             'var(--ink)',
-        'fg-soft':      'var(--ink-soft)',
-        'fg-faint':     'var(--ink-faint)',
-        muted:          'var(--muted)',
-        accent:         'var(--accent)',
-        'accent-deep':  'var(--accent-deep)',
-        'accent-mid':   'var(--accent-mid)',
+        bg:               ch('bg'),
+        surface:          ch('surface'),
+        surface2:         ch('surface-2'),
+        'surface-dark':   ch('surface-dark'),
+        'surface-dark-2': ch('surface-dark-2'),
+        border:           ch('rule'),
+        fg:               ch('ink'),
+        'fg-soft':        ch('ink-soft'),
+        'fg-faint':       ch('ink-faint'),
+        muted:            ch('muted'),
+        accent:           ch('accent'),
+        'accent-deep':    ch('accent-deep'),
+        'accent-mid':     ch('accent-mid'),
+        'accent-light':   ch('accent-light'),
+        cta:              ch('accent'),
+        'cta-fg':         ch('cta-fg'),
+        'cta-hover':      ch('danger'),
+        'cta-active':     ch('accent-deep'),
+        trust:            ch('surface'),
+        'trust-border':   ch('rule'),
+        'trust-star':     ch('trust-star'),
+        urgency:          ch('accent'),
+        phone:            ch('accent'),
+        'input-border':   ch('input-border'),
+        success:          ch('success'),
+        warning:          ch('warning'),
+        danger:           ch('danger'),
+        info:             ch('info'),
+
+        /* Pre-composed tints — alpha is baked in, so these take no modifier */
+        overlay:        'var(--overlay)',
         'accent-soft':  'var(--accent-soft)',
-        'accent-light': 'var(--accent-light)',
-        cta:            'var(--cta-bg)',
-        'cta-fg':       'var(--cta-fg)',
-        trust:          'var(--trust-bg)',
-        'trust-border': 'var(--trust-border)',
-        'trust-star':   'var(--trust-star)',
-        urgency:        'var(--urgency)',
-        success:        'var(--success)',
-        warning:        'var(--warning)',
-        danger:         'var(--danger)',
-        info:           'var(--info)',
-        /* Legacy aliases — preserve for existing page compat */
-        dac: {
-          red:        '#E80505',
-          'red-light':'#B30404',
-          'red-med':  '#980404',
-          'red-dark': '#740404',
-          ink:        '#0A0A0A',
-          black:      '#000000',
-          white:      '#FFFFFF',
-          muted:      '#B0B0B0',
-          faint:      '#6E6E6E',
-        },
+        'accent-mist':  'var(--accent-mist)',
+        'urgency-soft': 'var(--urgency-soft)',
+        'success-soft': 'var(--success-soft)',
+        'warning-soft': 'var(--warning-soft)',
+        'danger-soft':  'var(--danger-soft)',
+        'info-soft':    'var(--info-soft)',
       },
 
       /* ═══════════════════════════════════════════
@@ -65,7 +76,11 @@ const config: Config = {
       },
 
       /* ═══════════════════════════════════════════
-         FONT SIZE — Design Spec §18, §3
+         FONT SIZE — tokens doc §"Type Scale" + §"Labels & Mono"
+         The mono/* and kicker entries carry their own tracking so a label
+         is a single class. Nothing in the app may set a font size outside
+         this list — 12px is the floor for readable text, and text-xs (11px)
+         is reserved for mono micro-labels.
          ═══════════════════════════════════════════ */
       fontSize: {
         xs:      ['var(--t-xs)',      { lineHeight: '1.4' }],
@@ -78,6 +93,28 @@ const config: Config = {
         '3xl':   ['var(--t-3xl)',     { lineHeight: '1.1' }],
         '4xl':   ['var(--t-4xl)',     { lineHeight: '1.05' }],
         display: ['var(--t-display)', { lineHeight: '1.0' }],
+
+        'mono-xs': ['var(--t-mono-xs)', { lineHeight: '1.4', letterSpacing: 'var(--track-mono)' }],
+        'mono-sm': ['var(--t-mono-sm)', { lineHeight: '1.5', letterSpacing: 'var(--track-mono)' }],
+        'mono-md': ['var(--t-mono-md)', { lineHeight: '1.5', letterSpacing: 'var(--track-mono-md)' }],
+        kicker:    ['var(--t-kicker)',  { lineHeight: '1.4', letterSpacing: 'var(--track-kicker)' }],
+      },
+
+      /* ═══════════════════════════════════════════
+         LETTER SPACING — tokens doc §"Labels & Mono",
+         §"Heading Hierarchy", §"Quick Reference — Minimums".
+         `tight`/`tighter` intentionally shadow Tailwind's defaults
+         (-0.025em / -0.05em) so utilities match the heading base styles.
+         `label` is the WCAG 1.4.12 floor for uppercase text.
+         ═══════════════════════════════════════════ */
+      letterSpacing: {
+        tighter: 'var(--track-tighter)',
+        tight:   'var(--track-tight)',
+        flat:    'var(--track-flat)',
+        'mono-md': 'var(--track-mono-md)',
+        mono:    'var(--track-mono)',
+        label:   'var(--track-label)',
+        kicker:  'var(--track-kicker)',
       },
 
       /* ═══════════════════════════════════════════
@@ -97,17 +134,71 @@ const config: Config = {
       },
 
       /* ═══════════════════════════════════════════
-         BORDER RADIUS — Design Spec §18, §5
+         BORDER RADIUS — tokens doc §"Border Radius"
+         The scale tops out at r-lg (12px) + r-full. The old 2xl/3xl
+         legacy radii were off-system and have been removed.
          ═══════════════════════════════════════════ */
       borderRadius: {
+        DEFAULT: 'var(--r-sm)',
         none: 'var(--r-none)',
         sm:   'var(--r-sm)',
         md:   'var(--r-md)',
         lg:   'var(--r-lg)',
         full: 'var(--r-full)',
-        /* Keep 2xl/3xl for legacy compat */
-        '2xl': '1rem',
-        '3xl': '1.5rem',
+      },
+
+      /* ═══════════════════════════════════════════
+         BORDER WIDTH — tokens doc §"Border Width Tokens"
+         ═══════════════════════════════════════════ */
+      borderWidth: {
+        DEFAULT: 'var(--bw-thin)',
+        none:   'var(--bw-none)',
+        thin:   'var(--bw-thin)',
+        medium: 'var(--bw-medium)',
+        thick:  'var(--bw-thick)',
+        heavy:  'var(--bw-heavy)',
+      },
+
+      /* ═══════════════════════════════════════════
+         Z-INDEX — tokens doc §"Z-Index Scale"
+         ═══════════════════════════════════════════ */
+      zIndex: {
+        base:     'var(--z-base)',
+        raised:   'var(--z-raised)',
+        dropdown: 'var(--z-dropdown)',
+        sticky:   'var(--z-sticky)',
+        overlay:  'var(--z-overlay)',
+        modal:    'var(--z-modal)',
+        toast:    'var(--z-toast)',
+        tooltip:  'var(--z-tooltip)',
+      },
+
+      /* ═══════════════════════════════════════════
+         OPACITY — tokens doc §"Opacity Tokens"
+         ═══════════════════════════════════════════ */
+      opacity: {
+        disabled: 'var(--o-disabled)',
+        faint:    'var(--o-faint)',
+        muted:    'var(--o-muted)',
+        overlay:  'var(--o-overlay)',
+        hover:    'var(--o-hover)',
+      },
+
+      /* ═══════════════════════════════════════════
+         TOUCH TARGETS — tokens doc §"Touch Target Tokens"
+         ═══════════════════════════════════════════ */
+      minWidth: {
+        'touch-sm': 'var(--touch-sm)',
+        touch:      'var(--touch-md)',
+        'touch-lg': 'var(--touch-lg)',
+        'touch-xl': 'var(--touch-xl)',
+      },
+
+      minHeight: {
+        'touch-sm': 'var(--touch-sm)',
+        touch:      'var(--touch-md)',
+        'touch-lg': 'var(--touch-lg)',
+        'touch-xl': 'var(--touch-xl)',
       },
 
       /* ═══════════════════════════════════════════
@@ -135,10 +226,15 @@ const config: Config = {
       },
 
       /* ═══════════════════════════════════════════
-         MAX WIDTH — Design Spec §18, §9
+         MAX WIDTH — tokens doc §"Container Tokens"
          ═══════════════════════════════════════════ */
       maxWidth: {
-        container: 'var(--container-max-w)',
+        container:      'var(--container-max-w)',
+        'container-xs': 'var(--container-xs)',
+        'container-sm': 'var(--container-sm)',
+        'container-md': 'var(--container-md)',
+        'container-lg': 'var(--container-lg)',
+        'container-xl': 'var(--container-xl)',
       },
     },
   },

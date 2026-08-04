@@ -117,12 +117,27 @@ export function BeforeAfter({
           draggable={false}
         />
 
+        {/*
+          Everything below the images shares one z token (z-raised) and is
+          ordered in the DOM so paint order gives the ladder we want:
+          divider → labels → knob → input. The z-index scale has a single
+          "above base" step, so stacking is expressed by source order.
+        */}
+
         {/* Red divider line */}
         <div
           aria-hidden="true"
-          className="absolute inset-y-0 w-[2px] bg-accent z-[3]"
+          className="absolute inset-y-0 w-0.5 bg-accent z-raised"
           style={{ left: `${position}%`, transform: 'translateX(-50%)' }}
         />
+
+        {/* Labels — sit on a dark overlay, so text is pinned to --cta-fg */}
+        <span className="absolute bottom-bolt left-bolt z-raised rounded-full bg-overlay px-bolt py-pin font-mono text-mono-sm uppercase tracking-label text-cta-fg/80">
+          Before
+        </span>
+        <span className="absolute bottom-bolt right-bolt z-raised rounded-full bg-overlay px-bolt py-pin font-mono text-mono-sm uppercase tracking-label text-cta-fg/80">
+          After
+        </span>
 
         {/*
           Single drag handle — circular knob centered on the divider.
@@ -131,27 +146,19 @@ export function BeforeAfter({
         */}
         <div
           aria-hidden="true"
-          className="absolute z-[5] cursor-ew-resize"
+          className="absolute z-raised cursor-ew-resize"
           style={{ left: `${position}%`, top: '50%', transform: 'translate(-50%, -50%)' }}
           onPointerDown={onPointerDown}
         >
-          <div className="w-10 h-10 rounded-full bg-black/80 border border-accent flex items-center justify-center shadow-[0_0_8px_rgba(232,5,5,0.35)]">
+          <div className="w-10 h-10 rounded-full bg-overlay border-thin border-accent flex items-center justify-center shadow-red">
             <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
               {/* Left chevron */}
-              <path d="M8 1L2 7L8 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white" />
+              <path d="M8 1L2 7L8 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-cta-fg" />
               {/* Right chevron */}
-              <path d="M12 1L18 7L12 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white" />
+              <path d="M12 1L18 7L12 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-cta-fg" />
             </svg>
           </div>
         </div>
-
-        {/* Labels */}
-        <span className="absolute bottom-3 left-3 z-[4] rounded-full bg-black/70 px-3 py-1 font-mono text-xs uppercase tracking-widest text-white/80">
-          Before
-        </span>
-        <span className="absolute bottom-3 right-3 z-[4] rounded-full bg-black/70 px-3 py-1 font-mono text-xs uppercase tracking-widest text-white/80">
-          After
-        </span>
 
         {/* Accessible range input */}
         <input
@@ -160,17 +167,17 @@ export function BeforeAfter({
           max="100"
           value={position}
           onChange={(e) => !reduced && setPosition(Number(e.target.value))}
-          className="absolute bottom-2 left-1/2 w-4/5 -translate-x-1/2 opacity-0 focus:opacity-100 cursor-pointer z-[6]"
+          className="absolute bottom-rivet left-1/2 w-4/5 -translate-x-1/2 opacity-0 focus:opacity-100 cursor-pointer z-raised"
           aria-label={`Before/after slider for ${title || 'comparison'}`}
         />
       </div>
 
       {/* Meta row */}
       {(title || tag) && (
-        <div className="mt-3 px-1 flex items-center justify-between gap-2">
+        <div className="mt-bolt px-pin flex items-center justify-between gap-rivet">
           {title && <p className="text-sm font-medium text-fg">{title}</p>}
           {tag && (
-            <span className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-accent bg-accent-soft border border-[rgba(232,5,5,0.2)] rounded-full px-2 py-0.5 flex-shrink-0">
+            <span className="font-mono text-mono-sm tracking-label uppercase text-accent bg-accent-soft border border-accent-soft rounded-full px-rivet py-pin flex-shrink-0">
               {tag}
             </span>
           )}
