@@ -1,86 +1,153 @@
-import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-import Link from "next/link";
-import { ButtonHTMLAttributes, cloneElement, forwardRef, isValidElement, ReactElement } from "react";
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import {
+  ButtonHTMLAttributes,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  ReactElement,
+} from 'react';
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-full font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dac-red focus-visible:ring-offset-2 focus-visible:ring-offset-dac-black disabled:pointer-events-none disabled:opacity-50",
-  {
-    variants: {
-      variant: {
-        primary:
-          "bg-dac-red text-white hover:bg-dac-red-light active:bg-dac-red-med shadow-lg shadow-dac-red/20",
-        secondary:
-          "bg-white/5 border border-white/10 text-white backdrop-blur-xl hover:bg-white/10 active:bg-white/20",
-        ghost:
-          "text-white/80 hover:text-white hover:bg-white/5",
-      },
-      size: {
-        sm: "h-9 px-4 text-sm",
-        md: "h-11 px-6 text-base",
-        lg: "h-12 px-8 text-lg",
-        xl: "h-14 px-10 text-xl",
-      },
-    },
-    defaultVariants: {
-      variant: "primary",
-      size: "md",
-    },
-  }
-);
+/* ═══════════════════════════════════════════════════════════════
+   Track props — Contract §5 / §10
+   ═══════════════════════════════════════════════════════════════ */
+export interface TrackProps {
+  category: string;
+  action:   string;
+  label:    string;
+  context?: string;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Variant + size maps — tokens doc §"Component Tokens · Buttons"
+
+   Sizing lives entirely in sizeClasses (height + padding + font size);
+   variants only carry colour, border and state. Uppercase button labels
+   use tracking-label (0.12em), the WCAG 1.4.12 floor for uppercase text.
+   ═══════════════════════════════════════════════════════════════ */
+const variantBase =
+  'font-sans font-bold uppercase tracking-label rounded-sm cursor-pointer ' +
+  'inline-flex items-center justify-center gap-rivet ' +
+  'transition-all duration-base ease-default ' +
+  'focus-visible:outline-medium focus-visible:outline-accent focus-visible:outline-offset-2 ' +
+  'disabled:opacity-disabled disabled:pointer-events-none';
+
+const variantClasses: Record<string, string> = {
+  primary:
+    `${variantBase} bg-cta text-cta-fg border-none ` +
+    'hover:bg-cta-hover hover:-translate-y-px hover:shadow-red ' +
+    'active:bg-cta-active active:translate-y-0',
+  outline:
+    `${variantBase} bg-transparent text-fg border-thin border-border ` +
+    'hover:border-accent hover:text-accent',
+  phone:
+    `${variantBase} bg-transparent text-accent border-thin border-accent ` +
+    'hover:bg-accent hover:text-cta-fg ' +
+    'active:bg-cta-active active:text-cta-fg',
+  ghost:
+    `${variantBase} bg-transparent text-fg-soft ` +
+    'hover:text-fg',
+  /* Legacy alias — same treatment as `outline` */
+  secondary:
+    `${variantBase} bg-transparent text-fg border-thin border-border ` +
+    'hover:border-accent hover:text-accent',
+};
+
+/* btn-sm 32px · btn-md 40px · btn-lg 48px · btn-xl 56px */
+const sizeClasses: Record<string, string> = {
+  sm: 'h-8 px-bolt text-sm',
+  md: 'h-10 px-gauge text-sm',
+  lg: 'h-12 px-panel text-base',
+  xl: 'h-14 px-panel text-md',
+};
 
 export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  href?: string;
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?:  'primary' | 'outline' | 'phone' | 'ghost' | 'secondary';
+  size?:     'sm' | 'md' | 'lg' | 'xl';
+  href?:     string;
   external?: boolean;
-  asChild?: boolean;
+  asChild?:  boolean;
+  track?:    TrackProps;
+}
+
+function trackAttrs(track?: TrackProps): Record<string, string> {
+  if (!track) return {};
+  const attrs: Record<string, string> = {
+    'data-track-category': track.category,
+    'data-track-action':   track.action,
+    'data-track-label':    track.label,
+  };
+  if (track.context) attrs['data-track-context'] = track.context;
+  return attrs;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, href, external, asChild, children, ...props }, ref) => {
-    // Slot pattern: render the single child (e.g. <Link>) with button styles merged in.
+  (
+    {
+      className,
+      variant = 'primary',
+      /* Default is `lg` (48px): it clears the 44px touch-target minimum
+         (WCAG 2.5.5) and keeps unsized CTAs at their established weight. */
+      size    = 'lg',
+      href,
+      external,
+      asChild,
+      track,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const cls = cn(
+      variantClasses[variant] ?? variantClasses.primary,
+      sizeClasses[size] ?? sizeClasses.lg,
+      className
+    );
+    const ta = trackAttrs(track);
+
+    // Slot / asChild pattern
     if (asChild && isValidElement(children)) {
-      const child = children as ReactElement<any>;
-      return cloneElement(child, {
-        className: cn(buttonVariants({ variant, size }), className, child.props?.className),
-      });
+      const child = children as ReactElement<Record<string, unknown>>;
+      return cloneElement(child, { className: cn(cls, child.props?.className as string), ...ta });
     }
+
+    // Anchor (external or tel:)
     if (href) {
-      const isExternal = external || href.startsWith("http") || href.startsWith("tel:") || href.startsWith("mailto:");
-      if (isExternal) {
+      const isExt =
+        external ||
+        href.startsWith('http') ||
+        href.startsWith('tel:') ||
+        href.startsWith('mailto:');
+
+      if (isExt) {
         return (
           <a
             href={href}
-            className={cn(buttonVariants({ variant, size, className }))}
-            target={external ? "_blank" : undefined}
-            rel={external ? "noopener noreferrer" : undefined}
+            className={cls}
+            target={external ? '_blank' : undefined}
+            rel={external ? 'noopener noreferrer' : undefined}
+            {...ta}
           >
             {children}
           </a>
         );
       }
+
       return (
-        <Link
-          href={href}
-          className={cn(buttonVariants({ variant, size, className }))}
-        >
+        <Link href={href} className={cls} {...ta}>
           {children}
         </Link>
       );
     }
 
     return (
-      <button
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      >
+      <button ref={ref} className={cls} {...(ta as Record<string, string>)} {...props}>
         {children}
       </button>
     );
   }
 );
-Button.displayName = "Button";
+Button.displayName = 'Button';
 
-export { Button, buttonVariants };
+export { Button };

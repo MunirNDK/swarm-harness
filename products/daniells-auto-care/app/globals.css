@@ -2,45 +2,524 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Daniells Auto Care · Showroom Precision
+   Source of truth: "Design Updates/daniells-auto-care-design-tokens.md"
+                    "Design Updates/daniells-auto-care-design-system.html"
+   Every value below is quoted from those two files. Nothing is invented
+   here, and no component may introduce a colour, size, tracking, radius,
+   z-index or duration that is not defined in this block.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  color-scheme: light;
+
+  /* ─── COLOUR CHANNELS ────────────────────────────────────────────
+     Every colour token is stored as a space-separated RGB triplet and
+     the named token is derived from it. This is what lets Tailwind's
+     opacity modifiers work: tailwind.config.ts declares the colours as
+     `rgb(var(--x-rgb) / <alpha-value>)`, so `bg-surface/90` composes
+     correctly. A raw `var(--surface)` colour silently drops the alpha
+     modifier and emits no CSS at all — hence the split.
+     Change the triplet; both forms follow.
+     ──────────────────────────────────────────────────────────────── */
+
+  /* SHOWROOM FLOOR — Light Surface Layer */
+  --bg-rgb:         245 244 242;
+  --surface-rgb:    255 255 255;
+  --surface-2-rgb:  236 234 230;
+  --bg:           rgb(var(--bg-rgb));
+  --surface:      rgb(var(--surface-rgb));
+  --surface-2:    rgb(var(--surface-2-rgb));
+  --overlay:      rgb(0 0 0 / var(--o-overlay));
+
+  /* ANCHOR — Bright Surfaces (hero / footer / CTA-adjacent bands) */
+  --surface-dark-rgb:   255 255 255;
+  --surface-dark-2-rgb: 250 250 248;
+  --surface-dark:   rgb(var(--surface-dark-rgb));
+  --surface-dark-2: rgb(var(--surface-dark-2-rgb));
+
+  /* INK LAYER — Dark-on-Light Text */
+  --ink-rgb:       23 21 19;
+  --ink-soft-rgb:  85 80 74;
+  --ink-faint-rgb: 110 105 99;
+  --muted-rgb:     154 148 140;
+  --rule-rgb:      228 225 219;
+  --ink:        rgb(var(--ink-rgb));
+  --ink-soft:   rgb(var(--ink-soft-rgb));
+  --ink-faint:  rgb(var(--ink-faint-rgb));
+  --muted:      rgb(var(--muted-rgb));
+  --rule:       rgb(var(--rule-rgb));
+
+  /* DETAILER'S RED — Primary Accent (unchanged — already AA on white, ~4.71:1) */
+  --accent-rgb:       232 5 5;
+  --accent-deep-rgb:  116 4 4;
+  --accent-mid-rgb:   152 4 4;
+  --accent-light-rgb: 179 4 4;
+  --accent:       rgb(var(--accent-rgb));
+  --accent-deep:  rgb(var(--accent-deep-rgb));
+  --accent-mid:   rgb(var(--accent-mid-rgb));
+  --accent-light: rgb(var(--accent-light-rgb));
+  --accent-soft:  rgb(var(--accent-rgb) / 0.12);
+  --accent-mist:  rgb(var(--accent-rgb) / 0.06);
+
+  /* SEMANTIC — all four pass AA as text on white */
+  --success-rgb: 21 128 61;
+  --warning-rgb: 146 64 14;
+  --danger-rgb:  196 4 4;
+  --info-rgb:    29 78 216;
+  --success:      rgb(var(--success-rgb));
+  --success-soft: rgb(var(--success-rgb) / 0.12);
+  --warning:      rgb(var(--warning-rgb));
+  --warning-soft: rgb(var(--warning-rgb) / 0.12);
+  --danger:       rgb(var(--danger-rgb));
+  --danger-soft:  rgb(var(--danger-rgb) / 0.12);
+  --info:         rgb(var(--info-rgb));
+  --info-soft:    rgb(var(--info-rgb) / 0.12);
+
+  /* TYPOGRAPHY — set by next/font in layout.tsx */
+  --font-body:    'Montserrat', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+  /* TYPE SCALE */
+  --t-xs:      11px;
+  --t-sm:      13px;
+  --t-base:    16px;
+  --t-md:      18px;
+  --t-lg:      22px;
+  --t-xl:      26px;
+  --t-2xl:     32px;
+  --t-3xl:     clamp(34px, 4vw, 48px);
+  --t-4xl:     clamp(42px, 6vw, 64px);
+  --t-display: clamp(48px, 8vw, 80px);
+
+  /* LABEL & MONO STYLES — the only sizes allowed below --t-sm.
+     12px is the absolute floor for any readable text (WCAG 1.4.4). */
+  --t-mono-xs: 11px;
+  --t-mono-sm: 12px;
+  --t-mono-md: 13px;
+  --t-kicker:  12px;
+
+  /* LETTER SPACING — the complete sanctioned set.
+     `tight`/`tighter` deliberately override Tailwind's defaults so the
+     heading hierarchy below and the utility classes agree. */
+  --track-tighter: -0.02em;  /* h1 / display */
+  --track-tight:   -0.01em;  /* h2 / h3 */
+  --track-flat:    0;        /* h4–h6 */
+  --track-mono-md: 0.05em;   /* mono/md */
+  --track-mono:    0.06em;   /* mono/xs, mono/sm */
+  --track-label:   0.12em;   /* WCAG 1.4.12 minimum for uppercase */
+  --track-kicker:  0.28em;   /* section kickers / eyebrows */
+
+  /* HEADING WEIGHTS */
+  --w-h1: 900;
+  --w-h2: 800;
+  --w-h3: 700;
+  --w-h4: 700;
+  --w-h5: 700;
+  --w-h6: 600;
+
+  /* SPACING — Bay Hardware Scale */
+  --pin:       4px;
+  --rivet:     8px;
+  --bolt:      12px;
+  --gauge:     16px;
+  --panel:     24px;
+  --bay:       32px;
+  --stall:     48px;
+  --deck:      64px;
+  --hangar:    96px;
+  --perimeter: 128px;
+
+  /* FLUID RHYTHM */
+  --section-v-pad: clamp(64px, 10vw, 120px);
+  --card-grid-min: min(320px, 100%);
+
+  /* LAYOUT */
+  --container-max-w: 80rem;
+  --container-xs: 480px;
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --nav-h:  80px;
+  --nav-bg: #FFFFFF;
+  --nav-fg: #171513;
+
+  /* BORDER RADIUS */
+  --r-none: 0px;
+  --r-sm:   4px;
+  --r-md:   8px;
+  --r-lg:   12px;
+  --r-full: 9999px;
+
+  /* BORDER WIDTH */
+  --bw-none:   0px;
+  --bw-thin:   1px;
+  --bw-medium: 2px;
+  --bw-thick:  3px;
+  --bw-heavy:  4px;
+
+  /* OPACITY */
+  --o-disabled: 0.4;
+  --o-faint:    0.3;
+  --o-muted:    0.6;
+  --o-overlay:  0.75;
+  --o-hover:    0.85;
+
+  /* TOUCH TARGETS — WCAG 2.5.5 */
+  --touch-sm: 32px;
+  --touch-md: 44px;
+  --touch-lg: 48px;
+  --touch-xl: 56px;
+
+  /* Z-INDEX SCALE — no component may use a raw z value */
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-tooltip:  600;
+
+  /* MOTION */
+  --ease:        cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.3, 0.64, 1);
+  --d-fast:  120ms;
+  --d-base:  200ms;
+  --d-slow:  350ms;
+
+  /* SHADOWS — softened alpha for light bg (dark theme values were tuned
+     against near-black surfaces; the same alpha on white reads as heavy) */
+  --shadow-sm:  0 1px 2px rgba(23,21,19,0.06), 0 1px 4px rgba(23,21,19,0.04);
+  --shadow-md:  0 4px 12px rgba(23,21,19,0.10), 0 2px 6px rgba(23,21,19,0.06);
+  --shadow-lg:  0 12px 32px rgba(23,21,19,0.14), 0 6px 14px rgba(23,21,19,0.08);
+  --shadow-red: 0 4px 20px rgba(232, 5, 5, 0.22);
+
+  /* CONVERSION LAYER — cta-fg stays hardcoded white: it is the fixed text
+     color for anything sitting on the red accent/gradient, independent of
+     the site's light/dark theme. Never derive it from --ink. */
+  --cta-fg-rgb:       255 255 255;
+  --trust-star-rgb:   139 105 20;
+  --input-border-rgb: 216 212 204;
+
+  --cta-bg:         var(--accent);
+  --cta-fg:         rgb(var(--cta-fg-rgb));
+  --cta-bg-hover:   var(--danger);
+  --cta-bg-active:  var(--accent-deep);
+  --cta-gradient:   linear-gradient(135deg, var(--accent), var(--accent-mid));
+  --trust-bg:       var(--surface);
+  --trust-border:   var(--rule);
+  --trust-star:     rgb(var(--trust-star-rgb));
+  --input-bg:          var(--surface);
+  --input-border:      rgb(var(--input-border-rgb));
+  --input-focus:       var(--accent);
+  --input-error:       var(--danger);
+  --input-success:     var(--success);
+  --input-placeholder: var(--muted);
+  --urgency:      var(--accent);
+  --urgency-soft: var(--accent-soft);
+  --phone-fg:     var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DARK MODE TOKENS — tokens doc §"Dark Mode Tokens"
+   Inert by default. Tailwind runs darkMode:'class', so these only take
+   effect if `.dark` (or data-theme="dark") is put on <html>. The site
+   ships light; this block exists so the token layer is complete and a
+   dark surface never has to be hand-rolled.
+   ═══════════════════════════════════════════════════════════════ */
+.dark,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Only the channels move — every derived token follows automatically. */
+  --bg-rgb:        22 21 20;
+  --surface-rgb:   32 30 28;
+  --surface-2-rgb: 42 39 36;
+  --ink-rgb:       243 241 238;
+  --ink-soft-rgb:  184 178 170;
+  --ink-faint-rgb: 154 148 140;
+  --muted-rgb:     122 117 110;
+  --rule-rgb:      53 50 46;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.45);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.55);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   KEYFRAMES — Animation Catalog (§7, Appendix C)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Pulse Dot — red version */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(232,5,5,0.5); }
+  50%      { opacity: 0.7; box-shadow: 0 0 0 6px rgba(232,5,5,0); }
+}
+
+/* Pulse Dot — green version */
+@keyframes pulse-dot-green {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(21,128,61,0.5); }
+  50%      { opacity: 0.7; box-shadow: 0 0 0 6px rgba(21,128,61,0); }
+}
+
+/* CTA Bar opacity pulse */
+@keyframes ctaPulse {
+  from { opacity: 0.85; }
+  to   { opacity: 1; }
+}
+
+/* Trust marquee horizontal scroll */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Fade-Up headline entrance */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Stagger-rise grid items */
+@keyframes staggerRise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════ */
 @layer base {
   html {
     scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    @apply bg-black text-white font-body;
-    background: linear-gradient(180deg, #000000, #0A0A0A);
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--t-base);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
   }
 
-  /* Focus ring */
-  *:focus-visible {
-    @apply outline-none ring-2 ring-dac-red ring-offset-2 ring-offset-black;
+  /* Heading hierarchy — tokens doc §"Heading Hierarchy".
+     Each level owns its size, weight and tracking so pages never have to
+     restate them. A utility class still wins if a specific block needs to
+     step off the scale, but the default is always spec-correct. */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    color: var(--ink);
   }
 
-  /* Reduce motion for users who prefer it */
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
+  h1 {
+    font-size: var(--t-display);
+    line-height: 1.0;
+    font-weight: var(--w-h1);
+    letter-spacing: var(--track-tighter);
+  }
+
+  h2 {
+    font-size: var(--t-3xl);
+    line-height: 1.1;
+    font-weight: var(--w-h2);
+    letter-spacing: var(--track-tight);
+  }
+
+  h3 {
+    font-size: var(--t-2xl);
+    line-height: 1.2;
+    font-weight: var(--w-h3);
+    letter-spacing: var(--track-tight);
+  }
+
+  h4 {
+    font-size: var(--t-xl);
+    line-height: 1.3;
+    font-weight: var(--w-h4);
+    letter-spacing: var(--track-flat);
+  }
+
+  h5 {
+    font-size: var(--t-lg);
+    line-height: 1.5;
+    font-weight: var(--w-h5);
+    letter-spacing: var(--track-flat);
+  }
+
+  h6 {
+    font-size: var(--t-md);
+    line-height: 1.6;
+    font-weight: var(--w-h6);
+    letter-spacing: var(--track-flat);
+  }
+
+  /* Focus ring — accent outline, never remove default without replacement */
+  *:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Phone links — red, bold */
+  :where(a[href^="tel:"]) {
+    color: var(--phone-fg);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color var(--d-base) var(--ease);
+  }
+
+  /* Images */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
-@layer components {
-  /* Gradient headline utility for headlines */
-  .gradient-headline {
-    @apply bg-gradient-to-r from-white via-white to-dac-red bg-clip-text text-transparent;
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════ */
+@layer utilities {
+  /* Screen-reader only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border-width: 0;
   }
 
-  /* Glass utility to use inside components */
-  .glass-panel {
-    @apply bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl shadow-2xl;
+  /* Sr-only but focusable (for skip link) */
+  .sr-only.focus\:not-sr-only:focus,
+  .sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
   }
+
+  /* Fade-up animation utility */
+  .animate-fade-up {
+    animation: fadeUp var(--d-slow) var(--ease) both;
+  }
+
+  /* Pulse-dot utilities */
+  .animate-pulse-dot-red {
+    animation: pulse-dot 2s var(--ease) infinite;
+  }
+
+  .animate-pulse-dot-green {
+    animation: pulse-dot-green 2s var(--ease) infinite;
+  }
+
+  /* Marquee utility */
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  /* CTA pulse */
+  .animate-cta-pulse {
+    animation: ctaPulse 4s var(--ease) infinite alternate;
+  }
+
+  /* Section vertical padding */
+  .section-v-pad {
+    padding-top: var(--section-v-pad);
+    padding-bottom: var(--section-v-pad);
+  }
+
+  /* CTA gradient background */
+  .bg-cta-gradient {
+    background: var(--cta-gradient);
+  }
+
+  /* Glow card CSS vars for cursor tracking */
+  .glow-card-inner {
+    --mx: 50%;
+    --my: 50%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PREFERS-REDUCED-MOTION — Always respect
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPONENT-LEVEL CSS — where Tailwind utilities fall short
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Form field base — tokens doc §"Form Tokens" (input-lg: 48px / 16px / 12px)
+   and §"Form State Colors". 16px keeps iOS from zooming on focus. */
+.field-input,
+.field-select,
+.field-textarea {
+  width: 100%;
+  min-height: var(--touch-lg);
+  background: var(--input-bg);
+  border: var(--bw-thin) solid var(--input-border);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-base);
+  padding: var(--bolt) var(--gauge);
+  transition: border-color var(--d-fast) var(--ease),
+              box-shadow    var(--d-fast) var(--ease);
+  appearance: none;
+}
+
+.field-textarea {
+  min-height: calc(var(--touch-lg) * 2);
+}
+
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus {
+  outline: none;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 var(--bw-medium) var(--accent-soft);
+}
+
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: var(--input-placeholder);
+}
+
+.field-input.error,
+.field-select.error,
+.field-textarea.error {
+  border-color: var(--input-error);
+}
+
+.field-input.error:focus,
+.field-select.error:focus,
+.field-textarea.error:focus {
+  box-shadow: 0 0 0 var(--bw-medium) var(--danger-soft);
+}
+
+/* Marquee edge mask */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
 }

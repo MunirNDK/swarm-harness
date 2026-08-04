@@ -6,10 +6,10 @@ export const business = {
   hours: "Available 24/7",
   serviceArea: "Northern New Jersey",
   mobile: true,
-  responseTime: "15-minute quote response",
-  experienceYears: "8+",
+  responseTime: "quick quote response",
+  experienceYears: "5+",
   vehiclesDetailed: "2,000+",
-  reviewsCount: "300+",
+  reviewsCount: "140+",
   googleReviews: "100+",
   trust: [
     "Licensed & Insured",
@@ -42,7 +42,7 @@ export const services = [
     process: [
       {
         title: "Free Quote & Inspection",
-        desc: "We assess your vehicle's condition and provide a transparent, no-obligation quote within 15 minutes.",
+        desc: "We assess your vehicle's condition and provide a transparent, no-obligation quote quickly.",
       },
       {
         title: "Interior Deep Clean",
@@ -71,7 +71,7 @@ export const services = [
         a: "Absolutely. As a mobile detailing service, we come to your location anywhere in Northern New Jersey. We bring all necessary equipment, water, and power—no need for you to travel.",
       },
     ],
-    metaDescription: "Professional mobile car detailing in Northern NJ. Complete interior & exterior restoration with same-day service. Free quotes, 300+ five-star reviews. Call (973) 916-7868.",
+    metaDescription: "Professional mobile car detailing in Northern NJ. Complete interior & exterior restoration with same-day service. Free quotes, 140+ five-star reviews. Call (973) 916-7868.",
   },
   {
     slug: "exterior-detailing",
@@ -410,6 +410,454 @@ export const services = [
   },
 ];
 
+/* ────────────────────────────────────────────────────────────────
+   Pricing seed — source of truth for the CMS `pricing_*` / `addons`
+   meta fields, keyed by service slug. Pushed into WordPress by
+   scripts/cms-migration/migrate.ts (which joins on slug); the live site
+   reads pricing from WordPress, not from here. `includes` is an array
+   here and joined to a newline string on the way into WP (the wp-admin
+   repeater stores it as one textarea; transforms.ts splits it back).
+   Transcribed from daniells_auto_care_complete_pricing.md.
+   ──────────────────────────────────────────────────────────────── */
+export interface PricingTierSeed {
+  name: string;
+  price: string;
+  meta: string;   // small descriptor line (e.g. "Per vehicle", "3-year protection"); '' = none
+  badge: string;  // accent pill (e.g. "Most Popular"); '' = none
+  includes: string[];
+}
+export interface AddonSeed {
+  name: string;
+  price: string;
+  priceType: string;
+  details: string;
+}
+export interface ServicePricingSeed {
+  note: string;
+  tiers: PricingTierSeed[];
+  addons: AddonSeed[];
+}
+
+const PRICING_NOTE =
+  "All prices are starting estimates in USD. A price shown with a “+” is a starting point and may increase based on vehicle size, condition, and any requested add-ons. We confirm your exact quote before any work begins.";
+
+const FLEET_PRICING_NOTE =
+  "Fleet pricing varies with vehicle count, vehicle size, condition, and service frequency, and is negotiable based on your business needs. Discounts are available for fleets of 5 or more vehicles, with custom pricing for larger fleets. All fleet prices are starting estimates — contact us for an accurate quote or a custom maintenance plan.";
+
+const ADDON_ENGINE_BAY: AddonSeed = {
+  name: "Engine Bay Detail",
+  price: "$80",
+  priceType: "Fixed base price",
+  details: "Cleaning and detailing of the visible engine bay area.",
+};
+const ADDON_HEADLIGHT: AddonSeed = {
+  name: "Headlight Restoration",
+  price: "$120",
+  priceType: "Fixed base price",
+  details: "Restores clarity and appearance to oxidized or cloudy headlights.",
+};
+const ADDON_PET_HAIR: AddonSeed = {
+  name: "Pet Hair Removal",
+  price: "$75+",
+  priceType: "Starting price",
+  details:
+    "Removes embedded pet hair from carpets, seats, upholstery, and interior surfaces. Final price may depend on severity.",
+};
+const ADDON_OZONE: AddonSeed = {
+  name: "Ozone Odor Removal",
+  price: "$120",
+  priceType: "Fixed base price",
+  details: "Ozone treatment intended to neutralize persistent odors inside the vehicle.",
+};
+const ADDON_FABRIC_SEAT: AddonSeed = {
+  name: "Fabric Seat Shampoo",
+  price: "$50 per seat",
+  priceType: "Per-seat price",
+  details: "Deep shampoo cleaning for individual fabric seats.",
+};
+const ADDON_LEATHER: AddonSeed = {
+  name: "Leather Protection",
+  price: "$100",
+  priceType: "Fixed base price",
+  details: "Protective treatment applied to leather seating and interior leather surfaces.",
+};
+
+export const servicePricing: Record<string, ServicePricingSeed> = {
+  "interior-detailing": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Interior Refresh Detail",
+        price: "$150+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Full interior vacuum",
+          "Wipe down of dashboard, panels, and center console",
+          "Interior window cleaning",
+          "Light stain spot cleaning",
+          "Trash removal",
+        ],
+      },
+      {
+        name: "Interior Deep Cleaning Detail",
+        price: "$250+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Everything in the Interior Refresh Detail",
+          "Steam cleaning of interior surfaces",
+          "Carpet shampoo extraction",
+          "Seat shampoo extraction",
+          "Deep cleaning of vents and crevices",
+          "Leather conditioning",
+        ],
+      },
+      {
+        name: "Interior Restoration Detail",
+        price: "$350+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Everything in the Interior Deep Cleaning Detail",
+          "Heavy stain removal treatment",
+          "Pet hair removal",
+          "Odor-neutralizing treatment",
+          "Interior protection application",
+        ],
+      },
+    ],
+    addons: [ADDON_PET_HAIR, ADDON_OZONE, ADDON_FABRIC_SEAT, ADDON_LEATHER],
+  },
+
+  "exterior-detailing": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Exterior Refresh Detail",
+        price: "$150+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Foam hand wash",
+          "Wheel cleaning",
+          "Tire cleaning",
+          "Tire dressing",
+          "Bug removal",
+          "Microfiber hand drying",
+        ],
+      },
+      {
+        name: "Exterior Decontamination Detail",
+        price: "$275+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Everything in the Exterior Refresh Detail",
+          "Iron-remover treatment",
+          "Clay bar paint decontamination",
+          "Exterior trim dressing",
+          "Paint sealant protection",
+        ],
+      },
+      {
+        name: "Paint Enhancement Detail",
+        price: "$450+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Everything in the Exterior Decontamination Detail",
+          "Single-stage paint polish",
+          "Paint gloss enhancement",
+          "Extended paint protection",
+        ],
+      },
+    ],
+    addons: [ADDON_ENGINE_BAY, ADDON_HEADLIGHT],
+  },
+
+  "car-detailing": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Essential Full Detail",
+        price: "$275+",
+        meta: "",
+        badge: "",
+        includes: ["Exterior Refresh Detail", "Interior Refresh Detail"],
+      },
+      {
+        name: "Complete Full Detail",
+        price: "$425+",
+        meta: "",
+        badge: "Most Popular",
+        includes: ["Exterior Decontamination Detail", "Interior Deep Cleaning Detail"],
+      },
+      {
+        name: "Signature Full Detail",
+        price: "$650+",
+        meta: "",
+        badge: "",
+        includes: ["Paint Enhancement Detail", "Interior Restoration Detail"],
+      },
+    ],
+    addons: [
+      ADDON_ENGINE_BAY,
+      ADDON_HEADLIGHT,
+      ADDON_PET_HAIR,
+      ADDON_OZONE,
+      ADDON_FABRIC_SEAT,
+      ADDON_LEATHER,
+    ],
+  },
+
+  "paint-correction": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Gloss Enhancement Polish",
+        price: "$600+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Removes light swirl marks",
+          "Improves paint gloss",
+          "Enhances the overall appearance of the vehicle finish",
+        ],
+      },
+      {
+        name: "Precision Paint Correction",
+        price: "$900+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Removes moderate scratches",
+          "Corrects moderate paint defects",
+          "Improves paint clarity and finish",
+        ],
+      },
+      {
+        name: "Multi-Stage Paint Correction",
+        price: "$1,400+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Deep, multi-stage paint correction",
+          "Targets more significant paint defects",
+          "Restores paint close to showroom condition",
+        ],
+      },
+    ],
+    addons: [],
+  },
+
+  "ceramic-coating": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "One-Year Ceramic Protection",
+        price: "$900+",
+        meta: "1-year protection",
+        badge: "",
+        includes: [
+          "Entry-level ceramic paint protection",
+          "Approximately one year of protection",
+        ],
+      },
+      {
+        name: "Three-Year Advanced Ceramic Coating",
+        price: "$1,300+",
+        meta: "3-year protection",
+        badge: "Most Popular",
+        includes: [
+          "Advanced ceramic coating protection",
+          "Approximately three years of protection",
+        ],
+      },
+      {
+        name: "Five-Year Professional Ceramic Coating",
+        price: "$1,800+",
+        meta: "5-year protection",
+        badge: "",
+        includes: [
+          "Professional-grade ceramic coating",
+          "Approximately five years of protection",
+        ],
+      },
+    ],
+    addons: [],
+  },
+
+  "paint-protection-film": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Partial Front PPF Protection",
+        price: "$1,200+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Front bumper protection",
+          "Partial hood protection",
+          "Partial front-fender protection",
+          "Protection against rock chips",
+          "Protection against road debris",
+        ],
+      },
+      {
+        name: "Full Front PPF Protection",
+        price: "$2,000+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Full hood protection",
+          "Full front-bumper protection",
+          "Full front-fender protection",
+          "Side-mirror protection",
+        ],
+      },
+      {
+        name: "Full Vehicle PPF Protection",
+        price: "$5,000+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Complete vehicle paint protection",
+          "Maximum protection against chips and scratches",
+          "Self-healing film technology",
+        ],
+      },
+    ],
+    addons: [],
+  },
+
+  "window-tinting": {
+    note: PRICING_NOTE,
+    tiers: [
+      {
+        name: "Standard Window Tint",
+        price: "$250+",
+        meta: "",
+        badge: "",
+        includes: [
+          "High-quality automotive window tint",
+          "Improves privacy",
+          "Reduces glare",
+        ],
+      },
+      {
+        name: "Premium Heat Rejection Tint",
+        price: "$350+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Enhanced ultraviolet protection",
+          "Improved heat rejection",
+          "Improved cabin comfort and privacy",
+        ],
+      },
+      {
+        name: "Ceramic Window Tint",
+        price: "$500+",
+        meta: "",
+        badge: "",
+        includes: [
+          "Premium ceramic window film",
+          "Maximum heat rejection",
+          "Maximum ultraviolet protection",
+        ],
+      },
+    ],
+    addons: [],
+  },
+
+  "fleet-detailing": {
+    note: FLEET_PRICING_NOTE,
+    tiers: [
+      {
+        name: "Fleet Maintenance Detail",
+        price: "$80–$100",
+        meta: "Per vehicle",
+        badge: "",
+        includes: [
+          "Exterior wash",
+          "Interior vacuum",
+          "Interior and exterior window cleaning",
+        ],
+      },
+      {
+        name: "Fleet Professional Detail",
+        price: "$150–$180",
+        meta: "Per vehicle",
+        badge: "",
+        includes: [
+          "Exterior wash",
+          "Exterior protection",
+          "Interior cleaning",
+          "Tire shine",
+          "Interior surface wipe down",
+        ],
+      },
+      {
+        name: "Fleet Complete Detail",
+        price: "$220–$260",
+        meta: "Per vehicle",
+        badge: "",
+        includes: [
+          "Full interior detail",
+          "Full exterior detail",
+          "Stain removal",
+          "Paint protection",
+        ],
+      },
+      {
+        name: "Monthly Fleet Maintenance",
+        price: "$70–$90",
+        meta: "Per vehicle · monthly",
+        badge: "",
+        includes: [
+          "Exterior hand wash",
+          "Wheel cleaning, tire cleaning, and tire dressing",
+          "Interior vacuum",
+          "Dashboard and interior surface wipe down",
+          "Interior window cleaning",
+        ],
+      },
+      {
+        name: "Quarterly Fleet Maintenance",
+        price: "$160–$200",
+        meta: "Per vehicle · every 3 months",
+        badge: "",
+        includes: [
+          "Deep exterior wash",
+          "Iron-remover treatment",
+          "Light paint protection",
+          "Full interior vacuum",
+          "Deep wipe down of interior surfaces",
+          "Interior window cleaning",
+          "Light stain spot cleaning",
+        ],
+      },
+      {
+        name: "Annual Fleet Restoration Detail",
+        price: "$350–$450",
+        meta: "Per vehicle · yearly",
+        badge: "",
+        includes: [
+          "Full exterior decontamination wash",
+          "Clay bar treatment",
+          "Paint sealant protection",
+          "Full interior deep cleaning",
+          "Carpet shampoo and seat shampoo",
+          "Stain-removal treatment",
+          "Interior protection application",
+        ],
+      },
+    ],
+    addons: [],
+  },
+};
+
 export const areas = [
   "Franklin Lakes",
   "Ridgewood",
@@ -424,10 +872,10 @@ export const areas = [
 ];
 
 export const stats = [
-  { value: "300+", label: "Five-Star Reviews" },
-  { value: "8+", label: "Years Experience" },
+  { value: "140+", label: "Five-Star Reviews" },
+  { value: "5+", label: "Years Combined Experience" },
   { value: "2,000+", label: "Vehicles Detailed" },
-  { value: "15 min", label: "Quote Response" },
+  { value: "Quick", label: "Quote Response" },
 ];
 
 export const reviews = [
@@ -475,7 +923,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "How much does mobile detailing cost?",
-    a: "Pricing depends on your vehicle's size, condition, and the services you choose. We provide free, no-obligation quotes within 15 minutes—just call (973) 916-7868 or fill out our online form. We offer competitive rates with no hidden fees.",
+    a: "Pricing depends on your vehicle's size, condition, and the services you choose. We provide free, no-obligation quotes quickly—just call (973) 916-7868 or fill out our online form. We offer competitive rates with no hidden fees.",
   },
   {
     q: "How long does a full detail take?",
@@ -491,7 +939,7 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Can I book a same-day appointment?",
-    a: "Yes, we offer same-day service whenever our schedule allows. Call (973) 916-7868 for immediate availability, or request a quote online and we'll respond within 15 minutes to confirm a time that works for you.",
+    a: "Yes, we offer same-day service whenever our schedule allows. Call (973) 916-7868 for immediate availability, or request a quote online and we'll respond quickly to confirm a time that works for you.",
   },
   {
     q: "What areas do you serve?",
@@ -509,8 +957,8 @@ export const whyChooseUs: { title: string; desc: string }[] = [
     desc: "We bring professional auto detailing directly to your home or workplace anywhere in Northern New Jersey. No waiting at a shop—just showroom results at your doorstep.",
   },
   {
-    title: "8+ Years of Experience",
-    desc: "With over eight years in the industry and 2,000+ vehicles detailed, our factory-trained technicians have the expertise to handle any vehicle, from daily drivers to luxury cars.",
+    title: "5+ Years Combined Team Experience",
+    desc: "Our factory-trained technicians bring a combined ~5 years of hands-on detailing experience and have collectively serviced 2,000+ vehicles, from daily drivers to luxury cars.",
   },
   {
     title: "Licensed & Fully Insured",
@@ -521,7 +969,7 @@ export const whyChooseUs: { title: string; desc: string }[] = [
     desc: "Our premium ceramic coatings are backed by a warranty of up to 10 years, ensuring long-lasting protection and a brilliant gloss that stands the test of time.",
   },
   {
-    title: "300+ Five-Star Reviews",
+    title: "140+ Five-Star Reviews",
     desc: "Our customers consistently rate us five stars for quality, reliability, and service. Read our reviews to see why Northern NJ trusts Daniells Auto Care.",
   },
   {
@@ -533,7 +981,7 @@ export const whyChooseUs: { title: string; desc: string }[] = [
 export const processSteps: { title: string; desc: string }[] = [
   {
     title: "Request Your Free Quote",
-    desc: "Call (973) 916-7868 or fill out our online form. We'll respond within 15 minutes with a transparent, no-obligation quote tailored to your vehicle.",
+    desc: "Call (973) 916-7868 or fill out our online form. We'll respond quickly with a transparent, no-obligation quote tailored to your vehicle.",
   },
   {
     title: "We Come to You",
@@ -550,7 +998,7 @@ export const processSteps: { title: string; desc: string }[] = [
 ];
 
 export function areaIntro(town: string): string {
-  return `Looking for premium mobile auto detailing in ${town}, NJ? Daniells Auto Care brings professional detailing services directly to your doorstep in ${town} and throughout Northern New Jersey. From ceramic coating to interior deep cleaning, our factory-trained technicians deliver showroom results with same-day availability and free quotes.`;
+  return `Premium mobile auto detailing in ${town}, NJ — ceramic coating to interior deep-cleans, delivered to your doorstep with same-day availability.`;
 }
 
 export const siteUrl = "https://daniellsautocare.com";
@@ -574,5 +1022,20 @@ export const beforeAfter: { id: string; title: string; tag: string; before: stri
   { id:'ford-trim', title:'Trim Restoration — Ford F-150', tag:'Exterior Detailing', before:'/assets/gallery/ford-trim-before.webp', after:'/assets/gallery/ford-trim-after.webp' },
 ];
 
+export const team: { name: string; role: string; image: string }[] = [
+  { name: 'Daniells Nina De Leon', role: 'Owner & CEO',                       image: '/assets/team/daniells-nina-de-leon.png' },
+  { name: 'Hilbert Nina De Leon',  role: 'Operations Manager',                image: '/assets/team/hilbert-nina-de-leon.png' },
+  { name: 'Jon Ramirez',           role: 'Lead Detailer',                     image: '/assets/team/jon-ramirez.png' },
+  { name: 'David Rodriguez',       role: 'Detail Technician',                 image: '/assets/team/david-rodriguez.png' },
+  { name: 'Emily Chen',            role: 'Customer Service Representative',   image: '/assets/team/emily-chen.png' },
+  { name: 'Ashley Johnson',        role: 'Scheduling Coordinator',            image: '/assets/team/ashley-johnson.png' },
+];
+
+export const social: { platform: string; label: string; href: string }[] = [
+  { platform: 'Instagram', label: 'instagram', href: 'https://www.instagram.com/daniells_auto_care' },
+  { platform: 'YouTube',   label: 'youtube',   href: 'https://www.youtube.com/@DaniellsNinaDeLeon' },
+  { platform: 'TikTok',   label: 'tiktok',    href: 'https://www.tiktok.com/@daniellsautocare' },
+];
+
 // Aggregate accessor used by pages that prefer a single `site` object.
-export const site = { business, services, areas, stats, reviews, nav, faqs, siteUrl, images, logo, beforeAfter };
+export const site = { business, services, areas, stats, reviews, nav, faqs, siteUrl, images, logo, beforeAfter, team, social };

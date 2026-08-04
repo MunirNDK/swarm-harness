@@ -1,262 +1,409 @@
-"use client";
+'use client';
 
-import { useState, FormEvent } from "react";
-import { Button } from "@/components/ui/button";
-import { GlassCard } from "@/components/ui/glass-card";
-import { services } from "@/lib/site";
-import { cn } from "@/lib/utils";
+import { useState, FormEvent } from 'react';
+import { Button } from '@/components/ui/button';
+import { business } from '@/lib/site';
+import {
+  trackLeadFormError,
+  trackLeadFormResult,
+  type LeadFormAnalytics,
+} from '@/lib/analytics/track';
+import { cn } from '@/lib/utils';
+import type { Service } from '@/lib/wordpress/types';
 
-export function QuoteForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    vehicle: "",
-    service: "",
-    message: "",
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+interface FormData {
+  name:             string;
+  phone:            string;
+  zip:              string;
+  vehicle:          string;
+  service:          string;
+  fleetSize:        string;
+  vehicleType:      string;
+  serviceFrequency: string;
+  notes:            string;
+  _honey:           string; // honeypot
+}
 
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
-    if (!formData.phone.trim()) newErrors.phone = "Phone is required";
-    else if (!/^[\d\s\(\)\-\+\.]+$/.test(formData.phone))
-      newErrors.phone = "Invalid phone number";
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "Invalid email";
-    if (!formData.vehicle.trim()) newErrors.vehicle = "Vehicle is required";
-    if (!formData.service) newErrors.service = "Please select a service";
-    return newErrors;
+const INITIAL: FormData = {
+  name:             '',
+  phone:            '',
+  zip:              '',
+  vehicle:          '',
+  service:          '',
+  fleetSize:        '',
+  vehicleType:      '',
+  serviceFrequency: '',
+  notes:            '',
+  _honey:           '',
+};
+
+type Status = 'idle' | 'loading' | 'success' | 'error';
+
+const FORM_ANALYTICS_BASE = {
+  form_type: 'quote',
+  form_name: 'get a quote',
+  click_text: 'schedule now',
+} as const;
+
+/**
+ * QuoteForm — Contract §10, §6, §12.8
+ * Fields: name, phone, zip, vehicle, service, fleetSize, notes
+ * Honeypot: _honey (hidden field)
+ * POST → /api/quote
+ * Analytics context is declared through native form semantics + data-attribute.
+ */
+interface QuoteFormProps {
+  prefill?: { service?: string; fleetSize?: string; vehicleType?: string; serviceFrequency?: string };
+  services: Service[];
+  eventSection?: LeadFormAnalytics['event_section'];
+}
+
+export function QuoteForm({ prefill, services, eventSection = 'body' }: QuoteFormProps) {
+  const formAnalytics: LeadFormAnalytics = {
+    ...FORM_ANALYTICS_BASE,
+    form_identifier:
+      eventSection === 'popup_form' ? 'quote-modal-request-form' : 'quote-request-form',
+    event_section: eventSection,
   };
+  const [data, setData] = useState<FormData>({
+    ...INITIAL,
+    service:          prefill?.service          ?? '',
+    fleetSize:        prefill?.fleetSize        ?? '',
+    vehicleType:      prefill?.vehicleType      ?? '',
+    serviceFrequency: prefill?.serviceFrequency ?? '',
+  });
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+  const [status, setStatus] = useState<Status>('idle');
 
-  const handleSubmit = async (e: FormEvent) => {
+  function validate(): Partial<Record<keyof FormData, string>> {
+    const e: Partial<Record<keyof FormData, string>> = {};
+    if (!data.name.trim())    e.name    = 'Name is required';
+    if (!data.phone.trim())   e.phone   = 'Phone is required';
+    else if (!/^[\d\s()\-+.]+$/.test(data.phone)) e.phone = 'Invalid phone number';
+    if (!data.zip.trim())     e.zip     = 'ZIP code is required';
+    else if (!/^\d{5}(-\d{4})?$/.test(data.zip.trim())) e.zip = 'Invalid ZIP code';
+    if (!data.vehicle.trim()) e.vehicle = 'Vehicle is required';
+    if (!data.service)        e.service = 'Please select a service';
+    if (data.service === 'fleet-detailing') {
+      if (!data.fleetSize.trim()) {
+        e.fleetSize = 'Number of vehicles is required';
+      } else if (!/^\d+$/.test(data.fleetSize.trim()) || Number(data.fleetSize) < 1) {
+        e.fleetSize = 'Enter a valid number of vehicles';
+      }
+      if (!data.vehicleType)      e.vehicleType      = 'Please select a vehicle type';
+      if (!data.serviceFrequency) e.serviceFrequency = 'Please select a frequency';
+    }
+    setErrors(e);
+    return e;
+  }
+
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+    if (data._honey) {
+      trackLeadFormError(formAnalytics, {
+        interaction_type: 'spam_error',
+        error_name: 'honeypot_triggered',
+        error_type: 'bot_detected',
+      });
       return;
     }
-    setErrors({});
-    setStatus("loading");
 
-    try {
-      const res = await fetch("/api/quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+    const validationErrors = validate();
+    const invalidFields = Object.keys(validationErrors) as (keyof FormData)[];
+    if (invalidFields.length > 0) {
+      const field = invalidFields[0];
+      const errorType =
+        field === 'phone'
+          ? 'invalid_phone'
+          : validationErrors[field]?.toLowerCase().includes('required')
+            ? 'required_field_missing'
+            : 'invalid_format';
+      trackLeadFormError(formAnalytics, {
+        interaction_type: 'form_error',
+        error_name: 'field_validation_failed',
+        error_type: errorType,
+        field_id: field,
+        error_count: invalidFields.length,
       });
-      if (!res.ok) throw new Error("Failed to send");
-      setStatus("success");
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        vehicle: "",
-        service: "",
-        message: "",
-      });
-    } catch {
-      setStatus("error");
+      return;
     }
-  };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/quote', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          name:      data.name,
+          phone:     data.phone,
+          zip:       data.zip,
+          vehicle:   data.vehicle,
+          service:   data.service,
+          fleetSize: data.fleetSize,
+          vehicleType: data.vehicleType,
+          serviceFrequency: data.serviceFrequency,
+          notes:     data.notes,
+        }),
+      });
+      if (!res.ok) throw new Error('Failed');
+      trackLeadFormResult(formAnalytics, 'successful');
+      setStatus('success');
+      setData(INITIAL);
+    } catch {
+      setStatus('error');
+      trackLeadFormError(formAnalytics, {
+        interaction_type: 'system_error',
+        error_name: 'lead_form_submission_failed',
+        error_type: navigator.onLine ? 'js_exception' : 'network_offline',
+      });
+    }
+  }
+
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
+    setData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name as keyof FormData]) {
       setErrors((prev) => {
         const next = { ...prev };
-        delete next[name];
+        delete next[name as keyof FormData];
         return next;
       });
     }
-  };
+  }
 
-  if (status === "success") {
+  if (status === 'success') {
     return (
-      <GlassCard className="p-8 text-center">
-        <div className="text-2xl font-bold text-white mb-2">
+      <div className="text-center py-panel">
+        <p className="font-sans font-bold text-2xl uppercase text-fg mb-rivet">
           Quote Request Sent!
-        </div>
-        <p className="text-dac-muted">
-          We&apos;ll get back to you within {15} minutes.
         </p>
-      </GlassCard>
+        <p className="text-fg-soft text-sm">
+          We&apos;ll respond quickly.
+        </p>
+      </div>
     );
   }
 
   return (
-    <GlassCard className="p-6 md:p-8">
-      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-white mb-1">
-              Name *
-            </label>
+    <form
+      id={formAnalytics.form_identifier}
+      aria-label={formAnalytics.form_name}
+      onSubmit={handleSubmit}
+      noValidate
+      data-attribute={formAnalytics.form_type}
+    >
+      {/* Honeypot — hidden from real users, bots fill it */}
+      <input
+        type="text"
+        name="_honey"
+        value={data._honey}
+        onChange={handleChange}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', height: 0 }}
+      />
+
+      <div className="space-y-gauge">
+        {/* Name + Phone row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-bolt">
+          <FieldGroup label="Full Name" htmlFor="q-name" required error={errors.name}>
             <input
               type="text"
-              id="name"
+              id="q-name"
               name="name"
-              value={formData.name}
+              value={data.name}
               onChange={handleChange}
-              className={cn(
-                "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition",
-                errors.name && "border-red-500"
-              )}
+              autoComplete="name"
+              className={cn('field-input', errors.name && 'error')}
               placeholder="Your full name"
+              required
             />
-            {errors.name && (
-              <p className="mt-1 text-xs text-red-400">{errors.name}</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-white mb-1">
-              Phone *
-            </label>
+          </FieldGroup>
+          <FieldGroup label="Phone" htmlFor="q-phone" required error={errors.phone}>
             <input
               type="tel"
-              id="phone"
+              id="q-phone"
               name="phone"
-              value={formData.phone}
+              value={data.phone}
               onChange={handleChange}
-              className={cn(
-                "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition",
-                errors.phone && "border-red-500"
-              )}
+              autoComplete="tel"
+              className={cn('field-input', errors.phone && 'error')}
               placeholder="(123) 456-7890"
+              required
             />
-            {errors.phone && (
-              <p className="mt-1 text-xs text-red-400">{errors.phone}</p>
-            )}
-          </div>
+          </FieldGroup>
         </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-white mb-1">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={cn(
-              "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition",
-              errors.email && "border-red-500"
-            )}
-            placeholder="you@example.com"
-          />
-          {errors.email && (
-            <p className="mt-1 text-xs text-red-400">{errors.email}</p>
-          )}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="vehicle" className="block text-sm font-medium text-white mb-1">
-              Vehicle *
-            </label>
+
+        {/* ZIP + Vehicle row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-bolt">
+          <FieldGroup label="ZIP Code" htmlFor="q-zip" required error={errors.zip}>
             <input
               type="text"
-              id="vehicle"
-              name="vehicle"
-              value={formData.vehicle}
+              id="q-zip"
+              name="zip"
+              value={data.zip}
               onChange={handleChange}
-              className={cn(
-                "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition",
-                errors.vehicle && "border-red-500"
-              )}
-              placeholder="Year Make Model"
+              autoComplete="postal-code"
+              className={cn('field-input', errors.zip && 'error')}
+              placeholder="07417"
+              inputMode="numeric"
+              required
             />
-            {errors.vehicle && (
-              <p className="mt-1 text-xs text-red-400">{errors.vehicle}</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="service" className="block text-sm font-medium text-white mb-1">
-              Service *
-            </label>
-            <select
-              id="service"
-              name="service"
-              value={formData.service}
+          </FieldGroup>
+          <FieldGroup label="Vehicle" htmlFor="q-vehicle" required error={errors.vehicle}>
+            <input
+              type="text"
+              id="q-vehicle"
+              name="vehicle"
+              value={data.vehicle}
               onChange={handleChange}
-              className={cn(
-                "w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition appearance-none",
-                errors.service && "border-red-500"
-              )}
-            >
-              <option value="" disabled className="bg-dac-black">
-                Select a service
-              </option>
-              {services.map((s) => (
-                <option key={s.slug} value={s.slug} className="bg-dac-black">
-                  {s.name}
-                </option>
-              ))}
-            </select>
-            {errors.service && (
-              <p className="mt-1 text-xs text-red-400">{errors.service}</p>
-            )}
-          </div>
+              className={cn('field-input', errors.vehicle && 'error')}
+              placeholder="Year Make Model"
+              required
+            />
+          </FieldGroup>
         </div>
-        <div>
-          <label htmlFor="message" className="block text-sm font-medium text-white mb-1">
-            Message
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            rows={3}
-            value={formData.message}
+
+        {/* Service select */}
+        <FieldGroup label="Service" htmlFor="q-service" required error={errors.service}>
+          <select
+            id="q-service"
+            name="service"
+            value={data.service}
             onChange={handleChange}
-            className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-dac-faint focus:outline-none focus:ring-2 focus:ring-dac-red focus:border-transparent transition resize-none"
-            placeholder="Tell us about your vehicle or any special requests..."
+            className={cn('field-select', errors.service && 'error')}
+            required
+          >
+            <option value="" disabled>Select a service</option>
+            {services.map((s) => (
+              <option key={s.slug} value={s.slug} style={{ background: 'var(--bg)' }}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+        </FieldGroup>
+
+        {data.service === 'fleet-detailing' && (
+          <>
+            <FieldGroup label="Number of Vehicles" htmlFor="q-fleet-size" required error={errors.fleetSize}>
+              <input
+                type="number"
+                id="q-fleet-size"
+                name="fleetSize"
+                value={data.fleetSize}
+                onChange={handleChange}
+                min="1"
+                inputMode="numeric"
+                className={cn('field-input', errors.fleetSize && 'error')}
+                placeholder="e.g. 12"
+                required
+              />
+            </FieldGroup>
+            <FieldGroup label="Vehicle Type" htmlFor="q-vehicle-type" required error={errors.vehicleType}>
+              <select
+                id="q-vehicle-type"
+                name="vehicleType"
+                value={data.vehicleType}
+                onChange={handleChange}
+                className={cn('field-select', errors.vehicleType && 'error')}
+                required
+              >
+                <option value="" disabled>Select vehicle type</option>
+                <option value="Cars / Sedans" style={{ background: 'var(--bg)' }}>Cars / Sedans</option>
+                <option value="SUVs / Crossovers" style={{ background: 'var(--bg)' }}>SUVs / Crossovers</option>
+                <option value="Vans / Sprinters" style={{ background: 'var(--bg)' }}>Vans / Sprinters</option>
+                <option value="Trucks" style={{ background: 'var(--bg)' }}>Trucks</option>
+                <option value="Mixed Fleet" style={{ background: 'var(--bg)' }}>Mixed Fleet</option>
+              </select>
+            </FieldGroup>
+            <FieldGroup label="Service Frequency" htmlFor="q-service-frequency" required error={errors.serviceFrequency}>
+              <select
+                id="q-service-frequency"
+                name="serviceFrequency"
+                value={data.serviceFrequency}
+                onChange={handleChange}
+                className={cn('field-select', errors.serviceFrequency && 'error')}
+                required
+              >
+                <option value="" disabled>Select frequency</option>
+                <option value="Weekly" style={{ background: 'var(--bg)' }}>Weekly</option>
+                <option value="Bi-Weekly" style={{ background: 'var(--bg)' }}>Bi-Weekly</option>
+                <option value="Monthly" style={{ background: 'var(--bg)' }}>Monthly</option>
+                <option value="Quarterly" style={{ background: 'var(--bg)' }}>Quarterly</option>
+                <option value="Annually" style={{ background: 'var(--bg)' }}>Annually</option>
+                <option value="One-Time Service" style={{ background: 'var(--bg)' }}>One-Time Service</option>
+              </select>
+            </FieldGroup>
+          </>
+        )}
+
+        <FieldGroup label="Additional Details" htmlFor="q-notes">
+          <textarea
+            id="q-notes"
+            name="notes"
+            value={data.notes}
+            onChange={handleChange}
+            className="field-input"
+            rows={3}
+            placeholder="Anything else we should know? (optional)"
           />
-        </div>
+        </FieldGroup>
+
+        {/* Submit */}
         <Button
           type="submit"
-          className="w-full"
+          variant="primary"
           size="lg"
-          disabled={status === "loading"}
+          className="w-full"
+          disabled={status === 'loading'}
+          track={{ category: 'conversion', action: 'button_click', label: 'quote_form_schedule_now' }}
         >
-          {status === "loading" ? (
-            <span className="flex items-center gap-2">
-              <svg
-                className="animate-spin h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-              Sending...
-            </span>
-          ) : (
-            "Get Free Quote"
-          )}
+          {status === 'loading' ? 'Sending…' : 'Schedule Now'}
         </Button>
-        {status === "error" && (
-          <p className="text-sm text-red-400 text-center">
+
+        {status === 'error' && (
+          <p className="text-sm text-accent text-center" role="alert">
             Something went wrong. Please try again or call us directly.
           </p>
         )}
-      </form>
-    </GlassCard>
+      </div>
+    </form>
+  );
+}
+
+/* Sub-component: labeled field group */
+function FieldGroup({
+  label,
+  htmlFor,
+  required,
+  error,
+  children,
+}: {
+  label:     string;
+  htmlFor:   string;
+  required?: boolean;
+  error?:    string;
+  children:  React.ReactNode;
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={htmlFor}
+        className="block font-mono text-mono-sm tracking-label uppercase text-fg-faint mb-rivet"
+      >
+        {label}
+        {required && <span className="text-accent ml-pin" aria-hidden="true">*</span>}
+        {required && <span className="sr-only"> (required)</span>}
+      </label>
+      {children}
+      {error && (
+        <p className="mt-pin text-sm text-danger" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }

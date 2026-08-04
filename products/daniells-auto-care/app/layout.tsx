@@ -1,88 +1,118 @@
 import type { Metadata } from 'next';
-import { Sora, Inter } from 'next/font/google';
+import { Montserrat, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-import { business, siteUrl } from '@/lib/site';
+import { business, siteUrl, images } from '@/lib/site';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { StickyCTA } from '@/components/sticky-cta';
+import { StickyCta } from '@/components/sticky-cta';
 import { QuoteModalProvider, QuoteModal } from '@/components/quote-modal';
+import { AnalyticsProvider } from '@/lib/analytics/analytics-provider';
+import { GoogleTagManager, GoogleTagManagerNoScript } from '@/lib/analytics/gtm';
+import { getServices } from '@/lib/wordpress/services';
+import { getServiceAreas } from '@/lib/wordpress/service-areas';
 
-const sora = Sora({
-  subsets: ['latin'],
-  variable: '--font-sora',
-  display: 'swap',
-  weight: ['400', '600', '700'],
+const montserrat = Montserrat({
+  subsets:  ['latin'],
+  variable: '--font-body',
+  display:  'swap',
+  weight:   ['400', '500', '600', '700', '800', '900'],
 });
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
+const jetbrainsMono = JetBrains_Mono({
+  subsets:  ['latin'],
+  variable: '--font-mono',
+  display:  'swap',
+  weight:   ['400', '500', '600'],
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: `${business.name} | ${business.tagline}`,
-    template: `%s | ${business.name}`,
+    default:  business.name,
+    template: `%s | Daniells Auto Care`,
   },
   description: business.tagline,
   openGraph: {
-    title: business.name,
+    title:       business.name,
     description: business.tagline,
-    url: siteUrl,
-    siteName: business.name,
-    locale: 'en_US',
-    type: 'website',
+    url:         siteUrl,
+    siteName:    business.name,
+    locale:      'en_US',
+    type:        'website',
     images: [
       {
-        url: `${siteUrl}/assets/og.webp`,
-        width: 1200,
+        url:    images.og,
+        width:  1200,
         height: 630,
-        alt: business.name,
+        alt:    business.name,
       },
     ],
   },
-  other: {
-    'twitter:card': 'summary_large_image',
-    'twitter:image': `${siteUrl}/assets/og.webp`,
+  twitter: {
+    card:        'summary_large_image',
+    title:       business.name,
+    description: business.tagline,
+    images:      [images.og],
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [services, areas] = await Promise.all([getServices(), getServiceAreas()]);
+
   return (
-    <html lang="en" className={`dark ${sora.variable} ${inter.variable}`}>
-      <body className="min-h-screen flex flex-col">
+    <html
+      lang="en"
+      className={`${montserrat.variable} ${jetbrainsMono.variable}`}
+    >
+      <body className="min-h-screen flex flex-col bg-bg text-fg font-sans antialiased">
+        {/* Google Tag Manager — next/script hoists the loader into <head> */}
+        <GoogleTagManager />
+        {/* Google Tag Manager (noscript) — must stay first inside <body> */}
+        <GoogleTagManagerNoScript />
+
+        {/* Skip to main content — accessibility */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-sticky focus:px-gauge focus:py-rivet focus:bg-accent focus:text-cta-fg focus:rounded-sm focus:font-sans focus:text-sm"
+        >
+          Skip to main content
+        </a>
+
+        {/* Status strip §12.11 */}
+        <div
+          className="relative z-overlay bg-surface-dark border-b border-border overflow-hidden"
+          aria-hidden="true"
+        >
+          <div className="flex items-center justify-center gap-panel py-rivet font-mono text-mono-sm tracking-label text-fg-faint uppercase whitespace-nowrap">
+            <span className="flex items-center gap-rivet">
+              <span
+                className="inline-block w-2 h-2 rounded-full bg-success animate-pulse-dot-green"
+                aria-hidden="true"
+              />
+              Available 24/7
+            </span>
+            <span className="hidden sm:block text-muted">·</span>
+            <span className="hidden sm:block">Quick quote response</span>
+            <span className="hidden md:block text-muted">·</span>
+            <span className="hidden md:block">Northern New Jersey</span>
+          </div>
+        </div>
+
         <QuoteModalProvider>
-          <Navbar />
-          <main className="flex-1 pt-16 md:pt-20 pb-24 md:pb-0">{children}</main>
-          <Footer />
-          <StickyCTA />
-          <QuoteModal />
+          <Navbar services={services} areas={areas} />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <StickyCta />
+          <Footer services={services} areas={areas} />
+          <QuoteModal services={services} />
         </QuoteModalProvider>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              "name": business.name,
-              "telephone": business.phone,
-              "areaServed": "Northern New Jersey",
-              "url": siteUrl,
-              "priceRange": "$$",
-              "openingHours": "Mo-Su 00:00-24:00",
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": 5,
-                "reviewCount": 300
-              }
-            })
-          }}
-        />
+
+        <AnalyticsProvider />
       </body>
     </html>
   );
